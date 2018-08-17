@@ -2,9 +2,9 @@
   <div id="app">
     <!--<transition :name="transitionName">-->
       <!--<router-view/>-->
-      <keep-alive>
+      <!--<keep-alive>-->
           <router-view v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
+      <!--</keep-alive>-->
 
     <!--</transition>-->
     <!--<transition :name="transitionName">-->

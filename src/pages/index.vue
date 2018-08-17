@@ -19,6 +19,10 @@ export default {
     components: {
         "bottom-item": bottom,
     },
+    beforeCreate(){
+        this.$store.dispatch('carousel')
+        this.$store.dispatch('isFineList')
+    },
     computed:{
         
     },

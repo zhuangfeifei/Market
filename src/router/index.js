@@ -9,6 +9,15 @@ const Introduce = resolve => require(['@/pages/Introduce'], resolve)
 const DiscountItem = resolve => require(['@/pages/DiscountItem'], resolve)
 const My = resolve => require(['@/pages/My'], resolve)
 const Card = resolve => require(['@/pages/Card'], resolve)
+const Opencard = resolve => require(['@/pages/Opencard'], resolve)
+const Membership = resolve => require(['@/pages/Membership'], resolve)
+const Coupon = resolve => require(['@/pages/Coupon'], resolve)
+const CouponContent = resolve => require(['@/pages/CouponContent'], resolve)
+const Wallet = resolve => require(['@/pages/Wallet'], resolve)
+const Integralshop = resolve => require(['@/pages/Integralshop'], resolve)
+const ShopDetils = resolve => require(['@/pages/ShopDetils'], resolve)
+const ShopActivity = resolve => require(['@/pages/ShopActivity'], resolve)
+const Rule = resolve => require(['@/pages/Rule'], resolve)
 
 Vue.use(Router)
 
@@ -49,7 +58,7 @@ export default new Router({
           keepAlive: true
         }
       },{
-        path: '/My',
+        path: 'My',
         component: My,
         meta:{
           index:2,
@@ -75,6 +84,69 @@ export default new Router({
     {
       path: '/Card',
       component: Card,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/Opencard',
+      component: Opencard,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/Membership',
+      component: Membership,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/Coupon',
+      component: Coupon,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/CouponContent',
+      component: CouponContent,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/Wallet',
+      component: Wallet,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/Integralshop',
+      component: Integralshop,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/ShopDetils',
+      component: ShopDetils,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/ShopActivity',
+      component: ShopActivity,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/Rule',
+      component: Rule,
       meta:{
         index:3
       }

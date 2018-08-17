@@ -1,19 +1,20 @@
 <template>
     <div id="Introduce">
-        <header-item>商场介绍</header-item>
+        <!--<header-item>商场介绍</header-item>-->
 
         <div class="Introduce">
             <h4>方圆里</h4>
             <p class="time" @click="asd"><span>2018-7-9  苏州方圆里</span><span>苏州方圆里</span></p>
             <div class="content"></div>
         </div>
+        
     </div>
 </template>
 
 <script>
 import header from '../components/header'
 export default {
-    data() {
+    data() {  
         return {
             
         }
@@ -24,6 +25,7 @@ export default {
     created(){
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
+        document.title = '商场介绍'
         // console.log(12)
     },
     activated(){
@@ -44,7 +46,7 @@ export default {
 
 <style lang="less" scoped>
     #Introduce{
-        width: 100%; height: 100vh; background-color: white; padding-top: 1rem; font-size: 0.3rem;
+        width: 100%; height: 100vh; background-color: white; font-size: 0.3rem;
     }
 
     *{
@@ -55,7 +57,7 @@ export default {
     .font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
 
     .Introduce{
-        width: 100%; height: 100%; padding: 0.4rem;
+        width: 100%; height: 100%; padding: 0.4rem; position: relative;
         h4{ font-size: 0.38rem; margin-bottom: 0.2rem; }
         .time{ font-size: 0.3rem; }
         .content{

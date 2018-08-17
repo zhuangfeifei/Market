@@ -1,100 +1,148 @@
 <template>
     <div id="Brand">
 
-        <header-item>品牌商家</header-item>
-
         <nav v-if="ishow" class="floor">
-            <div><span>楼层</span></div>
-            <div><span>业态</span></div>
-            <div @click="focus">1</div>
+            <div v-for="(item,index) in activeNames" @click="changShow(index)" :key="index"><span>{{item}}</span><img src="../assets/img/down.png" alt=""></div>
+            <div @click="focus"><img src="../assets/img/search.png" alt=""></div>
         </nav>
         <nav v-else class="search">
-            <div><input type="text" @focus="focus($event)" @blur="blur($event)" ref="input"><img :src="images[0]" alt=""></div>
+            <div><input id="name" type="text" @focus="focus($event)" @blur="blur($event)" ref="input"><img @click="search" src="../assets/img/search.png" alt=""></div>
         </nav>
+        <div v-show="change" class="changeList">
+            <div v-show="changes == 0"><p v-for="(item,index) in List.projects" @click="getContact(index)" :class="{actives: projectsNum == index}" :key="index">{{item.PROJECT_NAME}}</p></div>
+            <div v-show="changes == 1"><p v-for="(item,index) in getContactList" @click="Contact(index)" :class="{actives: getContactListNum == index}" :key="index">{{item.REGION_NAME}}</p></div>
+            <div v-show="changes == 2"><p v-for="(item,index) in List.floors" @click="floors(index)" :class="{actives: floorstNum == index}" :key="index">{{item.name}}</p></div>
+            <div v-show="changes == 3"><p v-for="(item,index) in List.calssfiy" @click="calssfiy(index)" :class="{actives: calssfiyNum == index}" :key="index">{{item.categoryName}}</p></div>
+        </div>
 
-        <div class="Brand">
-            <div class="Brand_list">
-                <img :src="images[0]" alt="">
+        <div v-if="shopList.length > 0" class="Brand">
+            <div class="Brand_list" @click="detils(item.id)" v-for="(item,index) in shopList" :key="index">
+                <img :src="imgUrl + item.logo_pic" alt="">
                 <div class="content">
-                    <h3>苏浙徽农家大院</h3>
-                    <p><span>餐饮</span><span>1F-C101</span></p>
-                    <div>苏浙徽是一个非常著名的餐饮品牌店苏浙 徽是一个非常著名的餐饮品牌店</div>
-                </div>
-            </div>
-            <div class="Brand_list">
-                <img :src="images[1]" alt="">
-                <div class="content">
-                    <h3>苏浙徽农家大院</h3>
-                    <p><span>餐饮</span><span>1F-C101</span></p>
-                    <div>苏浙徽是一个非常著名的餐饮品牌店苏浙 徽是一个非常著名的餐饮品牌店</div>
-                </div>
-            </div>
-            <div class="Brand_list">
-                <img :src="images[0]" alt="">
-                <div class="content">
-                    <h3>苏浙徽农家大院</h3>
-                    <p><span>餐饮</span><span>1F-C101</span></p>
-                    <div>苏浙徽是一个非常著名的餐饮品牌店苏浙 徽是一个非常著名的餐饮品牌店</div>
-                </div>
-            </div>
-            <div class="Brand_list">
-                <img :src="images[1]" alt="">
-                <div class="content">
-                    <h3>苏浙徽农家大院</h3>
-                    <p><span>餐饮</span><span>1F-C101</span></p>
-                    <div>苏浙徽是一个非常著名的餐饮品牌店苏浙 徽是一个非常著名的餐饮品牌店</div>
+                    <h3>{{item.shopName}}</h3>
+                    <p><span>{{item.categoryName}}</span><span>{{item.floor}}-{{item.shopNum}}</span></p>
+                    <div>{{item.SHOP_DESCRIPTION}}</div>
                 </div>
             </div>
         </div>
-
         
+        <div v-else class="no"><img src="../assets/img/nohuo.png" alt=""></div>
 
 
     </div>
 </template>
 
 <script>
-import header from '../components/header'
 export default {
     data() {
         return {
-            images: [
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531462002438&di=e061bf459cfedfddc668e4336da6ca46&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Da4742242da1373f0e13267dfcd772e97%2F8718367adab44aed5b4404ddb81c8701a18bfb85.jpg',
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
-            ],
-            activeNames: ['0'],
-            ishow:true
+            activeNames: ['项目','馆位','楼层','业态'], projectsNum:0, getContactListNum: -1,floorstNum:-1,calssfiyNum:-1,
+            ishow:true,change:false,changes:-1, i:0,
+            list:{ categoryId:'', projectId:'', shopName:'', regionId:'', floorId:'', limit:5, current:1, sort:'', order:'', isPage:false }
         }
     },
     components: {
-        'header-item': header
+        
+    },
+    beforeCreate(){
+        
+    },
+    computed:{
+        imgUrl(){
+            return this.$store.state.imgUrl
+        },
+        List(){
+            return this.$store.state.List
+        },
+        shopList(){
+            return this.$store.state.shopList
+        },
+        getContactList(){
+            return this.$store.state.getContactList
+        },
     },
     mounted(){
         // this.$nextTick(() => {this.$refs['input'].focus()})
+        this.$store.dispatch('shopList', this.list)
+        this.$store.commit('SET_PAGE', true)
+        window.addEventListener('scroll', this.handleScroll)
     },
     created(){
-        // this.$nextTick(() => {this.$refs['input'].focus()})
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
+        document.title = '品牌商家'
+        this.$store.commit('ACTIVE', 1)
     },
     methods:{
+        changShow(index){
+            this.i % 2 == 0 ? this.change = true : this.change = false
+            this.changes = index
+            this.i++
+        },
+        getContact(index){
+            this.projectsNum = index
+            this.list.projectId = this.List.projects[index].ID
+            this.func()
+        },
+        Contact(index){
+            this.getContactListNum = index
+            this.list.regionId = this.getContactList[index].ID
+            this.func()
+        },
+        floors(index){
+            this.floorstNum = index
+            this.list.floorId = this.List.floors[index].num
+            this.func()
+        },
+        calssfiy(index){
+            this.calssfiyNum = index
+            this.list.categoryId = this.List.calssfiy[index].id
+            this.func()
+        },
+        func(){
+            this.changes = -1  // 显示
+            this.i++           // 再次点击关闭
+            this.list.current = 1   // 第一页
+            this.list.isPage = false  // 更新shop列表
+            this.$store.dispatch('shopList', this.list)
+        },
         focus(event) {
-            console.log(event)
+            // console.log(event)
             // event.currentTarget.select();  // 获取焦点时需直接选中文本内容
             this.ishow = false
             this.$nextTick(() => {this.$refs['input'].focus()})
         },
         blur(value){
-            console.log(value)
+            // console.log(value)
             this.ishow = true
+        },
+        search(){  // 搜索
+            var list = { categoryId:'', projectId:'', shopName:$('#name').val(), regionId:'', floorId:'', limit:5, current:1, sort:'', order:'', isPage:false }
+            this.$store.dispatch('shopList', list)
+        },
+        detils(shopid){
+            this.$router.push({path:'/ShopDetils',query:{ shopid: shopid }})
+        },
+        handleScroll(){
+            let scrollTop = $(window).scrollTop()
+            let scrollHeight = $(document).height()
+            let windowHeight = $(window).height()
+            if (scrollTop + windowHeight === scrollHeight) {
+                this.list.current ++
+                this.list.isPage = true
+                if(this.$store.state.isPage) this.$store.dispatch('shopList', this.list)
+            }
         }
+    },
+    destroyed () {
+        window.removeEventListener('scroll', this.handleScroll)
     }
 }
 </script>
 
 <style lang="less" scoped>
     #Brand{
-        width: 100%; height: 100%; padding-bottom: 1.1rem; background-color: white; padding-top: 1rem; font-size: 0.3rem;
+        width: 100%; height: 100%; padding-bottom: 1.1rem; background-color: white; font-size: 0.3rem; padding-top: 1.03rem;
     }
     
     *{
@@ -102,18 +150,19 @@ export default {
     }
 
     .floor{
-        width: 100%; height: 1.03rem; font-size: 0.3rem; display: flex; justify-content: space-around;
-        border-bottom: 0.01rem solid rgba(206,206,206,1); padding-top: 0.3rem;
+        width: 100%; height: 1.03rem; font-size: 0.3rem; display: flex; justify-content: space-around; background-color: white;
+        border-bottom: 0.01rem solid rgba(206,206,206,1); padding-top: 0.3rem; position: fixed; top: 0; left: 0;
         div{
-            width: 30%; height: 0.5rem; text-align: center; color:rgba(43,43,43,1); font-family:PingFang-SC-Regular;
+            width: 20%; height: 0.5rem; text-align: center; color:rgba(43,43,43,1); font-family:PingFang-SC-Regular;
             border-right: 0.02rem solid rgba(206,206,206,1); line-height: 0.5rem;
+            img{ width: 0.2rem; height: 0.1rem; position: relative; top: -0.05rem; left: 0.05rem; }
         }
-        div:nth-child(3){
-            border: 0;
+        div:last-child{
+            border: 0; img{ width: 0.42rem; height: 0.42rem; top: 0; }
         }
     }
     .search{
-        width: 100%; height: 1.03rem; border-bottom: 0.02rem solid rgba(206,206,206,1); padding-top: 0.195rem;
+        width: 100%; height: 1.03rem; border-bottom: 0.02rem solid rgba(206,206,206,1); padding-top: 0.195rem; position: fixed; top: 0; left: 0; background-color: white;
         div{
             width: 5.54rem; height: 0.64rem; border: 0.02rem solid #FF8B4B; margin: 0 auto; position: relative; border-radius: 0.32rem;
             input{
@@ -123,6 +172,21 @@ export default {
             img{
                 width: 0.42rem; height: 0.42rem; position: absolute; top: 0.1rem; right: 0.31rem;
             }
+        }
+    }
+
+
+    .changeList{
+        width: 100%; color:rgba(68,68,68,1); font-size: 0.26rem;
+        position: fixed; top: 1.03rem; left: 0;
+        div{
+            width: 20%; text-align: center; line-height: 0.5rem; background-color: white; box-shadow:2px 1px 5px rgba(35,24,21,0.2); padding: 0.1rem 0;
+        }
+        div:nth-child(2){ margin-left: 20%; }
+        div:nth-child(3){ margin-left: 40%; }
+        div:nth-child(4){ margin-left: 60%; }
+        .actives{
+            color: #FF8B4B;
         }
     }
 
@@ -147,6 +211,11 @@ export default {
                 }
             }
         }
+    }
+
+    .no{
+        width: 3.33rem; height: 3rem; margin: 1.6rem auto;
+        img{ width: 100%; height: 100%; }
     }
 
     

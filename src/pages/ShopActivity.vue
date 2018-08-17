@@ -1,14 +1,37 @@
 <template>
     <div id="Discount">
-
+        <!--<header-item>商场活动</header-item>-->
 
         <div v-if="show" class="Discount">
-            <div class="Discount_list" @click="details" v-for="(item,index) in 6" :key="index" :class="{state3: index == 2}">
+            <div class="Discount_list" @click="details">
                 <img :src="images[1]" alt="">
                 <div class="title">酱小七开业5.8折大促</div>
                 <div class="state">进行中</div>
-                <div v-if="index == 1" class="state" :class="{state1: index == 1}">未开始</div>
-                <div v-if="index == 2" class="state" :class="{state2: index == 2}">已结束</div>
+            </div>
+            <div class="Discount_list">
+                <img :src="images[1]" alt="">
+                <div class="title">酱小七开业5.8折大促</div>
+                <div class="state">进行中</div>
+            </div>
+            <div class="Discount_list">
+                <img :src="images[1]" alt="">
+                <div class="title">酱小七开业5.8折大促</div>
+                <div class="state">进行中</div>
+            </div>
+            <div class="Discount_list">
+                <img :src="images[1]" alt="">
+                <div class="title">酱小七开业5.8折大促</div>
+                <div class="state">进行中</div>
+            </div>
+            <div class="Discount_list">
+                <img :src="images[1]" alt="">
+                <div class="title">酱小七开业5.8折大促</div>
+                <div class="state">进行中</div>
+            </div>
+            <div class="Discount_list" @click="details">
+                <img :src="images[1]" alt="">
+                <div class="title">酱小七开业5.8折大促</div>
+                <div class="state">进行中</div>
             </div>
         </div>
 
@@ -18,6 +41,7 @@
 </template>
 
 <script>
+import header from '../components/header'
 export default {
     data() {
         return {
@@ -30,14 +54,13 @@ export default {
         }
     },
     components: {
-        
+        'header-item': header
     },
     created(){
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
-        // console.log('asdasd')
-        document.title = '商家优惠'
-        this.$store.commit('ACTIVE', 2)
+        document.title = '商场活动'
+        
     },
     methods:{
         details(){
@@ -49,7 +72,7 @@ export default {
 
 <style lang="less" scoped>
     #Discount{
-        width: 100%; min-height: calc(100vh - 1.1rem); padding-bottom: 1.1rem; background-color: rgba(232,232,232,1);
+        width: 100%; min-height: calc(100vh); background-color: rgba(232,232,232,1);
     }
     
     *{
@@ -71,10 +94,7 @@ export default {
                 width: 1.2rem; height: 0.5rem; font-size: 0.28rem; line-height: 0.5rem; border-top-right-radius: 0.1rem; border-bottom-left-radius: 0.1rem;
                 position: absolute; top: 0; right: 0; background:rgba(98,185,0,1); color: white; text-align: center;
             }
-            .state1{ background:rgba(255,139,75,1); }
-            .state2{ background:rgba(75,75,75,1); }
         }
-        .state3{  opacity: 0.6; }
     }
 
     .no{

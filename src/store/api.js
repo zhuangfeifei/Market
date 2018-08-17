@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from './store'
+import { Toast } from 'vant'
 
 
 let localhostDev = true
@@ -22,11 +23,13 @@ api.interceptors.request.use(function (config) {
 // 添加响应拦截器
 api.interceptors.response.use(function (response) {
 
+  if(response.data.code != 200) Toast.fail(response.data.message)
+
     return response;
 
   }, function (error) {
     
-
+    Toast.fail('网络异常！')
     return Promise.reject(error)
 })
 

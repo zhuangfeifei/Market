@@ -1,24 +1,26 @@
 <template>
-    <div id="My">
-        <header-item>会员中心</header-item>
+    <div id="My" v-if="user">
 
         <nav>
             <div class="header">
-                <div class="portrait"><img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3512758362,4182805754&fm=27&gp=0.jpg" alt=""></div>
-                <div class="name"><h4>厚木资产</h4><p v-if="isShow">普通会员</p><p v-else><router-link to="/Card">成为会员></router-link></p><p v-if="isShow">当前余额：2000元</p></div>
-                <div class="Sign"><span>签到</span></div>
+                <div class="portrait"><img :src="user.wtCustomer.avatar" alt=""></div>
+                <div class="name">
+                    <h4>{{user.wtCustomer.nickname}}</h4><p v-if="user.wtCustomer.phonenumber">{{user.card[0].name}}</p><p v-else><router-link to="/Opencard">成为会员></router-link></p>
+                    <p v-if="user.wtCustomer.phonenumber">当前余额：{{user.balanceMap.balance}}元</p>
+                </div>
+                <div class="Sign" @click="sign"><span>签到</span></div>
             </div>
-            <p v-if="isShow" class="privilege"><span>·消费优惠</span><span>·身份象征</span><span>·更专业的服务</span></p>
+            <p v-if="user.wtCustomer.phonenumber" class="privilege"><span>·消费优惠</span><span>·身份象征</span><span>·更专业的服务</span></p>
             <p v-else class="privileges">请至会员卡开通会员，享受更多优惠</p>
         </nav>
 
-        <div class="My">
+        <div class="Mys">
             <div class="Order"></div>
             <div class="function">
                 <div class="car"><img src="../assets/img/car.png" alt=""><p>停车缴费</p><p>parking payment</p></div>
                 <div class="right">
-                    <div class="coupon"><img src="../assets/img/coupon.png" alt=""><div><p>优惠券</p><p>coupon</p></div></div>
-                    <div class="vip"><img src="../assets/img/vip.png" alt=""><p>会员卡</p><p>membership card</p></div>
+                    <router-link to="/Coupon"><div class="coupon"><img src="../assets/img/coupon.png" alt=""><div><p>优惠券</p><p>coupon</p></div></div></router-link>
+                    <router-link to="/Card"><div class="vip"><img src="../assets/img/vip.png" alt=""><p>会员卡</p><p>membership card</p></div></router-link>
                     <div class="settings"><img src="../assets/img/settings.png" alt=""><p>设置</p><p>settings</p></div>
                 </div>
             </div>
@@ -27,23 +29,33 @@
 </template>
 
 <script>
-import header from '../components/header'
 export default {
     data() {
         return {
-            isShow:false
+            isShow: false
         }
     },
     components: {
-        'header-item': header
+        
+    },
+    beforeCreate(){
+        this.$store.dispatch('user')
+    },
+    computed:{
+        user(){
+            return this.$store.state.user
+        },
     },
     created(){
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
-
+        document.title = '会员中心'
+        this.$store.commit('ACTIVE', 3)
     },
     methods:{
-        
+        sign(){
+            this.$store.dispatch('addIntegration', 2)
+        }
     },
     // beforeRouteLeave(to, from, next) {   
     // // 设置下一个路由的 meta
@@ -55,7 +67,7 @@ export default {
 
 <style lang="less" scoped>
     #My{
-        width: 100%; height: 12.85rem; background-color: white; padding-top: 1rem; font-size: 0.3rem;
+        width: 100%; height: 12rem; background-color: white; font-size: 0.3rem;
     }
 
     *{
@@ -96,7 +108,7 @@ export default {
         }
     }
 
-    .My{
+    .Mys{
         width: 100%; height: 8.72rem; padding: 0.4rem; margin-top: -1.4rem; color: white; .font1; font-size: 0.28rem;
         .Order{
             width: 100%; height: 2.94rem; background: url('../assets/img/order.png') no-repeat; background-size: 100% 100%;
@@ -110,6 +122,7 @@ export default {
             }
             .right{
                 width: 4.2rem; height: 4.2rem; float: right;
+                a{ color: white; }
                 .coupon{
                     width: 100%; height: 2rem; background: url('../assets/img/couponbac.png') no-repeat; background-size: 100% 100%; float: left;
                     img{ width: 1.2rem; height: 0.84rem; margin-top: 0.58rem; margin-right: 0.4rem; margin-left: 0.85rem; float: left; }

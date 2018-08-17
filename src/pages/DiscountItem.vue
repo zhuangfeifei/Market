@@ -1,7 +1,7 @@
 <template>
     <div id="Discount">
 
-        <header-item>商家优惠</header-item>
+        <!--<header-item>商家优惠</header-item>-->
 
         <div class="Discount">
             <h3>酱小七开业5.8折大促</h3>
@@ -13,7 +13,7 @@
                 <div class="business_logo"><img :src="images[1]" alt=""></div>
                 <div class="business_contact">
                     <p>酱小七</p>
-                    <p><span>相城区元和街道华元路818号</span><img src="../assets/img/addresss.png" alt=""></p>
+                    <p><span>相城区元和街道华元路818号相城区元和街道华元路818号</span><img src="../assets/img/addresss.png" alt=""></p>
                     <div>
                         <div class="contact">联系门店</div><div class="reach">到这去</div>
                     </div>
@@ -54,7 +54,7 @@ export default {
 
 <style lang="less" scoped>
     #Discount{
-        width: 100%; height: 130vh; padding-top: 1rem; background-color: white; font-size: 0.3rem;
+        width: 100%; height: 130vh; background-color: white; font-size: 0.3rem;
     }
     
     *{
@@ -88,9 +88,11 @@ export default {
             }
             .business_contact{
                 width: calc(100% - 1.6rem - 0.64rem); height: 100%; position: relative; top: -0.05rem;
-                img{ width: 0.4rem; height: 0.4rem; float: right; }
+                img{ width: 0.4rem; height: 0.4rem; }
                 p:nth-child(1){ .font1; color:rgba(43,43,43,1); font-size: 0.3rem; margin-bottom: 0.05rem; }
-                p:nth-child(2){ .font2; color:rgba(75,75,75,1); font-size: 0.28rem; margin-bottom: 0.25rem; }
+                p:nth-child(2){ .font2; color:rgba(75,75,75,1); font-size: 0.28rem; margin-bottom: 0.25rem; display: flex; justify-content: space-between;
+                    span{ display: inline-block; width: calc(100% - 0.4rem); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+                }
                 div{
                     width: 100%; height: 0.5rem; font-size: 0.28rem; .font1; text-align: center; line-height: 0.48rem;
                     .contact{

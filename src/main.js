@@ -5,6 +5,8 @@ import App from './App'
 import router from './router'
 
 import FontSize from './FontSize'
+// import jQuery from 'jquery'
+// Vue.prototype.$ = jQuery
 
 import store from './store/store'
 Vue.prototype.$store = store
