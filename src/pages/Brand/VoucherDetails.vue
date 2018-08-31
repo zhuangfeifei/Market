@@ -1,8 +1,8 @@
 <template>
-    <div id="Discount" v-if="groupList">
+    <div id="VoucherDetails" v-if="groupList">
 
         <div class="logo"><img :src="imgUrl + groupList.thumbnail_pic" alt=""></div>
-        <div class="Discount">
+        <div class="VoucherDetails">
             <div class="detail">
                 <h4>{{groupList.group_name}}</h4>
                 <p><span>广场指定餐饮商户{{groupList.group_name}}</span><span>库存{{groupList.inventory}}</span></p>
@@ -10,9 +10,9 @@
                 <p v-if="groupList.period_validity == 0">有效期：长期有效</p>
                 <p v-else>有效期：{{groupList.start_time}} ~ {{groupList.end_time}}</p>
             </div>
-            <div class="business">
-                <div class="business_logo"><img :src="imgUrl + shopDetail.thumbnail_pic" alt=""></div>
-                <div class="business_contact">
+            <div class="VoucherDetails_business">
+                <div class="VoucherDetails_business_logo"><img :src="imgUrl + shopDetail.thumbnail_pic" alt=""></div>
+                <div class="VoucherDetails_business_contact">
                     <p>{{groupList.update_man}}</p>
                     <p><span>{{shopDetail.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
                     <div>
@@ -100,7 +100,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-    #Discount{
+    #VoucherDetails{
         width: 100%; min-height: 100vh; background-color: white; font-size: 0.3rem; letter-spacing: 0.005rem; padding-bottom: 1.28rem;
     }
     
@@ -116,7 +116,7 @@ export default {
         width: 100%; height: 4.2rem;
         img{ width: 100%; height: 100%; }
     }
-    .Discount{
+    .VoucherDetails{
         width: 100%; height: 100%; padding: 0.41rem;
         .detail{
             width: 100%; height: 3.13rem; padding-top: 0.07rem;
@@ -133,14 +133,14 @@ export default {
                 .font1; font-size: 0.24rem; color:rgba(43,43,43,1); line-height: 1rem;
             }
         }
-        .business{
+        .VoucherDetails_business{
             width: 100%; height: 2.88rem; display: flex; justify-content: space-between; padding: 0.64rem 0;
              border-bottom: 0.02rem dashed rgba(206,206,206,1); border-top: 0.02rem dashed rgba(206,206,206,1);
-            .business_logo{
+            .VoucherDetails_business_logo{
                 width: 1.6rem; height: 100%;
                 img{ width: 100%; height: 100%; }
             }
-            .business_contact{
+            .VoucherDetails_business_contact{
                 width: calc(100% - 1.6rem - 0.64rem); height: 100%; position: relative; top: -0.05rem;
                 img{ width: 0.32rem; height: 0.32rem; position: relative; top: 0.03rem; }
                 p:nth-child(1){ .font1; color:rgba(43,43,43,1); font-size: 0.3rem; margin-bottom: 0.05rem; }

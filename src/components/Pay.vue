@@ -4,7 +4,7 @@
         <van-popup v-model="PageShow" position="bottom" :overlay="true" :close-on-click-overlay="false">
             <van-row class="Pay_title">
                 <van-col span="3"><img @click="isShowPay" src="../assets/img/clear.png" alt=""></van-col>
-                <van-col span="18" offset="4">确认付款</van-col>
+                <van-col span="18">确认付款</van-col>
             </van-row>
             <div v-if="show" class="Pay_change">
                 <p>订单编号：{{order.order_num}}</p>
@@ -65,8 +65,12 @@ export default {
             this.checke_show = !this.checke_show
         },
         pay(){
-            this.show = !this.show
-            this.value = ''
+            if(!this.checke_show){
+                this.show = !this.show
+                this.value = ''
+            }else{
+                this.wxPay()
+            }
         },
         onInput(key) {
             this.value = (this.value + key).slice(0, 6)
@@ -84,6 +88,22 @@ export default {
         onDelete() {
             this.value = this.value.slice(0, this.value.length - 1)
         },
+        wxPay(){
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady); 
+                    document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady);
+                }
+            }else{
+                this.onBridgeReady();
+            }
+        },
+        onBridgeReady(){
+            var list = { orderId: this.order.order_id, payType: 2 }
+            this.$store.dispatch('pay', list)
+        }
     }
 }
 </script>
@@ -105,11 +125,11 @@ export default {
     height: 8.3rem; width: 100vw; text-align: center;
 }
 .Pay_title{
-    width: 100%; height: 0.87rem; font-size: 0.37rem; .font3; text-align: center; line-height: 0.87rem; border-bottom: 0.01rem solid rgba(232,232,232,1);
+    width: 100vw; height: 0.87rem; font-size: 0.37rem; .font3; text-align: center; line-height: 0.87rem; border-bottom: 0.01rem solid rgba(232,232,232,1);
     img{ width: 0.33rem; height: 0.33rem; }
 }
 .Pay_change{
-    width: 100%; height: calc(8rem - 1.3rem); padding: 0 0.4rem;
+    width: 100vw; height: calc(8rem - 1.3rem); padding: 0 0.4rem;
     p{ margin-top: 0.63rem; font-size: 0.28rem; color:rgba(75,75,75,1); .font1; }
     h4{ font-size: 0.6rem; .font3; margin-top: 0.48rem; letter-spacing: 0.06rem; }
     h5{ text-align: left; font-size: 0.3rem; .font1; margin-top: 0.64rem; margin-bottom: 0.27rem; }
@@ -119,12 +139,12 @@ export default {
         .Pay_checke{ width: 0.3rem; height: 0.3rem; float: right; margin-top: 0.1rem; }
     }
     .Pay_start{
-        width: 100%; height: 0.96rem; font-size: 0.34rem; .font3; color:rgba(255,255,255,1); 
+        width: 100vw; height: 0.96rem; font-size: 0.34rem; .font3; color:rgba(255,255,255,1); 
         background:rgba(255,139,75,1); border-radius: 0.1rem; line-height: 0.96rem; margin-top: 1rem;
     }
 }
 .Pay_passwod{
-    width: 100%; height: calc(8rem - 0.87rem);
+    width: 100vw; height: calc(8rem - 0.87rem);
     p{ margin-top: 0.63rem; margin-bottom: 0.3rem; font-size: 0.28rem; color:rgba(75,75,75,1); .font1; }
     .Pay_input{ width: 90%; margin-left: 5%; }
 }

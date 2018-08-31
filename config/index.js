@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       "/market":{
-        target:"http://192.168.1.95:8090",
-        // target:"http://www.homeamc.cn",
+        // target:"http://192.168.1.95:8090",
+        target:"http://www.homeamc.cn",
     		changeOrigin: true,
     		pathRewrite: {
           '^/market': ''
@@ -52,7 +52,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../market'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: 'http://www.homeamc.cn/shopping/static/wx/',
+    assetsPublicPath: 'http://www.homeamc.cn/shops/static/wx/',
 
     /**
      * Source Maps

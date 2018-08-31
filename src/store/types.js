@@ -41,3 +41,5 @@ export const BASICINFORMATION = 'BASICINFORMATION'  // 获取业主认证信息
 
 export const BALANCE = 'BALANCE'  // 余额明细
 
+export const MAINGOODS = 'MAINGOODS'  // 推荐商品（主推）
+

@@ -12,7 +12,7 @@
                     <van-col span="6" class="My_class_"><router-link to="/Balance"><p>{{'¥'+user.wtCustomer.amount || 0}}</p><p>余额</p></router-link></van-col>
                     <van-col span="6" class="My_class_"><router-link to="/Coupon"><p>{{user.couponNum || 0}}</p><p>优惠券</p></router-link></van-col>
                 </van-row>
-                <div v-if="user.wtCustomer.userType < 3" class="My_cardno"><span>NO：{{user.card[0].cardno}}</span><div @click="qrcodes" class="open_code"></div></div>
+                <div v-if="user.card.length > 0" class="My_cardno"><span>NO：{{user.card[0].cardno}}</span><div @click="qrcodes" class="open_code"></div></div>
                 <router-link v-else to="/Opencard"><div class="My_bind">绑定会员卡</div></router-link>
             </div>
         </nav>

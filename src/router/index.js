@@ -6,6 +6,7 @@ const index = resolve => require(['@/pages/index'], resolve)
 const Home = resolve => require(['@/pages/Home/Home'], resolve)
 const Introduce = resolve => require(['@/pages/Home/Introduce'], resolve)
 const ShopActivity = resolve => require(['@/pages/Home/ShopActivity'], resolve)
+const CouponAll = resolve => require(['@/pages/Home/CouponAll'], resolve)
 
 const Brand = resolve => require(['@/pages/Brand/Brand'], resolve)
 const ShopDetils = resolve => require(['@/pages/Brand/ShopDetils'], resolve)
@@ -207,6 +208,13 @@ export default new Router({
     {
       path: '/Owner',
       component: Owner,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/CouponAll',
+      component: CouponAll,
       meta:{
         index:3
       }

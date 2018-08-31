@@ -1,7 +1,7 @@
 <template>
-    <div id="Discount">
+    <div id="DiscountItem">
 
-        <div v-if="preferentialList" class="Discount">
+        <div v-if="preferentialList" class="DiscountItem">
             <h3>{{preferentialList.title}}</h3>
             <p class="time"><span>活动时间</span><span>{{preferentialList.activity_time.split('~')[0].substring(0,10)}}~{{preferentialList.activity_time.split('~')[1].substring(0,10)}}</span></p>
             <div v-if="preferentialList.status === '1'" class="state">进行中</div>
@@ -9,9 +9,9 @@
             <div v-if="preferentialList.status === '2'" class="state" :class="{state2: preferentialList.status === '2'}">已结束</div>
             <div class="logo"><img :src="imgUrl + preferentialList.offerpic" alt=""></div>
             <h4>适用商家</h4>
-            <div class="business" v-for="(item,index) in preferentialList.shopList" :key="index">
-                <div class="business_logo"><img :src="imgUrl + item.PATH" alt=""></div>
-                <div class="business_contact">
+            <div class="DiscountItem_business" v-for="(item,index) in preferentialList.shopList" :key="index">
+                <div class="DiscountItem_business_logo"><img :src="imgUrl + item.PATH" alt=""></div>
+                <div class="DiscountItem_business_contact">
                     <p>{{item.shopName}}</p>
                     <p><span>{{item.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
                     <div>
@@ -74,8 +74,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-    #Discount{
-        width: 100%; height: 130vh; background-color: white; font-size: 0.3rem;
+    #DiscountItem{
+        width: 100%; min-height: 100vh; background-color: white; font-size: 0.3rem;
     }
     
     *{
@@ -85,7 +85,7 @@ export default {
     .font1{ font-family:PingFang-SC-Medium; font-weight: Medium; }
     .font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
 
-    .Discount{
+    .DiscountItem{
         width: 100%; height: 100%; padding: 0.4rem;
         h3{ font-size: 0.48rem; }
         .time{
@@ -103,13 +103,13 @@ export default {
             img{ width: 100%; height: 3.8rem; border-radius: 0.1rem; }
         }
         h4{ font-size: 0.36rem; }
-        .business{
+        .DiscountItem_business{
             width: 100%; height: 1.6rem; display: flex; justify-content: space-between; margin: 0.3rem 0;
-            .business_logo{
+            .DiscountItem_business_logo{
                 width: 1.6rem; height: 100%;
                 img{ width: 100%; height: 100%; }
             }
-            .business_contact{
+            .DiscountItem_business_contact{
                 width: calc(100% - 1.6rem - 0.64rem); height: 100%; position: relative; top: -0.05rem;
                 img{ width: 0.4rem; height: 0.4rem; }
                 p:nth-child(1){ .font1; color:rgba(43,43,43,1); font-size: 0.3rem; margin-bottom: 0.05rem; }

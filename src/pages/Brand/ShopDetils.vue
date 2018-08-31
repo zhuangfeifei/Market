@@ -2,7 +2,7 @@
 	
     <div class="ShopDetils">
         
-        <van-swipe v-if="shopDetail" class="ShopDetils_swipe" :autoplay="3000">
+        <van-swipe v-if="shopDetail.PATH" class="ShopDetils_swipe" :autoplay="3000">
             <van-swipe-item v-for="(item, index) in shopDetail.PATH.split(';')" :key="index">
                 <img v-lazy="imgUrl + item" />
             </van-swipe-item>
@@ -19,16 +19,17 @@
 
         <div class="ShopDetils_Recommend">
             <div class="ShopDetils_Recommend_title"><span>推荐商品</span><span>查看更多</span></div>
-            <div class="ShopDetils_Recommend_scroll">
-                <div class="ShopDetils_Recommend_scrolls" :style="{'width':''+(6*2.2 + 0.6)+'rem'}">
-                    <div class="ShopDetils_Recommend_list" v-for="(item, index) in 6" :key="index">
+            <div v-if="mainGoods" class="ShopDetils_Recommend_scroll">
+                <div v-if="mainGoods.length > 0" class="ShopDetils_Recommend_scrolls" :style="{'width':''+(mainGoods.length*2.2 + 0.6)+'rem'}">
+                    <div class="ShopDetils_Recommend_list" v-for="(item, index) in mainGoods" :key="index">
                         <div class="ShopDetils_Recommend_list_img">
-                            <img class="list_img" :src="images[1]" alt="">
-                            <img v-if="index%2 == 0" class="status" src="../../assets/img/push.png" alt=""><img v-else class="status" src="../../assets/img/new.png" alt="">
+                            <img class="list_img" :src="imgUrl + item.thumbnail" alt="">
+                            <img v-if="true" class="status" src="../../assets/img/push.png" alt=""><img v-else class="status" src="../../assets/img/new.png" alt="">
                         </div>
-                        <p>绍兴花雕鸡</p>
+                        <p>{{item.goods_name}}</p>
                     </div>
                 </div>
+                <div v-else class="ShopDetils_No">暂无</div>
             </div>
         </div>
 
@@ -45,7 +46,6 @@
 </template>
 
 <script>
-import header from '../../components/header'
 import Preferential_information from '../../components/Preferential_information'
 	export default {
 		name: "loginpassword-item",
@@ -59,12 +59,12 @@ import Preferential_information from '../../components/Preferential_information'
             }
         },
         components: {
-            'header-item': header,
             'Preferential-information':Preferential_information
         },
         beforeCreate(){
             this.$store.dispatch('shopDetail', this.$route.query.shopid)
             this.$store.dispatch('groupList', this.$route.query.shopid)
+            this.$store.dispatch('mainGoods', this.$route.query.shopid)
         },
         computed:{
             imgUrl(){
@@ -75,6 +75,9 @@ import Preferential_information from '../../components/Preferential_information'
             },
             groupList(){
                 return this.$store.state.groupList
+            },
+            mainGoods(){
+                return this.$store.state.mainGoods
             },
         },
         created(){
@@ -169,6 +172,7 @@ import Preferential_information from '../../components/Preferential_information'
                 p{ font-size: 0.28rem; color:rgba(75,75,75,1); .font1; margin-top: 0.1rem; white-space: nowrap; overflow: hidden; }
             }
         }
+        .ShopDetils_No{ margin-left: 0.4rem; }
     }
 }
 

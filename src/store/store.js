@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 import router from '../router'
+import wx from 'weixin-js-sdk'
 import * as types from './types'
 import axios from './api'
 import Util from './storage'
@@ -36,6 +37,7 @@ const state = {
     documentType:'', // 获取业主认证证件类型
     basicinformation:'', // 获取业主认证信息
     balance:'', // 余额明细
+    mainGoods:'', // 推荐商品（主推）
 }
 
 const mutations = {
@@ -108,8 +110,11 @@ const mutations = {
     [types.BASICINFORMATION](state){
         state.basicinformation = Util.getLocal('basicinformation')
     },
-    [types.BALANCE](state,res){
+    [types.BALANCE](state){
         state.balance = Util.getLocal('balance')
+    },
+    [types.MAINGOODS](state,res){
+        state.mainGoods = res
     },
 }
 
@@ -178,6 +183,16 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
+    mainGoods({commit}, shopid){   // 推荐商品（主推）
+        axios.api.post('/shops/api/goods/mainGoods', $.param({ shopId: shopid }) )
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                commit('MAINGOODS', res.data.data)
+            }
+        })
+        .catch(err => console.log(err))
+    },
     groupList({commit,state}, shopIds){   // 获取商家团购设置的团购卷码信息列表
         axios.api.post('/shops/api/groupOrder/groupList', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             shopId: shopIds, groupType: '1' }) )
@@ -221,17 +236,42 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    pay({commit,state}, list){   // 团购订单支付
+    pay({commit,state,dispatch}, list){   // 团购订单支付
         axios.api.post('/shops/api/groupOrder/pay', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             orderId: list.orderId, payType: list.payType, payPwd: list.payPwd }) )
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
-                Toast.success('支付完成！')
-                router.push({path:'/'})
+                if(list.payType === 3){
+                    Toast.success('支付完成！')
+                    router.push({path:'/'})
+                }else{
+                    dispatch('wsPay', res.data.data)
+                }
             }
         })
         .catch(err => console.log(err))
+    },
+    wsPay({commit,state,dispatch}, data){   // 微信支付
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest', {
+                "appId": data.appid,     //公众号名称，由商户传入     
+                "timeStamp": data.timestamp,         //时间戳，自1970年以来的秒数     
+                "nonceStr": data.noncestr, //随机串     
+                "package": data.package,
+                "signType": 'MD5',         //微信签名方式     
+                "paySign": data.sign //微信签名 
+            },
+            (res) => {
+                if (res.err_msg == "get_brand_wcpay_request:ok") {// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
+                    this.$router.replace({ path: 'GroupPurchaseOrder' })
+                } else {
+                    if (res.err_msg != 'get_brand_wcpay_request:cancel') {
+                        Toast.fail(res.err_msg)
+                    }
+                }
+            }
+        );
     },
     cancelOrder({commit,state}, orderIds){   // 取消订单
         axios.api.post('/shops/api/groupOrder/cancelOrder', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
