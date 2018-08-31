@@ -5,6 +5,8 @@ export const ACTIVE = 'ACTIVE'    // 导航
 
 export const CAROUSEL = 'CAROUSEL'  // 轮播图
 
+export const ANNOUNCELIST = 'ANNOUNCELIST'  // 公告
+
 export const ISFINELIST = 'ISFINELIST'  // 精选
 
 export const GETCONTACTLIST = 'GETCONTACTLIST'  // 馆位
@@ -22,4 +24,20 @@ export const COUPON = 'COUPON'  // 优惠券列表
 export const COUPON_DETAIL = 'COUPON_DETAIL'  // 优惠券详情列表
 
 export const GET_INTEGRALHIS = 'GET_INTEGRALHIS'  // 获取积分规则和记录
+
+export const GROUP_LIST = 'GROUP_LIST'  // 获取商家团购设置的团购卷码信息列表
+
+export const PREFERENTIAL_LIST = 'PREFERENTIAL_LIST'  // 获取商家优惠活动列表
+
+export const ORDER = 'ORDER'  // 订单信息
+
+export const GET_BALANCE = 'GET_BALANCE'  // 获取余额
+
+export const GET_HISTORYGROUPORDER = 'GET_HISTORYGROUPORDER'  // 查看个人历史团购订单
+
+export const DOCUMENTTYPE = 'DOCUMENTTYPE'  // 获取业主认证证件类型
+
+export const BASICINFORMATION = 'BASICINFORMATION'  // 获取业主认证信息
+
+export const BALANCE = 'BALANCE'  // 余额明细
 
