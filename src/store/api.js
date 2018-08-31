@@ -1,9 +1,10 @@
 import axios from 'axios'
 import store from './store'
-import { Toast } from 'vant'
+import router from '../router'
+import { Toast, Dialog } from 'vant'
 
 
-let localhostDev = true
+let localhostDev = false
 let urls = localhostDev ? '/market' : 'http://www.homeamc.cn'
 
 const api = axios.create()
@@ -23,7 +24,16 @@ api.interceptors.request.use(function (config) {
 // 添加响应拦截器
 api.interceptors.response.use(function (response) {
 
-  if(response.data.code != 200) Toast.fail(response.data.message)
+  if(response.data.code == 9999) {
+    Dialog.confirm({
+        title: '您还没有绑定会员卡！',
+        confirmButtonText:'去绑定'
+    }).then(() => {
+        router.push({path:'/Opencard'})
+    }).catch(()=>{
+
+    });
+  }else if(response.data.code != 200) Toast.fail(response.data.message)
 
     return response;
 

@@ -139,12 +139,12 @@ export default {
 
     .classification{
         width: 100%; height: 3.6rem; padding: 0.1rem 0 0.25rem 0.4rem; font-size: 0.25rem; text-align: center;
-        a{color:rgba(0,0,0,1);}
+        a{color:rgba(43,43,43,1);font-family:YouYuan;}
         & div{
             width: 2.1rem; height: 1.4rem; float: left; margin-right: 0.2rem; margin-top: 0.2rem;
-            background-color: #ffe8db; text-align: center; padding-top: 0.16rem;
+            text-align: center; padding-top: 0.16rem;
             img{
-                width: 0.64rem; height: 0.64rem;
+                width: 0.74rem; height: 0.74rem;
             }
         }
     }

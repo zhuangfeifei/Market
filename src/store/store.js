@@ -244,7 +244,7 @@ const actions = {
             if(res.data.code == 200) {
                 if(list.payType === 3){
                     Toast.success('支付完成！')
-                    router.push({path:'/'})
+                    router.push({path:'/GroupPurchaseOrderDetils'})
                 }else{
                     dispatch('wsPay', res.data.data)
                 }

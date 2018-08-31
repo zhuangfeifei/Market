@@ -13,7 +13,7 @@
                 <div class="DiscountItem_business_logo"><img :src="imgUrl + item.PATH" alt=""></div>
                 <div class="DiscountItem_business_contact">
                     <p>{{item.shopName}}</p>
-                    <p><span>{{item.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
+                    <p><span class="DiscountItem_business_address">{{item.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
                     <div>
                         <a :href="'tel:' + item.PHONE"><div class="contact">联系门店</div></a><div @click="map(item)" class="reach">到这去</div>
                     </div>
@@ -114,7 +114,10 @@ export default {
                 img{ width: 0.4rem; height: 0.4rem; }
                 p:nth-child(1){ .font1; color:rgba(43,43,43,1); font-size: 0.3rem; margin-bottom: 0.05rem; }
                 p:nth-child(2){ .font2; color:rgba(75,75,75,1); font-size: 0.28rem; margin-bottom: 0.25rem; display: flex; justify-content: space-between;
-                    span{ display: inline-block; width: calc(100% - 0.4rem); overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+                    .DiscountItem_business_address{ 
+                        display: inline-block; width: calc(100% - 0.4rem); height: 0.4rem; line-height: 0.4rem;
+                        overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; 
+                    }
                 }
                 div{
                     width: 100%; height: 0.5rem; font-size: 0.28rem; .font1; text-align: center; line-height: 0.48rem;

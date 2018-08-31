@@ -6,15 +6,15 @@
             <h3>{{couponDetail.title}}</h3>
             <van-row class="CouponContent_title">
                 <van-col span="7">使用条件</van-col>
-                <van-col span="17" offset="4"><p>· {{couponDetail.conditionDesc}}</p><p>· {{couponDetail.shopName}}</p></van-col>
+                <van-col span="17"><p>· {{couponDetail.conditionDesc}}</p><p>· {{couponDetail.shopName}}</p></van-col>
             </van-row>
             <van-row class="CouponContent_time">
                 <van-col span="7">有效期</van-col>
-                <van-col span="17" offset="4"><p>· {{couponDetail.limitDateStart}} ~ {{couponDetail.limitDateEnd}}</p></van-col>
+                <van-col span="17"><p>· {{couponDetail.limitDateStart}} ~ {{couponDetail.limitDateEnd}}</p></van-col>
             </van-row>
             <van-row class="CouponContent_code">
                 <van-col span="7">校验码</van-col>
-                <van-col class="CouponContent_code_2" span="17" offset="4">
+                <van-col class="CouponContent_code_2" span="17">
                     <p>· {{couponDetail.qrcode}}</p>
                     <img v-if="status > 0" class="CouponContent_code_no" src="../../assets/img/couponNoCode.png" alt="">
                     <img class="couponStatus" :src="img[status]" alt="">
@@ -23,7 +23,7 @@
             <div id="qrcode"></div>
             <van-row class="CouponContent_tip">
                 <van-col span="7">使用须知</van-col>
-                <van-col span="17" offset="4"><p>· 仅限于方圆里中商家使</p><p>· 每人每次最多核销一张</p></van-col>
+                <van-col span="17"><p>· 仅限于方圆里中商家使</p><p>· 每人每次最多核销一张</p></van-col>
             </van-row>
         </div>
 

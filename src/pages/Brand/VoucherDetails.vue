@@ -14,7 +14,7 @@
                 <div class="VoucherDetails_business_logo"><img :src="imgUrl + shopDetail.thumbnail_pic" alt=""></div>
                 <div class="VoucherDetails_business_contact">
                     <p>{{groupList.update_man}}</p>
-                    <p><span>{{shopDetail.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
+                    <p><span class="VoucherDetails_business_address">{{shopDetail.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
                     <div>
                         <a :href="'tel:' + shopDetail.PHONE"><div class="contact">联系门店</div></a><div class="reach" @click="map">到这去</div>
                     </div>
@@ -146,7 +146,10 @@ export default {
                 p:nth-child(1){ .font1; color:rgba(43,43,43,1); font-size: 0.3rem; margin-bottom: 0.05rem; }
                 p:nth-child(2){ 
                     .font2; color:rgba(128,128,128,1); font-size: 0.28rem; margin-bottom: 0.25rem; display: flex; justify-content: space-between;
-                    span{ overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
+                    .VoucherDetails_business_address{ 
+                        display: inline-block; width: calc(100% - 0.4rem); height: 0.4rem; line-height: 0.4rem; 
+                        overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; 
+                    }
                 }
                 div{
                     width: 100%; height: 0.5rem; font-size: 0.28rem; .font1; text-align: center; line-height: 0.48rem;

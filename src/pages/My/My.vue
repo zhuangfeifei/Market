@@ -2,14 +2,14 @@
     <div id="My" v-if="user">
 
         <nav class="My_nav">
-            <div class="My_code" :class="{My_code_active:user.wtCustomer.userType < 3}">
+            <div class="My_code" :class="{My_code_active:user.wtCustomer.phonenumber}">
                 <div class="My_title">
                     <section><img :src="user.wtCustomer.avatar" alt=""></section><h4>{{user.wtCustomer.nickname}}</h4>
                     <img @click="sign" class="My_sign" src="../../assets/img/sign.png" alt="">
                 </div>
                 <van-row class="My_class" type="flex" justify="space-between">
-                    <van-col span="6" class="My_class_"><router-link to="/Wallet"><p>{{user.wtCustomer.integration}}</p><p>积分</p></router-link></van-col>
-                    <van-col span="6" class="My_class_"><router-link to="/Balance"><p>{{'¥'+user.wtCustomer.amount || 0}}</p><p>余额</p></router-link></van-col>
+                    <van-col span="6" class="My_class_"><router-link to="/Wallet"><p>{{user.wtCustomer.integration || 0}}</p><p>积分</p></router-link></van-col>
+                    <van-col span="6" class="My_class_"><router-link to="/Balance"><p>{{'¥'+(user.wtCustomer.amount || 0)}}</p><p>余额</p></router-link></van-col>
                     <van-col span="6" class="My_class_"><router-link to="/Coupon"><p>{{user.couponNum || 0}}</p><p>优惠券</p></router-link></van-col>
                 </van-row>
                 <div v-if="user.card.length > 0" class="My_cardno"><span>NO：{{user.card[0].cardno}}</span><div @click="qrcodes" class="open_code"></div></div>
@@ -28,7 +28,7 @@
         <van-row class="My_class_list" type="flex" justify="space-between">
             <van-col span="6" class="My_class_list_"><a href="http://www.homeamc.cn/h5/car/auth"><img src="../../assets/img/ParkingPayment.png" alt=""></a></van-col>
             <van-col span="6" class="My_class_list_"><router-link :to="user.wtCustomer.userType == 1 ? '/Owner' :'/Authentication'"><img src="../../assets/img/OwnerCertification.png" alt=""></router-link></van-col>
-            <van-col span="6" class="My_class_list_ My_class_list_7"><router-link to="/Card"><img src="../../assets/img/MembershipCard.png" alt=""></router-link></van-col>
+            <van-col span="6" class="My_class_list_ My_class_list_7"><img @click="vip" src="../../assets/img/MembershipCard.png" alt=""></van-col>
             <van-col span="6" class="My_class_list_"><router-link to="/Setpassword"><img src="../../assets/img/PaymentSetting.png" alt=""></router-link></van-col>
         </van-row>
 
@@ -64,6 +64,20 @@ export default {
     methods:{
         sign(){
             this.$store.dispatch('addIntegration', 2)
+        },
+        vip(){
+            if(this.user.wtCustomer.phonenumber != ''){
+                this.$router.push({path:'/Card'})
+            }else{
+                this.$dialog.confirm({
+                    message: '您还没有绑定会员卡！',
+                    confirmButtonText:'去绑定'
+                }).then(() => {
+                    this.$router.push({path:'/Opencard'})
+                }).catch(()=>{
+
+                });
+            }
         },
         qrcodes() {
             this.show = !this.show

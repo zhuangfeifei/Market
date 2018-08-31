@@ -139,7 +139,7 @@ export default {
         .Pay_checke{ width: 0.3rem; height: 0.3rem; float: right; margin-top: 0.1rem; }
     }
     .Pay_start{
-        width: 100vw; height: 0.96rem; font-size: 0.34rem; .font3; color:rgba(255,255,255,1); 
+        width: 100%; height: 0.96rem; font-size: 0.34rem; .font3; color:rgba(255,255,255,1); 
         background:rgba(255,139,75,1); border-radius: 0.1rem; line-height: 0.96rem; margin-top: 1rem;
     }
 }

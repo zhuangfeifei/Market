@@ -20,7 +20,7 @@
                 <img :src="imgUrl + item.logo_pic" alt="">
                 <div class="content">
                     <h3>{{item.shopName}}</h3>
-                    <p><span>{{item.categoryName}}</span><span>{{item.floor}}-{{item.shopNum}}</span></p>
+                    <p><span>{{item.categoryName}}</span><span class="Brand_name">{{item.floor}}-{{item.shopNum}}</span></p>
                     <div>{{item.SHOP_DESCRIPTION}}</div>
                 </div>
             </div>
@@ -203,8 +203,12 @@ export default {
                 width: calc(100% - 0.64rem - 1.6rem); height: 1.6rem; float: right;
                 h3{ font-size: 0.3rem; }
                 p{ 
-                    font-size: 0.28rem; line-height: 0.6rem;
-                    span:nth-child(1){ color:rgba(255,139,75,1); margin-right: 0.47rem; }
+                    font-size: 0.28rem; line-height: 0.6rem; display: flex; justify-content: space-between;
+                    span:nth-child(1){ color:rgba(255,139,75,1); margin-right: 0.47rem;}
+                    .Brand_name{
+                        display: inline-block; width: 2.5rem; height: 0.4rem; line-height: 0.6rem;
+                        overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; 
+                    }
                 }
                 div{
                     width: 100%; height: 0.53rem; font-size: 0.24rem; color:rgba(68,68,68,1); line-height:0.3rem;

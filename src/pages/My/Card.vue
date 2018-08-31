@@ -8,7 +8,7 @@
                 <img class="qrcode" @click="qrcodes" src="../../assets/img/qrcode.png" alt="">
                 <div class="step">
                     <p><span>会员等级</span><span>{{user.card[0].name}}</span></p>
-                    <div><span></span><span></span><span></span></div>
+                    <div><span :class="{ isyezhu: user.card[0].name === '黑金会员' }"></span><span></span><span :class="{ isyezhu1: user.card[0].name === '黑金会员' }"></span></div>
                     <div><span>普通会员</span><span>黑金会员</span></div>
                 </div>
                 <div class="code"><span>NO：{{user.wtCustomer.cardno}}</span></div>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import header from '../../components/header'
+// import header from '../../components/header'
 export default {
     data() {
         return {
@@ -36,7 +36,7 @@ export default {
         }
     },
     components: {
-        'header-item': header
+        // 'header-item': header
     },
     computed:{
         user(){
@@ -161,7 +161,9 @@ export default {
                 }            
                 span:nth-child(3){
                     width: 100%; height: 0.02rem; background-color: RGBA(255, 139, 75, 1); position: relative; top: 0.012rem;
-                }            
+                }  
+                .isyezhu{ width: 100%!important; }     
+                .isyezhu1{ width: 0!important; }       
             }
             div:nth-child(3){
                 width: 90%; height: 0.3rem; padding:0; font-size: 0.2rem; line-height: 0.3rem; color:rgba(128,128,128,1); margin-top: 0.15rem;

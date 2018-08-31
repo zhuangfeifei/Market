@@ -13,12 +13,12 @@
             </div>
             <div>验证码
                 <input id="yma" v-model="list.codes" type="text" placeholder="请输入验证码">
-                <button @click="getCode" id="huoqu" type="default" :disabled="disabled_btn" :class="{codes:disabled_btn}">{{time}}</span></button>
+                <button @click="getCode" id="huoqu" type="default" :disabled="disabled_btn" :class="{codes:disabled_btn}">{{time}}</button>
             </div>
         </div>
         <div class="shouquan">
             <img @click="change" :src="checked ? checkeds[0] : checkeds[1]" alt=""><span>同意将您的个人信息授权给方圆里商城使用</span>
-            <p @click="q">开卡需知</p>
+            <p @click="Notes">开卡需知</p>
         </div>
         <button id="Grant" class="btn" :class="{active: !checked}" :disabled="!checked" @click="open">授权开通</button>
     </div>
@@ -71,9 +71,8 @@
             change(){
                 this.checked = !this.checked
             },
-            q(){
-                this.$store.commit('HTML', this.user.card[0].regulations)
-                this.$router.push({path:'/Rule', query:{title:'开卡需知'}})
+            Notes(){
+                this.$router.push({path:'/Rule'})
             }
         }
 	}

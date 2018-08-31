@@ -6,7 +6,7 @@
             <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: list.tabIndex == index}"><span>{{item}}</span><section v-show="list.tabIndex == index"></section></div>
         </nav>
 
-        <div v-if="data" class="list">
+        <div v-if="coupon.length > 0" class="list">
             <div class="coupon_list" @click="coupon_content(item.id)" v-for="(item,index) in coupon" :key="index">
                 <div class="money"><h3 :class="{Coupon_list_active: list.tabIndex > 0}"><span>¥</span>{{item.discount}}</h3></div>
                 <div class="content" :class="{Coupon_list_active: list.tabIndex > 0}"><h3 :class="{Coupon_list_active: list.tabIndex > 0}">{{item.conditionDesc}}</h3><p>{{item.title}}</p></div>

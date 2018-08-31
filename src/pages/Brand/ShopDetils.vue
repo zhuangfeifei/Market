@@ -135,7 +135,7 @@ import Preferential_information from '../../components/Preferential_information'
         width: 100%; height: 1.2rem; display: flex;
         img{ width: 1.2rem; height: 100%; border-radius: 50%; margin-right: 0.3rem; }
         div{
-            width: 100%; height: 100%; font-size: 0.36rem; color:rgba(43,43,43,1); .font3; line-height: 0.55rem; padding-top: 0.03rem;
+            width: calc(100% - 1.2rem - 0.3rem); height: 100%; font-size: 0.36rem; color:rgba(43,43,43,1); .font3; line-height: 0.55rem; padding-top: 0.03rem;
             p{ font-size: 0.3rem; color: rgba(234,22,22,1); .font2; }
         }
     }
