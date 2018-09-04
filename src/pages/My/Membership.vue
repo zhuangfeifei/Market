@@ -1,26 +1,26 @@
 <template>
 	
-    <div class="yuyue">
+    <div class="Membership">
         <!--<header-item>会员中心</header-item>-->
         
         <div v-if="user" class="Membership_main">
             <section><img :src="user.avatar" alt=""></section>
-            <div class="main">
+            <div class="Membership_main">
                 <span>会员卡号</span><span>{{user.cardno}}</span>
             </div>
-            <div class="main">
+            <div class="Membership_main">
                 <span>昵称</span><span>{{user.nickname}}</span>
             </div>
             <div class="main_input">
                 <span>真实姓名</span><input type="text" v-model="list.name" placeholder="请输入真实姓名">
             </div>
-            <div class="main">
+            <div class="Membership_main">
                 <span>手机号</span><span>{{user.phonenumber}}</span>
             </div>
             <div class="main_input_data">
                 <span>出生年月</span>
                 <datetime @on-change="change" class="date" :title="''" v-model="list.birthday" :min-year="min" :max-year="max"></datetime>
-                <img src="../../assets/img/Mores.png" alt="">
+                <!-- <img src="../../assets/img/Mores.png" alt=""> -->
             </div>
             <div class="main_inputs" @click="sexChange">
                 <div>性别</div><div><span>{{sex}}</span><img src="../../assets/img/Mores.png" alt=""></div>
@@ -107,7 +107,7 @@ import header from '../../components/header'
 </script>
 
 <style lang="less" scoped>
-.yuyue{
+.Membership{
     width: 100%; font-size: 0.3rem;
 }
 
@@ -128,14 +128,14 @@ import header from '../../components/header'
     & div{
         width: 100%; height: 0.86rem; border-top: 0.01rem solid rgba(206,206,206,1); line-height: 0.86rem;
     }
-    .main{
+    .Membership_main{
         & span:nth-child(1){ float: left; font-size: 0.28rem; color:rgba(43,43,43,1); .font1; }
         & span:nth-child(2){ float: right; color:rgba(255,139,75,1); .font2; }
     }
     .main_input{
         & span:nth-child(1){ float: left; font-size: 0.28rem; color:rgba(43,43,43,1); .font1; }
         input{
-            text-align: right; width: 60%; height: 100%; border: 0; outline: none!important; color: rgba(255,139,75,1); float: right;
+            text-align: right; width: 60%; height: 100%; border: 0; outline: none!important; color: rgba(255,139,75,1); float: right; background: none;
         }
         input:-moz-placeholder{
             color: rgba(255,139,75,1); .font2;
@@ -151,13 +151,13 @@ import header from '../../components/header'
         .date{
             width: calc(75% - 0.26rem); height: 0.86rem; border: 0!important; display: flex; text-align: right; .font2; 
         }
-        img{ width: 0.16rem; height: 0.29rem; position: relative; top: 0.27rem; margin-left: 0.1rem; }
+        // img{ width: 0.16rem; height: 0.29rem; position: relative; top: 0.27rem; margin-left: 0.1rem; }
     }
     .main_inputs{
         display: flex; justify-content: space-between; border-bottom: 0.01rem solid rgba(206,206,206,1);
         & div:nth-child(2){
             text-align: right; .font2;
-            img{ width: 0.16rem; height: 0.29rem; position: relative; top: 0.07rem; margin-left: 0.1rem; }
+            img{ width: 0.1rem; height: 0.2rem; position: relative; top: 0rem; margin-left: 0.1rem; }
         }
     }
     .main_add{

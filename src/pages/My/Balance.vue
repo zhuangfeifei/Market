@@ -2,7 +2,7 @@
     <div id="Balance">
         <!--<header-item>会员卡</header-item>-->
 
-        <div v-if="balance" class="Balance">
+        <div class="Balance">
             <div class="Balance_">
                 <img src="../../assets/img/integrals.png" alt=""><span>当前余额</span><span>{{'¥'+user.wtCustomer.amount || 0}}</span>
             </div>
@@ -11,12 +11,15 @@
             </nav>
         </div>
         
-        <div class="Balance_content">
+        <div v-if="balance != ''" class="Balance_content">
             <div class="add_reduce" v-for="(item,index) in balance" :key="index">
                 <div><span>{{item.flow}}</span><br><span class="date">{{item.create_time}}</span></div>
-                <div><span :class="{colors:item.status == '1'}">{{item.status === '0' ? '-¥' : '+¥'}} {{item.amount}}</span></div>
+                <div><span :class="{colors:item.status == 1}">{{item.status === 0 ? '-¥' : '+¥'}} {{item.amount}}</span></div>
             </div>
         </div>
+
+
+        <div v-else class="no"><img src="../../assets/img/nohuo.png" alt="">暂无</div>
 
 
 
@@ -24,7 +27,7 @@
 </template>
 
 <script>
-import header from '../../components/header'
+// import header from '../../components/header'
 export default {
     data() {
         return {
@@ -33,7 +36,7 @@ export default {
         }
     },
     components: {
-        'header-item': header
+        // 'header-item': header
     },
     beforeCreate(){
             // this.$store.dispatch('documentType')
@@ -43,6 +46,9 @@ export default {
             return this.$store.state.balance
         },
         user(){
+            if(this.$store.state.user == ''){
+                this.$store.commit('USER')
+            }
             return this.$store.state.user
         },
     },
@@ -136,6 +142,10 @@ export default {
         }
     }
 
+    .no{
+        width: 3.33rem; padding-top: 1.6rem; margin: 0 auto; font-size: 0.3rem; text-align: center; 
+        img{ width: 100%; height: 3rem; }
+    }
 
     
 </style>

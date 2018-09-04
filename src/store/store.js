@@ -16,6 +16,7 @@ const state = {
     imgUrl: axios.urls + '/shops/kaptcha/',
     isPage: true,
     isPay: false,
+    isPassword: false,
     isGetAuthentication: 2,
     html: '',
     user: '',        // 获取用户信息
@@ -52,6 +53,9 @@ const mutations = {
     },
     ['isGetAuthentication'](state,res){
         state.isGetAuthentication = res
+    },
+    ['isPassword'](state,res){
+        state.isPassword = res
     },
     [types.ACTIVE](state,res){
         state.active = res
@@ -92,7 +96,7 @@ const mutations = {
     [types.GROUP_LIST](state){
         state.groupList = Util.getLocal('groupList')
     },
-    [types.PREFERENTIAL_LIST](state,res){
+    [types.PREFERENTIAL_LIST](state){
         state.preferentialList = Util.getLocal('preferentialList')
     },
     [types.ORDER](state){
@@ -151,11 +155,11 @@ const actions = {
             if(res.data.code == 200) {   // 如果没有多个项目，就默认第一个
                 dispatch('getContactList', list.projectId ? list.projectId : res.data.data.projects[0].ID)
                 commit('LIST', res.data.data)
-                if(res.data.data.shops.length > 0){  // 如果大于0 则拼接数据
-                    Util.setLocal(res.data.data.shops, 'shopList', list.isPage)
-                    commit('SHOP_LIST')
-                }else if(list.current == 1 && res.data.data.shops.length == 0){  // 如果是第一次请求或者搜索没有数据就更新数据
+                if(list.current == 1){  // 如果是第一次请求或者搜索没有数据就更新数据
                     Util.setLocal(res.data.data.shops, 'shopList', false)
+                    commit('SHOP_LIST')
+                }else if(list.current > 1 && res.data.data.shops.length > 0){  // 如果大于0 则拼接数据
+                    Util.setLocal(res.data.data.shops, 'shopList', list.isPage)
                     commit('SHOP_LIST')
                 }else{      // 关闭上拉加载
                     commit('SET_PAGE', false)  
@@ -195,9 +199,9 @@ const actions = {
     },
     groupList({commit,state}, shopIds){   // 获取商家团购设置的团购卷码信息列表
         axios.api.post('/shops/api/groupOrder/groupList', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
-            shopId: shopIds, groupType: '1' }) )
+            shopId: shopIds, groupType: '' }) )
         .then(res => {
-            // console.log(res.data)
+            // console.log(res.data)   
             if(res.data.code == 200) {
                 Util.setLocal(res.data.data, 'groupList')
                 commit('GROUP_LIST')
@@ -205,9 +209,9 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    addGroupOrder({commit,state,dispatch}, list){   // 添加团购订单
+    addGroupOrder({state}, list){   // 添加团购订单
         axios.api.post('/shops/api/groupOrder/addGroupOrder', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
-            shopId: list.shop_id, groupType: list.group_type, groupName: list.group_name, amount: list.discount, groupId: list.id }) )
+            shopId: list.shop_id, groupType: list.group_type, groupName: list.group_name, amount: list.present_price, groupId: list.id }) )
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -236,7 +240,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    pay({commit,state,dispatch}, list){   // 团购订单支付
+    pay({state,dispatch}, list){   // 团购订单支付
         axios.api.post('/shops/api/groupOrder/pay', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             orderId: list.orderId, payType: list.payType, payPwd: list.payPwd }) )
         .then(res => {
@@ -244,7 +248,8 @@ const actions = {
             if(res.data.code == 200) {
                 if(list.payType === 3){
                     Toast.success('支付完成！')
-                    router.push({path:'/GroupPurchaseOrderDetils'})
+                    var lists = { orderIds: list.orderId, status: 1 }
+                    dispatch('getHistoryGroupOrderDetail', lists)
                 }else{
                     dispatch('wsPay', res.data.data)
                 }
@@ -252,7 +257,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    wsPay({commit,state,dispatch}, data){   // 微信支付
+    wsPay(data){   // 微信支付
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
                 "appId": data.appid,     //公众号名称，由商户传入     
@@ -273,7 +278,7 @@ const actions = {
             }
         );
     },
-    cancelOrder({commit,state}, orderIds){   // 取消订单
+    cancelOrder({state}, orderIds){   // 取消订单
         axios.api.post('/shops/api/groupOrder/cancelOrder', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             orderId: orderIds }) )
         .then(res => {
@@ -294,7 +299,7 @@ const actions = {
                 if(list.current == 1){
                     Util.setLocal(res.data.data, 'getHistoryGroupOrder', false)
                     commit('GET_HISTORYGROUPORDER')
-                }else if(res.data.data.length > 0){
+                }else if(list.current > 1 && res.data.data.length > 0){
                     Util.setLocal(res.data.data, 'getHistoryGroupOrder', list.isPage)
                     commit('GET_HISTORYGROUPORDER')
                 }else{
@@ -304,7 +309,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    getCode({commit,state}, orderIds){   // 获取劵码及二维码图片路径
+    getCode({state}, orderIds){   // 获取劵码及二维码图片路径
         axios.api.post('/shops/api/groupOrder/getCode', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, orderId: orderIds }) )
         .then(res => {
             // console.log(res.data)
@@ -320,24 +325,38 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    preferentialList({commit,state}){   // 获取商家优惠活动列表
-        axios.api.post('/shops/api/activity/preferentialList', $.param({ limit: 100, current: 1 }) )
+    preferentialList({commit}, list){   // 获取商家优惠活动列表
+        axios.api.post('/shops/api/activity/preferentialList', $.param({ limit: list.limit, current: list.current }) )
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
-                Util.setLocal(res.data.data, 'preferentialList')
-                commit('PREFERENTIAL_LIST')
+                if(list.current == 1){
+                    Util.setLocal(res.data.data, 'preferentialList', false)
+                    commit('PREFERENTIAL_LIST')
+                }else if(list.current > 1 && res.data.data.length > 0){
+                    Util.setLocal(res.data.data, 'preferentialList', list.isPage)
+                    commit('PREFERENTIAL_LIST')
+                }else{
+                    commit('SET_PAGE', false)  
+                }
             }
         })
         .catch(err => console.log(err))
     },
-    activityList({commit,state}){   // 获取商场优惠活动列表
-        axios.api.post('/shops/api/activity/activityList', $.param({ limit: 100, current: 1 }) )
+    activityList({commit}, list){   // 获取商场优惠活动列表
+        axios.api.post('/shops/api/activity/activityList', $.param({ limit: list.limit, current: list.current }) )
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
-                // Util.setLocal(res.data.data, 'user')
-                commit('PREFERENTIAL_LIST', res.data.data)
+                if(list.current == 1){
+                    Util.setLocal(res.data.data, 'preferentialList', false)
+                    commit('PREFERENTIAL_LIST')
+                }else if(list.current > 1 && res.data.data.length > 0){
+                    Util.setLocal(res.data.data, 'preferentialList', list.isPage)
+                    commit('PREFERENTIAL_LIST')
+                }else{
+                    commit('SET_PAGE', false)  
+                }
             }
         })
         .catch(err => console.log(err))
@@ -353,7 +372,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    editUserInfo({commit,state}, list){   // 更新用户信息
+    editUserInfo({state}, list){   // 更新用户信息
         axios.api.post('/shops/api/customer/editUserInfo', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             name: list.name, sex: list.sex, birthday: list.birthday }) )
         .then(res => {
@@ -365,13 +384,23 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    paypwd({commit,state}, pwds){   // 设置余额密码
+    paypwd({state}, pwds){   // 设置余额密码
         axios.api.post('/shops/api/set/paypwd', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, pwd: pwds }) )
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
                 Toast.success('设置成功！')
                 router.push({path:'/My'})
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    updatePaypwd({commit,state}, newPwds){   // 修改余额密码
+        axios.api.post('/shops/api/set/updatePaypwd', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, newPwd: newPwds }) )
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                commit('isPassword', true)
             }
         })
         .catch(err => console.log(err))
@@ -385,7 +414,7 @@ const actions = {
                 if(list.current == 1){
                     Util.setLocal(res.data.data.yueList, 'balance', false)
                     commit('BALANCE')
-                }else if(res.data.data.yueList.length > 0){
+                }else if(list.current > 1 && res.data.data.yueList.length > 0){
                     Util.setLocal(res.data.data.yueList, 'balance', list.isPage)
                     commit('BALANCE')
                 }else{
@@ -404,7 +433,7 @@ const actions = {
                 if(list.current == 1){
                     Util.setLocal(res.data.data, 'coupon', false)
                     commit('COUPON')
-                }else if(res.data.data.length > 0){
+                }else if(list.current > 1 && res.data.data.length > 0){
                     Util.setLocal(res.data.data, 'coupon', list.isPage)
                     commit('COUPON')
                 }else{
@@ -434,11 +463,11 @@ const actions = {
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
-                if(res.data.data.length > 0){  // 如果大于0 则拼接数据
-                    Util.setLocal(res.data.data, 'getIntegralHis', list.isPage)
-                    commit('GET_INTEGRALHIS')
-                }else if(list.current == 1){  // 如果是第一次请求或者搜索没有数据就更新数据
+                if(list.current == 1){  // 如果是第一次请求或者搜索没有数据就更新数据
                     Util.setLocal(res.data.data, 'getIntegralHis', false)
+                    commit('GET_INTEGRALHIS')
+                }else if(list.current > 1 && res.data.data.length > 0){  // 如果大于0 则拼接数据
+                    Util.setLocal(res.data.data, 'getIntegralHis', list.isPage)
                     commit('GET_INTEGRALHIS')
                 }else{      // 关闭上拉加载
                     commit('SET_PAGE', false)  
@@ -447,7 +476,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    code({commit,state}, list){   // 获取验证码
+    code(list){   // 获取验证码
         axios.api.post('/puman/api/system/code', $.param({ phone: list.phones, msgType:3 }))
         .then(res => {
             // console.log(res.data)
@@ -455,26 +484,29 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    phone({commit,state,dispatch}, list){   // 开通会员卡
+    phone({state}, list){   // 开通会员卡
         axios.api.post('/shops/api/bind/phoneNew', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, phone: list.phones, vcode: list.codes }))
         .then(res => {
             // console.log(res.data)
-            if(res.data.code == 200) dispatch('addIntegration', 1)
-        })
-        .catch(err => console.log(err))
-    },
-    addIntegration({commit,state}, integration){   // 开通送积分
-        axios.api.post('/shops/api/card/addIntegration', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, type: integration }) )
-        .then(res => {
-            // console.log(res.data)
             if(res.data.code == 200) {
-                integration == 1 ? Toast.success('开通成功！') : Toast.success('签到成功！')
+                Toast.success('开通成功！')
                 router.push({path:'/My'})
             }
         })
         .catch(err => console.log(err))
     },
-    documentType({commit,state}){   // 获取业主认证证件类型
+    addIntegration({state,dispatch}, integration){   // 开通送积分
+        axios.api.post('/shops/api/card/addIntegration', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, type: integration }) )
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                Toast.success('签到成功！')
+                dispatch('user')
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    documentType({commit}){   // 获取业主认证证件类型
         axios.api.post('/shops/api/bind/documentType' )
         .then(res => {
             // console.log(res.data)
@@ -484,7 +516,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    ownerCertification({commit,state}, formData){   // 业主认证
+    ownerCertification({commit}, formData){   // 业主认证
         axios.api.post('/shops/api/bind/ownerCertification', formData )
         .then(res => {
             // console.log(res.data)

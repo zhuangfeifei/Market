@@ -150,6 +150,10 @@ export default {
         margin: 0; padding: 0; box-sizing: border-box;
     }
 
+    .font1{ font-family:PingFang-SC-Medium; font-weight: Medium; }
+    .font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
+    .font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
+
     .floor{
         width: 100%; height: 1.03rem; font-size: 0.3rem; display: flex; justify-content: space-around; background-color: white;
         border-bottom: 0.01rem solid rgba(206,206,206,1); padding-top: 0.3rem; position: fixed; top: 0; left: 0;
@@ -178,14 +182,12 @@ export default {
 
 
     .changeList{
-        width: 100%; color:rgba(68,68,68,1); font-size: 0.26rem;
+        width: 100%; color:rgba(68,68,68,1); font-size: 0.3rem;
         position: fixed; top: 1.03rem; left: 0;
         div{
-            width: 20%; text-align: center; line-height: 0.5rem; background-color: white; box-shadow:2px 1px 5px rgba(35,24,21,0.2); padding: 0.1rem 0;
+            width: 100%; height: 3.96rem; line-height: 0.6rem; background-color: rgba(232,232,232,1); padding: 0.1rem 0.4rem;
+            .font1; 
         }
-        div:nth-child(2){ margin-left: 20%; }
-        div:nth-child(3){ margin-left: 40%; }
-        div:nth-child(4){ margin-left: 60%; }
         .actives{
             color: #FF8B4B;
         }

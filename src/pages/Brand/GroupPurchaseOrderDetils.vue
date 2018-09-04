@@ -3,7 +3,7 @@
 
         <nav>
             <p>订单状态：<span v-if="order.order_status == '0'">待付款</span><span v-else>交易完成</span></p>
-            <p v-if="order.order_status == '0'" class="tip">请在下单后30分钟内付款，超时订单将自动关闭</p>
+            <p v-if="order.order_status == '0'" class="tip">请在下单后及时付款</p>
             <p v-if="order.order_status == '1'" class="tip">您已交易成功，请尽快到门店使用</p>
             <p v-if="order.verification_status == '1'" class="tip">订单已使用</p>
         </nav>

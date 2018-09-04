@@ -2,9 +2,11 @@
     <div id="Discount">
 
 
-        <div v-if="show" class="Discount">
+        <div v-if="preferentialList != ''" class="Discount">
             <div class="Discount_list" @click="details(index)" v-for="(item,index) in preferentialList" :key="index" :class="{state3: item.status === '2'}">
-                <img :src="imgUrl + item.offerpic" alt="">
+                <div class="Discount_img" 
+                :style="{background:'url('+imgUrl + item.offerpic+')', 'background-size': 'cover', 'background-repeat': 'no-repeat', 'background-position':'center'}"></div>
+                <!-- <img :src="imgUrl + item.offerpic" alt=""> -->
                 <div class="title">{{item.title}}</div>
                 <div class="state">进行中</div>
                 <div v-if="item.status === '0'" class="state" :class="{state1: item.status === '0'}">未开始</div>
@@ -12,7 +14,7 @@
             </div>
         </div>
 
-        <div v-else class="no"><img src="../../assets/img/nohuo.png" alt=""></div>
+        <div v-else class="no"><img src="../../assets/img/nohuo.png" alt="">暂无活动</div>
 
     </div>
 </template>
@@ -26,15 +28,16 @@ export default {
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
             ],
             activeNames: ['0'],
-            show:true
+            show:true,
+            list: { current: 1, limit: 5, isPage: false }
         }
     },
     components: {
         
     },
     beforeCreate(){
-        this.$store.dispatch('preferentialList')
-        // this.$store.dispatch('activityList')
+        let list = { current: 1, limit: 5, isPage: false }
+        this.$store.dispatch('preferentialList', list)
     },
     computed:{
         imgUrl(){
@@ -50,7 +53,7 @@ export default {
         // console.log('asdasd')
         document.title = '商家优惠'
         this.$store.commit('ACTIVE', 2)
-
+        this.$store.commit('SET_PAGE', true)
         window.addEventListener('scroll', this.get)
     },
     methods:{
@@ -62,7 +65,9 @@ export default {
             var windowHeight = $(window).height()
             var documentHeight = $(document).height()
             if(scrollTop + windowHeight === documentHeight){
-                // console.log(2)
+                this.list.current ++
+                this.list.isPage = true
+                if(this.$store.state.isPage) this.$store.dispatch('preferentialList', this.list)
             }
         },
     },
@@ -86,8 +91,12 @@ export default {
         .Discount_list{
             width: 6.7rem; height: 3.88rem; margin: 0.48rem auto; margin-top: 0; background-color: white; border-radius: 0.1rem; position: relative;
             font-family:PingFang-SC-Medium; font-weight: Medium;
-            img{
-                width: 100%; height: 3rem; border-top-left-radius: 0.1rem; border-top-right-radius: 0.1rem;
+            // img{
+            //     width: 100%; height: 3rem; border-top-left-radius: 0.1rem; border-top-right-radius: 0.1rem;
+            // }
+            .Discount_img{
+                width: 100%; height: 3rem; border-top-right-radius: 0.1rem; border-top-left-radius: 0.1rem; padding-top: 0.04%;
+                // background-size: cover 
             }
             .title{
                 width: 100%; height: 0.88rem; line-height: 0.88rem; font-size: 0.3rem; padding-left: 0.2rem; position: absolute; bottom: 0; left: 0;
@@ -103,8 +112,8 @@ export default {
     }
 
     .no{
-        width: 3.33rem; height: 3rem; margin: 1.6rem auto;
-        img{ width: 100%; height: 100%; }
+        width: 3.33rem; padding-top: 1.6rem; margin: 0 auto; font-size: 0.3rem; text-align: center; 
+        img{ width: 100%; height: 3rem; }
     }
 
 

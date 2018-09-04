@@ -9,7 +9,7 @@
                 </div>
                 <van-row class="My_class" type="flex" justify="space-between">
                     <van-col span="6" class="My_class_"><router-link to="/Wallet"><p>{{user.wtCustomer.integration || 0}}</p><p>积分</p></router-link></van-col>
-                    <van-col span="6" class="My_class_"><router-link to="/Balance"><p>{{'¥'+(user.wtCustomer.amount || 0)}}</p><p>余额</p></router-link></van-col>
+                    <van-col span="6" class="My_class_"><router-link to="/Balance"><p>{{'¥'+(isFloats || 0)}}</p><p>余额</p></router-link></van-col>
                     <van-col span="6" class="My_class_"><router-link to="/Coupon"><p>{{user.couponNum || 0}}</p><p>优惠券</p></router-link></van-col>
                 </van-row>
                 <div v-if="user.card.length > 0" class="My_cardno"><span>NO：{{user.card[0].cardno}}</span><div @click="qrcodes" class="open_code"></div></div>
@@ -54,6 +54,10 @@ export default {
         user(){
             return this.$store.state.user
         },
+        isFloats(){
+            var regPos = /^[0-9]*[1-9][0-9]*$/  // 判断是否是正整数
+            return regPos.test(this.user.wtCustomer.amount) ? this.user.wtCustomer.amount +'.00' : this.user.wtCustomer.amount
+        }
     },
     created(){
         document.body.scrollTop = 0
@@ -70,7 +74,7 @@ export default {
                 this.$router.push({path:'/Card'})
             }else{
                 this.$dialog.confirm({
-                    message: '您还没有绑定会员卡！',
+                    title: '您还没有绑定会员卡！',
                     confirmButtonText:'去绑定'
                 }).then(() => {
                     this.$router.push({path:'/Opencard'})
@@ -93,6 +97,9 @@ export default {
             }
         },
     },
+    filters:{
+        
+    }
 }
 </script>
 

@@ -6,12 +6,12 @@
             <div class="detail">
                 <h4>{{groupList.group_name}}</h4>
                 <p><span>广场指定餐饮商户{{groupList.group_name}}</span><span>库存{{groupList.inventory}}</span></p>
-                <p><span>{{groupList.present_price}}元</span><span>/价值{{groupList.purchas_num}}元</span></p>
+                <p><span>{{groupList.present_price}}元</span><span>/价值{{groupList.discount}}元</span></p>
                 <p v-if="groupList.period_validity == 0">有效期：长期有效</p>
                 <p v-else>有效期：{{groupList.start_time}} ~ {{groupList.end_time}}</p>
             </div>
             <div class="VoucherDetails_business">
-                <div class="VoucherDetails_business_logo"><img :src="imgUrl + shopDetail.thumbnail_pic" alt=""></div>
+                <div class="VoucherDetails_business_logo"><img :src="imgUrl + shopDetail.logo_pic" alt=""></div>
                 <div class="VoucherDetails_business_contact">
                     <p>{{groupList.update_man}}</p>
                     <p><span class="VoucherDetails_business_address">{{shopDetail.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
@@ -27,7 +27,7 @@
         </div>
 
         <div class="footers">
-            <button @click="pay">¥{{groupList.discount}}立即购买</button>
+            <button @click="pay">¥{{groupList.present_price}}立即购买</button>
         </div>
 
 

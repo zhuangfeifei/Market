@@ -12,7 +12,7 @@
                 <h5>选择支付方式</h5>
                 <van-row class="Pay_change_">
                     <van-col span="3"><img class="Pay_balance" src="../assets/img/balance.png" alt=""></van-col>
-                    <van-col span="18">余额</van-col>
+                    <van-col span="18">余额（当前余额：{{user.wtCustomer.amount}}）</van-col>
                     <van-col span="3"><img @click="change" class="Pay_checke" :src="checke_show ? img[0] : img[1]" alt=""></van-col>
                 </van-row>
                 <van-row class="Pay_change_">
@@ -56,6 +56,12 @@ export default {
         order(){
             return this.$store.state.order
         },
+        user(){
+            if(this.$store.state.user == ''){
+                this.$store.commit('USER')
+            }
+            return this.$store.state.user
+        },
     },
     methods:{
         isShowPay(){
@@ -66,6 +72,25 @@ export default {
         },
         pay(){
             if(!this.checke_show){
+                if(parseInt(this.user.wtCustomer.amount) < parseInt(this.order.amount)){
+                    this.$dialog.alert({
+                        title: '余额不足！',
+                    }).then(() => {
+                        
+                    })
+                    return
+                }
+                if(this.user.wtCustomer.payPassword == '' || this.user.wtCustomer.payPassword == null){
+                    this.$dialog.confirm({
+                        title: '您还没有设置密码！',
+                        confirmButtonText:'去设置'
+                    }).then(() => {
+                        this.$router.push({path:'/Setpassword'})
+                    }).catch(()=>{
+
+                    });
+                    return
+                }
                 this.show = !this.show
                 this.value = ''
             }else{

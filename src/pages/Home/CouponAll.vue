@@ -2,9 +2,9 @@
     <div id="Coupon">
         <!--<header-item>优惠券</header-item>-->
 
-        <nav>
+        <!-- <nav>
             <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: list.tabIndex == index}"><span>{{item}}</span><section v-show="list.tabIndex == index"></section></div>
-        </nav>
+        </nav> -->
 
         <div v-if="data" class="list">
             <div class="coupon_list" @click="coupon_content(item.id)" v-for="(item,index) in coupon" :key="index">

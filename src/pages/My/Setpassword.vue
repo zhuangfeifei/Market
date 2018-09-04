@@ -1,33 +1,10 @@
 <template>
     <div id="Setup">
 
-        <div class="liu">
-            <p>请输入密码</p>
-            <div class="ge">
-                <input type="password" v-model="mm" maxlength = "6">
-                <div class="ge1">
-                    <div><span v-show="mm.length > 0">●</span></div>
-                    <div><span v-show="mm.length > 1">●</span></div>
-                    <div><span v-show="mm.length > 2">●</span></div>
-                    <div><span v-show="mm.length > 3">●</span></div>
-                    <div><span v-show="mm.length > 4">●</span></div>
-                    <div><span v-show="mm.length > 5">●</span></div>
-                </div>
-            </div>
-            <p>请再次输入密码</p>
-            <div class="ge">
-                <input id="password" v-model="mm1" type="password" maxlength = "6">
-                <div class="ge1">
-                    <div><span v-show="mm1.length > 0">●</span></div>
-                    <div><span v-show="mm1.length > 1">●</span></div>
-                    <div><span v-show="mm1.length > 2">●</span></div>
-                    <div><span v-show="mm1.length > 3">●</span></div>
-                    <div><span v-show="mm1.length > 4">●</span></div>
-                    <div><span v-show="mm1.length > 5">●</span></div>
-                </div>
-            </div>
-        </div>
-        <button @click="set" type="button" class="btn">确认</button>
+        <h4 class="Setup_title">{{isPassword ? isNext ? '设置支付密码' : '确认支付密码' : '原支付密码'}}</h4>
+        <van-password-input class="Setup_input" :value="value" info="" @focus="showKeyboard = true" />
+        <div class="Setup_next" @click="next">{{isNext ? '下一步' : '完成'}}</div>
+        <van-number-keyboard :show="showKeyboard" @input="onInput" @delete="onDelete" @blur="showKeyboard = true" />
         
     </div>
 </template>
@@ -36,7 +13,7 @@
 export default {
     data() {
         return {
-            mm:'',mm1:''
+            value: '', showKeyboard: true, password:[], isNext: true
         }
     },
     components: {
@@ -46,54 +23,56 @@ export default {
         
     },
     computed:{
-        
+        user(){
+            if(this.$store.state.user == ''){
+                this.$store.commit('USER')
+            }
+            return this.$store.state.user.wtCustomer
+        },
+        isPassword(){
+            return this.$store.state.isPassword
+        },
     },
     created(){
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
-        document.title = '支付密码'
+        document.title = '支付设置'
         
+        this.$nextTick(()=>{
+            this.$store.commit('isPassword', this.$store.state.user.wtCustomer.payPassword == '' ? true : false )
+        })
     },
     methods:{
-        set() {
-            if(this.isNumber(this.mm1)){
-                if(this.mm === this.mm1){
-                    this.$store.dispatch('paypwd', this.mm1)
-                }else{
-                    this.$dialog.alert({
-                        title: '两次输入的密码不一致!',
-                        message: '',
-                        confirmButtonText: '关闭'
-                    }).then(() => {
-                        
-                    })
-                }
-            }else{
-                this.$dialog.alert({
-                    title: '密码必须为数字!',
-                    message: '',
-                    confirmButtonText: '关闭'
-                }).then(() => {
-                        
-                })
-            }
-            // if ($(':password')[0].value != $(':password')[1].value) {
-            //     this.$dialog.alert({
-            //         title: '两次输入的密码不一致!',
-            //         message: '',
-            //         confirmButtonText: '关闭'
-            //     }).then(() => {
-            //     // on close
-            //     });
-            // }
+        onInput(key) {
+            this.value = (this.value + key).slice(0, 6)
         },
-        isNumber(val) {
-            var regPos = /^\d+(\.\d+)?$/; //非负浮点数
-            var regNeg = /^(-(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*)))$/; //负浮点数
-            if(regPos.test(val) || regNeg.test(val)) {
-                return true;
-            } else {
-                return false;
+        onDelete() {
+            this.value = this.value.slice(0, this.value.length - 1)
+        },
+        next(){
+            if(this.value.length == 6){
+                if(this.user.payPassword == '' || this.isPassword){   // 如果没有设置密码或者原密码验证成功
+                    this.password.push(this.value)
+                    this.isNext = false
+                    this.value = ''
+                    if(this.password.length == 2){
+                        if(this.password[0] === this.password[1]){
+                            this.$store.dispatch('paypwd', this.password[1])
+                        }else{
+                            this.$dialog.alert({
+                                title: '两次输入的密码不一致!',
+                                message: '',
+                                confirmButtonText: '关闭'
+                            }).then(() => {
+                                this.isNext = true
+                                this.password = []
+                            })
+                        }
+                    }
+                }else{
+                    this.$store.dispatch('updatePaypwd', this.value)
+                    this.value = ''
+                }
             }
         }
     },
@@ -102,7 +81,7 @@ export default {
 
 <style lang="less" scoped>
     #Setup{
-        width: 100%; background-color: white; font-size: 0.3rem;
+        width: 100%; min-height: 100vh; background-color: white; font-size: 0.3rem; padding: 0 0.4rem; padding-top: 1.5rem;
     }
 
     *{
@@ -113,46 +92,16 @@ export default {
     .font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
 
     
-    /**/
-.liu{
-    width: 100%; margin-top: 3vw;
-    font-size: 4vw; text-align: center;
-}
-.liu p{
-    font-size: 4.5vw; margin-top: 5vw; clear: both;
-}
-input{
-    width: 100%; height: 100%; font-size: 6vw; letter-spacing: 6.5vw;
-    border: 0; background: none; position: absolute; top: 0; left: 0;
-    opacity: 0;
-    /*color:transparent;*/
-    /*caret-color:rgba(0, 0, 0, 0);*/
-    /*改变光标颜色*/
-}
-
-a:focus{
-    outline: none;
-}
-
-.btn{
-    outline: none!important; margin-top: 10vw;
-    width: 60%; height: 12vw; border-radius: 1vw; border: 0.02rem solid black;
-    margin-left: 20%; font-size: 4.6vw; background-color: white;
-}
-
-
-.ge{
-    width: 60vw; height: 10vw; margin: 5vw auto; position: relative; 
-}
-.ge1{
-    width: 100%; height: 100%; font-size: 7vw; font-weight: 600;
-}
-.ge1>div{
-    width: 10vw; height: 100%; border: 0.3vw solid gainsboro; float: left; border-right: 0; text-align: center; line-height: 10vw;
-}
-.ge1>div:nth-child(6){
-    border-right: 0.3vw solid gainsboro;
-}
+    .Setup_title{
+        text-align: center; font-size: 0.48rem; .font1
+    }
+    .Setup_input{
+        margin-top: 0.64rem;
+    }
+    .Setup_next{
+        width: 4rem; height: 0.96rem; background-color: rgba(255,139,75,1); border-radius: 0.1rem;
+        color: white; font-size: 0.36rem; .font1; line-height: 0.96rem; text-align: center; margin: 0 auto; margin-top: 1.28rem; 
+    }
     
 </style>
 

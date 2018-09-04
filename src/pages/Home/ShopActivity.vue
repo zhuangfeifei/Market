@@ -2,7 +2,7 @@
     <div id="Discount">
 
 
-        <div v-if="show" class="Discount">
+        <div v-if="preferentialList != ''" class="Discount">
             <div class="Discount_list" @click="details(index)" v-for="(item,index) in preferentialList" :key="index" :class="{state3: item.status === '2'}">
                 <img :src="imgUrl + item.offerpic" alt="">
                 <div class="title">{{item.title}}</div>
@@ -12,7 +12,7 @@
             </div>
         </div>
 
-        <div v-else class="no"><img src="../../assets/img/nohuo.png" alt=""></div>
+        <div v-else class="no"><img src="../../assets/img/nohuo.png" alt="">暂无活动</div>
 
     </div>
 </template>
@@ -26,15 +26,16 @@ export default {
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
             ],
             activeNames: ['0'],
-            show:true
+            show:true,
+            list: { current: 1, limit: 5, isPage: false }
         }
     },
     components: {
         
     },
     beforeCreate(){
-        this.$store.dispatch('activityList')
-        // this.$store.dispatch('activityList')
+        let list = { current: 1, limit: 5, isPage: false }
+        this.$store.dispatch('activityList', list)
     },
     computed:{
         imgUrl(){
@@ -48,21 +49,23 @@ export default {
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
         // console.log('asdasd')
-        document.title = '商家优惠'
+        document.title = '商场活动'
         this.$store.commit('ACTIVE', 2)
-
+        this.$store.commit('SET_PAGE', true)
         window.addEventListener('scroll', this.get)
     },
     methods:{
         details(index){
-            this.$router.push({path:'/DiscountItem',query:{indexs: index}})
+            window.location.href = this.preferentialList[index].activity_url
         },
         get(){
             var scrollTop = $(window).scrollTop()
             var windowHeight = $(window).height()
             var documentHeight = $(document).height()
             if(scrollTop + windowHeight === documentHeight){
-                // console.log(2)
+                this.list.current ++
+                this.list.isPage = true
+                if(this.$store.state.isPage) this.$store.dispatch('activityList', this.list)
             }
         },
     },
@@ -103,8 +106,8 @@ export default {
     }
 
     .no{
-        width: 3.33rem; height: 3rem; margin: 1.6rem auto;
-        img{ width: 100%; height: 100%; }
+        width: 3.33rem; padding-top: 1.6rem; margin: 0 auto; font-size: 0.3rem; text-align: center; 
+        img{ width: 100%; height: 3rem; }
     }
 
 

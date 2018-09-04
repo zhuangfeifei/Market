@@ -128,8 +128,8 @@ import Util from '../../store/storage'
                     formData.append('identType', this.list.identType)
                     this.list.contractPic = formData
                     this.success = true
-                    this.$store.commit('isGetAuthentication', 1)
-                    // this.$store.dispatch('ownerCertification', formData)
+                    // this.$store.commit('isGetAuthentication', 1)
+                    this.$store.dispatch('ownerCertification', formData)
                 }
             },
             clear(){
@@ -191,7 +191,7 @@ import Util from '../../store/storage'
     .Authentication{
         height: 1.22rem; line-height: 1.22rem; border-top: 0.01rem solid rgba(206,206,206,1); 
         input{
-            width: 100%; height: 100%; border: 0; outline: none!important; color: rgba(255,139,75,1); line-height: 0.5rem;
+            width: 100%; height: 100%; border: 0; outline: none!important; color: rgba(255,139,75,1); line-height: 0.5rem; background: none;
         }
         input:-moz-placeholder{
             color: rgba(255,139,75,1); .font2;

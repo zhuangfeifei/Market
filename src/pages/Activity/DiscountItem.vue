@@ -10,7 +10,7 @@
             <div class="logo"><img :src="imgUrl + preferentialList.offerpic" alt=""></div>
             <h4>适用商家</h4>
             <div class="DiscountItem_business" v-for="(item,index) in preferentialList.shopList" :key="index">
-                <div class="DiscountItem_business_logo"><img :src="imgUrl + item.PATH" alt=""></div>
+                <div class="DiscountItem_business_logo"><img :src="imgUrl + item.logo_pic" alt=""></div>
                 <div class="DiscountItem_business_contact">
                     <p>{{item.shopName}}</p>
                     <p><span class="DiscountItem_business_address">{{item.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>

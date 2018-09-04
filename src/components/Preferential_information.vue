@@ -4,8 +4,8 @@
         <div class="ShopDetils_CashCoupon">
             <h4>代金券</h4>
             <div class="ShopDetils_CashCoupon_list" @click="details(index)" v-for="(item,index) in groupList" :key="index">
-                <div><h4>{{item.group_name}}</h4><p></p><p>{{date[parseInt(item.use_cycle)]}}</p></div>
-                <div>¥{{item.discount}}抢购</div>
+                <div><h4>{{item.group_name}}</h4><p></p><p>{{date[parseInt(item.use_cycle) - 1]}}</p></div>
+                <div>¥{{item.present_price}}抢购</div>
             </div>
         </div>
 
@@ -54,7 +54,7 @@ export default {
 
 <style lang="less" scoped>
 #Preferential_information{
-    width: 100%; padding: 0.48rem 0.4rem; font-size: 0.3rem; z-index: 1;
+    width: 100%; min-height: calc(100vh - 1.2rem); padding: 0.48rem 0.4rem; font-size: 0.3rem; z-index: 1;
 }
     
 *{

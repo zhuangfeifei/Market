@@ -31,7 +31,7 @@
                             <van-col span="12">
                                 <div>
                                     <img v-if="item.issign == '已签约'" src="../../assets/img/signed.png" alt="">
-                                    <img v-if="item.issign == '未签约'" src="../../assets/img/nosign.png" alt="">
+                                    <img v-if="item.issign == '未签约'" src="../../assets/img/noSign.png" alt="">
                                     <img v-if="item.issign == '签约不通过'" src="../../assets/img/Notthrough.png" alt="">
                                     <img v-if="item.isnetsign == '未网签'" src="../../assets/img/Certificate.png" alt="">
                                     <img v-if="item.isnetsign == '已办证'" src="../../assets/img/Certificated.png" alt="">

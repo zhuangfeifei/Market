@@ -81,14 +81,16 @@ export default {
             this.$router.push({path:'/GroupPurchaseOrderDetils', query:{ order_id: order_id}})
         },
         get(){
-            var scrollTop = $(window).scrollTop()
-            var windowHeight = $(window).height()
-            var documentHeight = $(document).height()
-            if(scrollTop + windowHeight === documentHeight){
-                this.list.current ++
-                this.list.isPage = true
-                if(this.$store.state.isPage) this.$store.dispatch('getHistoryGroupOrder', this.list)
-            }
+            this.$nextTick(()=>{
+                var scrollTop = $(window).scrollTop()
+                var windowHeight = $(window).height()
+                var documentHeight = $(document).height()
+                if(scrollTop + windowHeight === documentHeight){
+                    this.list.current ++
+                    this.list.isPage = true
+                    if(this.$store.state.isPage) this.$store.dispatch('getHistoryGroupOrder', this.list)
+                }
+            })
         },
     },
     destroyed(){

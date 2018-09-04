@@ -31,7 +31,7 @@ api.interceptors.response.use(function (response) {
     }).then(() => {
         router.push({path:'/Opencard'})
     }).catch(()=>{
-
+       Toast.clear()
     });
   }else if(response.data.code != 200) Toast.fail(response.data.message)
 

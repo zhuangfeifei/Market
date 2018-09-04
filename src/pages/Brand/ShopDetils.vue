@@ -23,7 +23,7 @@
                 <div v-if="mainGoods.length > 0" class="ShopDetils_Recommend_scrolls" :style="{'width':''+(mainGoods.length*2.2 + 0.6)+'rem'}">
                     <div class="ShopDetils_Recommend_list" v-for="(item, index) in mainGoods" :key="index">
                         <div class="ShopDetils_Recommend_list_img">
-                            <img class="list_img" :src="imgUrl + item.thumbnail" alt="">
+                            <img class="list_img" @click="imgClick" :src="imgUrl + item.thumbnail" alt="">
                             <img v-if="true" class="status" src="../../assets/img/push.png" alt=""><img v-else class="status" src="../../assets/img/new.png" alt="">
                         </div>
                         <p>{{item.goods_name}}</p>
@@ -40,6 +40,8 @@
         </div>
 
         <Preferential-information v-if="tabIndex == 0" :groupList="groupList"></Preferential-information>
+        <Hot-comments v-if="tabIndex == 1"></Hot-comments>
+        <v-html v-if="tabIndex == 2"></v-html>
 
     </div>
 
@@ -47,19 +49,20 @@
 
 <script>
 import Preferential_information from '../../components/Preferential_information'
+import Hot_comments from '../../components/Hot_comments'
+import html from '../../components/html'
+import { ImagePreview } from 'vant';
 	export default {
 		name: "loginpassword-item",
         data(){
             return{
-                images: [
-                    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531462002438&di=e061bf459cfedfddc668e4336da6ca46&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Da4742242da1373f0e13267dfcd772e97%2F8718367adab44aed5b4404ddb81c8701a18bfb85.jpg',
-                    'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
-                ],
                 active: 0, title:['优惠信息','热门评论','品牌故事'], tabIndex: 0, tableFixed: false
             }
         },
         components: {
-            'Preferential-information':Preferential_information
+            'Preferential-information':Preferential_information,
+            'v-html':html,
+            'Hot-comments':Hot_comments
         },
         beforeCreate(){
             this.$store.dispatch('shopDetail', this.$route.query.shopid)
@@ -85,6 +88,8 @@ import Preferential_information from '../../components/Preferential_information'
             document.documentElement.scrollTop = 0
             document.title = '商家详情'
             window.addEventListener('scroll', this.fixed)
+
+            
         },
         methods: {
             map(){
@@ -95,11 +100,23 @@ import Preferential_information from '../../components/Preferential_information'
             },
             tab(index){
                 this.tabIndex = index
+                index == 2 ? this.$store.commit('HTML', this.shopDetail.content) : ''
+                let Top = $(".ShopDetils_table").offset().top
+                $(window).scrollTop(Top)
             },
             fixed(){
                 var scrollTop = $(window).scrollTop()
                 var tableTop = $('.ShopDetils_table').offset().top
                 scrollTop >= tableTop ? this.tableFixed = true : this.tableFixed = false
+            },
+            imgClick(){
+                // this.$nextTick(()=>{
+                    let mainGoodsImg = []
+                    for( let val of this.mainGoods){
+                        mainGoodsImg.push(this.imgUrl+val.thumbnail)
+                    }
+                    ImagePreview(mainGoodsImg);
+                // })
             }
         },
         destroyed(){

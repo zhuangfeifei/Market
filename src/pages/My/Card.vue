@@ -83,7 +83,7 @@ export default {
 
 <style lang="less" scoped>
     #card{
-        width: 100%; height: 100%; background-color: #e8e8e8; font-size: 0.3rem;
+        width: 100%; height: 100%; font-size: 0.3rem; background-color: white;
     }
 
     *{
@@ -95,7 +95,7 @@ export default {
     .font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
 
     .card{
-        width: 100%; height: 4.45rem; padding: 0.48rem 0;
+        width: 100%; height: 4.45rem; padding: 0.48rem 0; background-color: #e8e8e8;
         .card_vip{
             width: 6.71rem; height: 3.95rem; margin-left: 0.4rem; position: relative;
             .vipend{
@@ -123,7 +123,7 @@ export default {
     }
 
     .Card_list{
-        width: 100%; height: 6.5rem; background: url('../../assets/img/listbac.png') no-repeat; background-size: 100% 100%;
+        width: 100%; background: url('../../assets/img/listbac.png') no-repeat; background-size: 100% 6.5rem; 
         z-index: 10; position: relative; padding: 1.2rem 0; margin-top: -0.85rem;
         .Card_list_{ 
             text-align: center; height: 0.54rem; border-bottom: 0.01rem solid rgba(206,206,206,1); line-height: 0.5rem;

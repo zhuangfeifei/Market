@@ -8,7 +8,7 @@
         </van-swipe>
 
         <div class="classification">
-            <router-link to=""><div><img src="../../assets/img/introduce.png" alt=""><p>商场介绍</p></div></router-link>
+            <router-link to="/Introduce"><div><img src="../../assets/img/introduce.png" alt=""><p>商场介绍</p></div></router-link>
             <div @click="changes"><img src="../../assets/img/brand.png" alt=""><p>品牌商家</p></div>
             <router-link to="/ShopActivity"><div><img src="../../assets/img/activity.png" alt=""><p>商场活动</p></div></router-link>
             <router-link to="/Wallet"><div><img src="../../assets/img/integral.png" alt=""><p>积分礼包</p></div></router-link>
@@ -18,14 +18,15 @@
 
         <div class="Headline">
             <img src="../../assets/img/Headline.png" alt="">
-            <span v-if="announceList">{{announceList[0].title}}</span>
+            <span v-if="announceList != ''">{{announceList[0].title}}</span>
         </div>
 
         <div class="Discount">
-            <h3>商家优惠</h3>
+            <h3>商家优惠<span @click="Discount_gets" class="Discount_get">查看全部</span></h3>
+            <h4>限时福利、数量有限、抢完即止</h4>
             <div class="Discount_">
                 <div class="Discount_list" @click="details(index)" v-for="(item,index) in preferentialList" :key="index" v-if="index < 4">
-                    <img :src="imgUrl + item.ratechartpic" alt="">
+                    <img :src="imgUrl + item.topchartpic" alt="">
                     <div><p>{{item.title}}</p></div>
                 </div>
             </div>
@@ -34,9 +35,9 @@
         <div class="Selecteds">
             <!--<div><img src="../../assets/img/after.png" alt=""><span>精选品牌</span><p>随时随地&nbsp;&nbsp;想购就GO</p></div>-->
             <h3>精选品牌</h3>
+            <h4>精品商店一手掌握、随时随地想购就GO</h4>
         </div>
         <div class="brand">
-            <h4>精品商店   一手掌握</h4>
             <span v-for="(item,index) in isFineList" :key="index">
                 <img @click="Selected(item.id)" :src="imgUrl + item.logo_pic">
                 <p>{{item.shopName}}</p>
@@ -63,7 +64,8 @@ export default {
     beforeCreate(){
         // this.$store.dispatch('carousel')
         // this.$store.dispatch('isFineList')
-        this.$store.dispatch('preferentialList')
+        let list = { current: 1, limit: 5, isPage: false }
+        this.$store.dispatch('preferentialList', list)
         this.$store.dispatch('announceList')
     },
     computed:{
@@ -86,7 +88,7 @@ export default {
     created(){
         // document.body.scrollTop = 0
         // document.documentElement.scrollTop = 0
-        document.title = '商场'
+        document.title = '方圆里'
         this.$store.commit('ACTIVE', 0)
     },
     mounted() {
@@ -111,6 +113,10 @@ export default {
         changes(){
             this.$store.commit('ACTIVE', 1)
             this.$router.push({path:'/Brand'})
+        },
+        Discount_gets(){
+            this.$store.commit('ACTIVE', 2)
+            this.$router.push({path:'/Discount'})
         },
     },
     
@@ -158,8 +164,10 @@ export default {
     }
 
     .Discount{
-        width: 100%; padding: 0.3rem 0 0.3rem 0.4rem;
+        width: 100%; padding: 0.48rem 0 0.3rem 0.4rem;
         & h3{ font-size: 0.36rem; }
+        .Discount_get{ float: right; font-size: 0.28rem; color:rgba(255,139,75,1); .font2; margin-right: 0.4rem; line-height: 0.55rem; }
+        & h4{ font-size: 0.28rem; .font2; color:rgba(128,128,128,1); }
         .Discount_{
             display: inline-block; width: 100%; color: rgba(255,255,255,1);
             .Discount_list{
@@ -172,24 +180,21 @@ export default {
                     text-shadow: 0.018rem 0.018rem 0.018rem black; line-height: 0.4rem; 
                     overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
                     font-size: 0.28rem; font-family:PingFang-SC-Medium; font-weight: Medium;
-                    // p:nth-child(1){ position: absolute; bottom: 0.43rem; left: 0.1rem; font-size: 0.28rem; font-family:PingFang-SC-Medium; font-weight: Medium;}
-                    // p:nth-child(2){ position: absolute; bottom: 0.1rem; left: 0.1rem; font-size: 0.24rem; font-family:PingFang-SC-Regular; font-weight: Regular;}
                 }
             }
         }
     }
 
     .Selecteds{
-        width: 100%; height: 0.75rem; position: relative; margin-top: 0.2rem; padding-left: 0.4rem;
-        // img{ width: 3rem; height: 0.3rem; position: absolute; top: 0.12rem; left: calc(50% - 1.5rem); }
-        // span{ font-size: 0.36rem; .font3; }
-        // p{ font-size: 0.24rem; color:rgba(75,75,75,1); .font2; letter-spacing: 0.1rem; }
+        width: 100%; height: 1.9rem; position: relative; margin-top: 0.2rem; padding-left: 0.4rem; 
+        border-top: 0.2rem solid rgba(232,232,232,1); padding-top: 0.48rem;
+        & h3{ font-size: 0.36rem;  }
+        & h4{ font-size: 0.28rem; .font2; color:rgba(128,128,128,1); }
     }
 
     .brand{
-        width: calc(100% - 0.8rem); margin: 0 auto; padding-top: 0.48rem; padding-bottom: 0.3rem;
-        box-shadow:0px 0px 16px rgba(0,0,0,0.2); border-radius: 0.1rem;
-        h4{ font-size: 0.24rem; color:rgba(234,22,22,1); .font1; margin-left: 0.2rem; }
+        width: calc(100% - 0.8rem); margin: 0 auto; padding-bottom: 0.3rem;
+        border:1px solid rgba(206,206,206,1);
         span{
             display: inline-block;
             width: 33.33%; height: 1.7rem; text-align: center; margin-top: 0.3rem;
