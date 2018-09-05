@@ -26,7 +26,7 @@ export default {
         return {
             active: 0, title:['未使用','已使用','已到期'], data:'1',
             status:[require('../../assets/img/notUsed.png'),require('../../assets/img/Undue.png'),require('../../assets/img/Expired.png')],
-            list:{ limit:5, current:1, isPage: false, tabIndex: 0 }
+            list:{ limit:10, current:1, isPage: false, tabIndex: 0 }
         }
     },
     components: {

@@ -25,7 +25,7 @@
                     </van-row>
                 </div>
                 <div v-else class="Owner_information_shops">
-                    <div class="Owner_information_shops_list" v-for="(item,index) in basicinformation.isInterestsList" :key="index">
+                    <div v-if="basicinformation.isInterestsList.length > 0" class="Owner_information_shops_list" v-for="(item,index) in basicinformation.isInterestsList" :key="index">
                         <van-row class="Owner_information_shops_list_">
                             <van-col span="12" ><h4>{{item.shopsnumber}}</h4><p>{{item.proname}}{{item.tubeposition}}-F{{item.floors}} &nbsp;{{item.area}}m2</p></van-col>
                             <van-col span="12">
@@ -41,6 +41,7 @@
                             </van-col>
                         </van-row>
                     </div>
+                    <div v-else>暂无</div>
                 </div>
             </div>
         </div>
@@ -54,7 +55,7 @@
 		name: "loginpassword-item",
         data(){
             return{
-                show:true, list: { current: 1, limit: 5, isPage: false }
+                show:true, list: { current: 1, limit: 10, isPage: false }
             }
         },
         components: {

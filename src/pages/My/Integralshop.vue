@@ -4,7 +4,8 @@
         <!--<header-item>积分商城</header-item>-->
         
         <div class="main">
-            <div class="Integrals_mains">
+            暂无
+            <!-- <div class="Integrals_mains">
                 <div class="list" >
                     <img src="../../assets/img/1.jpg" alt="">
                     <p>星巴克榛果拿铁中杯</p>
@@ -77,10 +78,10 @@
                     <p>星巴克榛果拿铁中杯</p>
                     <p><span>50积分</span><del>￥39</del></p>
                 </div>
-            </div>
+            </div> -->
         </div>
 
-        <div class="top"><p>返回</p><p>顶部</p></div>
+        <!-- <div class="top"><p>返回</p><p>顶部</p></div> -->
         
     </div>
 

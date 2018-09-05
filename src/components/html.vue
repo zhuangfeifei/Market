@@ -21,7 +21,6 @@ export default {
     created(){
         // document.body.scrollTop = 0
         // document.documentElement.scrollTop = 0
-        // console.log(wx)
     },
     computed:{
         htmls(){
@@ -48,7 +47,7 @@ export default {
 
 
 .htmls{
-    width: 100%; padding: 0 0.4rem;
+    width: 100vw; padding: 0 0.4rem; overflow: hidden;
 }
 
 

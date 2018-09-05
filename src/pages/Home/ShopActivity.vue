@@ -27,14 +27,14 @@ export default {
             ],
             activeNames: ['0'],
             show:true,
-            list: { current: 1, limit: 5, isPage: false }
+            list: { current: 1, limit: 10, isPage: false }
         }
     },
     components: {
         
     },
     beforeCreate(){
-        let list = { current: 1, limit: 5, isPage: false }
+        let list = { current: 1, limit: 10, isPage: false }
         this.$store.dispatch('activityList', list)
     },
     computed:{

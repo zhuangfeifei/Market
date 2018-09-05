@@ -29,14 +29,14 @@ export default {
             ],
             activeNames: ['0'],
             show:true,
-            list: { current: 1, limit: 5, isPage: false }
+            list: { current: 1, limit: 10, isPage: false }
         }
     },
     components: {
         
     },
     beforeCreate(){
-        let list = { current: 1, limit: 5, isPage: false }
+        let list = { current: 1, limit: 10, isPage: false }
         this.$store.dispatch('preferentialList', list)
     },
     computed:{
@@ -95,8 +95,7 @@ export default {
             //     width: 100%; height: 3rem; border-top-left-radius: 0.1rem; border-top-right-radius: 0.1rem;
             // }
             .Discount_img{
-                width: 100%; height: 3rem; border-top-right-radius: 0.1rem; border-top-left-radius: 0.1rem; padding-top: 0.04%;
-                // background-size: cover 
+                width: 100%; height: 3rem; border-top-right-radius: 0.1rem; border-top-left-radius: 0.1rem; padding-top: calc((300/750) * 100%);
             }
             .title{
                 width: 100%; height: 0.88rem; line-height: 0.88rem; font-size: 0.3rem; padding-left: 0.2rem; position: absolute; bottom: 0; left: 0;

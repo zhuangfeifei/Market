@@ -29,7 +29,8 @@ const state = {
     List: '',       // 项目列表
     coupon: '',    // 优惠券列表
     couponDetail: '',    // 优惠券详情列表
-    getIntegralHis: '',    // 获取积分规则和记录
+    getIntegralHis: '',    // 获取积分记录 获取积分规则
+    getJFIllege: '',    // 获取积分规则
     groupList: '',    // 获取商家团购设置的团购卷码信息列表
     preferentialList: '',    // 获取商家优惠活动列表
     order: '',    // 订单信息
@@ -89,6 +90,9 @@ const mutations = {
     },
     [types.COUPON_DETAIL](state,res){
         state.couponDetail = res
+    },
+    [types.GET_JFILLEGE](state,res){
+        state.getJFIllege = res
     },
     [types.GET_INTEGRALHIS](state){
         state.getIntegralHis = Util.getLocal('getIntegralHis')
@@ -191,9 +195,7 @@ const actions = {
         axios.api.post('/shops/api/goods/mainGoods', $.param({ shopId: shopid }) )
         .then(res => {
             // console.log(res.data)
-            if(res.data.code == 200) {
-                commit('MAINGOODS', res.data.data)
-            }
+            if(res.data.code == 200) commit('MAINGOODS', res.data.data)
         })
         .catch(err => console.log(err))
     },
@@ -364,7 +366,7 @@ const actions = {
     user({commit,state}){   // 获取用户信息
         axios.api.post('/shops/api/comment/userNew', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId }) )
         .then(res => {
-            // console.log(res.data)
+            console.log(res.data)
             if(res.data.code == 200) {
                 Util.setLocal(res.data.data, 'user')
                 commit('USER')
@@ -399,9 +401,7 @@ const actions = {
         axios.api.post('/shops/api/set/updatePaypwd', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, newPwd: newPwds }) )
         .then(res => {
             // console.log(res.data)
-            if(res.data.code == 200) {
-                commit('isPassword', true)
-            }
+            if(res.data.code == 200) commit('isPassword', true)
         })
         .catch(err => console.log(err))
     },
@@ -458,7 +458,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    getIntegralHis({commit,state}, list){   // 获取积分规则和记录
+    getIntegralHis({commit,state}, list){   // 获取积分记录
         axios.api.post('/shops/api/card/getIntegralHis', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, current: list.current, limit: list.limit }) )
         .then(res => {
             // console.log(res.data)
@@ -473,6 +473,14 @@ const actions = {
                     commit('SET_PAGE', false)  
                 }
             }
+        })
+        .catch(err => console.log(err))
+    },
+    getJFIllege({commit}){   // 获取积分规则
+        axios.api.post('/shops/api/card/getJFIllege')
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) commit('GET_JFILLEGE', res.data.data)
         })
         .catch(err => console.log(err))
     },
@@ -510,9 +518,7 @@ const actions = {
         axios.api.post('/shops/api/bind/documentType' )
         .then(res => {
             // console.log(res.data)
-            if(res.data.code == 200) {
-                commit('DOCUMENTTYPE', res.data.data)
-            }
+            if(res.data.code == 200) commit('DOCUMENTTYPE', res.data.data)
         })
         .catch(err => console.log(err))
     },
@@ -520,11 +526,7 @@ const actions = {
         axios.api.post('/shops/api/bind/ownerCertification', formData )
         .then(res => {
             // console.log(res.data)
-            if(res.data.code == 200) {
-                commit('isGetAuthentication', 1)
-            }else{
-                commit('isGetAuthentication', 0)
-            }
+            res.data.code == 200 ? commit('isGetAuthentication', 1) : commit('isGetAuthentication', 0)
         })
         .catch(err => console.log(err))
     },

@@ -32,7 +32,7 @@ import header from '../../components/header'
 		name: "loginpassword-item",
         data(){
             return{
-                show:true, list: { current: 1, limit: 5, isPage: false }
+                show:true, list: { current: 1, limit: 10, isPage: false }
             }
         },
         components: {
@@ -40,6 +40,7 @@ import header from '../../components/header'
         },
         beforeCreate(){
             // 获取不到data属性
+            this.$store.dispatch('getJFIllege')
         },
         computed:{
             user(){
@@ -48,8 +49,11 @@ import header from '../../components/header'
                 }
                 return this.$store.state.user
             },
+            getJFIllege(){
+                return this.$store.state.getJFIllege
+            },
             htmls(){
-                this.$store.commit('HTML', this.user.card[0].integralRules)
+                this.$store.commit('HTML', this.getJFIllege.detail)
                 return this.$store.getters.htmls
             },
             getIntegralHis(){

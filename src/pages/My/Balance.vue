@@ -4,7 +4,8 @@
 
         <div class="Balance">
             <div class="Balance_">
-                <img src="../../assets/img/integrals.png" alt=""><span>当前余额</span><span>{{'¥'+user.wtCustomer.amount || 0}}</span>
+                <p>当前余额</p><h4><span>¥ </span>{{user.wtCustomer.amount || 0}}</h4>
+                <div class="Balance_Recharge">充值</div>
             </div>
             <nav>
                 <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: list.tabIndex == index}"><span>{{item}}</span><section v-show="list.tabIndex == index"></section></div>
@@ -91,7 +92,7 @@ export default {
 
 <style lang="less" scoped>
     #Balance{
-        width: 100%; min-height: 100vh; font-size: 0.3rem; padding-top: calc(1.34rem + 0.93rem);
+        width: 100%; min-height: 100vh; font-size: 0.3rem; padding-top: calc(4.27rem + 0.93rem);
     }
 
     *{
@@ -104,15 +105,16 @@ export default {
     .font4{ font-family:PingFang-SC-Light; font-weight: Light; }
 
     .Balance{
-        width: 100%; height: calc(1.34rem + 0.93rem); padding-top: 0.53rem; background-color: #e8e8e8;
-        position: fixed; top: 0; left: 0;
+        width: 100%; height: calc(4.27rem + 0.93rem); padding-top: 1rem; background-color: #e8e8e8;
+        position: fixed; top: 0; left: 0; text-align: center;
         .Balance_{
-            width: 100%; height: 0.38rem; line-height: 0.38rem; padding: 0 0.4rem; 
-            color:rgba(43,43,43,1); .font1;
-            img{ width: 0.38rem; height: 0.38rem; margin-right: 0.2rem; float: left; }
-            span:nth-child(2){ float: left; }
-            span:nth-child(3){ margin-left: 0.48rem; color: #EA1616; font-size: 0.36rem; float: left; }
-            a span{ font-size: 0.24rem; .font2; float: right; color:rgba(43,43,43,1); }
+            width: 100%; 
+            p{ color: rgba(128,128,128,1); } 
+            h4{ font-size: 0.6rem; letter-spacing: 0.02rem; .font1; span{ font-size: 0.36rem; } }
+            .Balance_Recharge{
+                width: 2rem; height: 0.6rem; background-color: rgba(255,139,75,1); line-height: 0.6rem; .font1; color: white; 
+                font-size: 0.28rem; margin: 0.5rem auto; border-radius: 0.1rem;
+            }
         }
     }
 

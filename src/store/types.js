@@ -23,7 +23,9 @@ export const COUPON = 'COUPON'  // 优惠券列表
 
 export const COUPON_DETAIL = 'COUPON_DETAIL'  // 优惠券详情列表
 
-export const GET_INTEGRALHIS = 'GET_INTEGRALHIS'  // 获取积分规则和记录
+export const GET_INTEGRALHIS = 'GET_INTEGRALHIS'  // 获取积分记录
+
+export const GET_JFILLEGE = 'GET_JFILLEGE'  // 获取积分规则
 
 export const GROUP_LIST = 'GROUP_LIST'  // 获取商家团购设置的团购卷码信息列表
 

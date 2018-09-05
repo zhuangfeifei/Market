@@ -13,6 +13,7 @@ const ShopDetils = resolve => require(['@/pages/Brand/ShopDetils'], resolve)
 const VoucherDetails = resolve => require(['@/pages/Brand/VoucherDetails'], resolve)
 const GroupPurchaseOrder = resolve => require(['@/pages/Brand/GroupPurchaseOrder'], resolve)
 const GroupPurchaseOrderDetils = resolve => require(['@/pages/Brand/GroupPurchaseOrderDetils'], resolve)
+const CommonOrder = resolve => require(['@/pages/Brand/CommonOrder'], resolve)
 
 const My = resolve => require(['@/pages/My/My'], resolve)
 const Card = resolve => require(['@/pages/My/Card'], resolve)
@@ -215,6 +216,13 @@ export default new Router({
     {
       path: '/CouponAll',
       component: CouponAll,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/CommonOrder',
+      component: CommonOrder,
       meta:{
         index:3
       }

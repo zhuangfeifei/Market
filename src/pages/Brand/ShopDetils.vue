@@ -23,7 +23,7 @@
                 <div v-if="mainGoods.length > 0" class="ShopDetils_Recommend_scrolls" :style="{'width':''+(mainGoods.length*2.2 + 0.6)+'rem'}">
                     <div class="ShopDetils_Recommend_list" v-for="(item, index) in mainGoods" :key="index">
                         <div class="ShopDetils_Recommend_list_img">
-                            <img class="list_img" @click="imgClick" :src="imgUrl + item.thumbnail" alt="">
+                            <img class="list_img" @click="imgClick(index)" :src="imgUrl + item.thumbnail" alt="">
                             <img v-if="true" class="status" src="../../assets/img/push.png" alt=""><img v-else class="status" src="../../assets/img/new.png" alt="">
                         </div>
                         <p>{{item.goods_name}}</p>
@@ -43,6 +43,8 @@
         <Hot-comments v-if="tabIndex == 1"></Hot-comments>
         <v-html v-if="tabIndex == 2"></v-html>
 
+        <van-popup class="ImagePreviews" v-model="show"><img class="ImagePreview" @click="isShow" :src="imgs" alt=""></van-popup>
+
     </div>
 
 </template>
@@ -51,12 +53,13 @@
 import Preferential_information from '../../components/Preferential_information'
 import Hot_comments from '../../components/Hot_comments'
 import html from '../../components/html'
-import { ImagePreview } from 'vant';
+import { ImagePreview } from 'vant'
+import { setTimeout } from 'timers';
 	export default {
 		name: "loginpassword-item",
         data(){
             return{
-                active: 0, title:['优惠信息','热门评论','品牌故事'], tabIndex: 0, tableFixed: false
+                active: 0, title:['优惠信息','热门评论','品牌故事'], tabIndex: 0, tableFixed: false, show:false, imgs:''
             }
         },
         components: {
@@ -109,14 +112,12 @@ import { ImagePreview } from 'vant';
                 var tableTop = $('.ShopDetils_table').offset().top
                 scrollTop >= tableTop ? this.tableFixed = true : this.tableFixed = false
             },
-            imgClick(){
-                // this.$nextTick(()=>{
-                    let mainGoodsImg = []
-                    for( let val of this.mainGoods){
-                        mainGoodsImg.push(this.imgUrl+val.thumbnail)
-                    }
-                    ImagePreview(mainGoodsImg);
-                // })
+            imgClick(index){
+                this.imgs = this.imgUrl+this.mainGoods[index].thumbnail
+                this.show = true
+            },
+            isShow(){
+                this.show = false
             }
         },
         destroyed(){
@@ -207,6 +208,13 @@ import { ImagePreview } from 'vant';
         .active{ color: rgba(255,139,75,1); }
     }
     .Fiexd{ position: fixed; top: 0; left: 0; }
+}
+
+
+
+.ImagePreviews{ background: none; }
+.ImagePreview{
+    max-width: 100vw; text-align: center;
 }
 
 

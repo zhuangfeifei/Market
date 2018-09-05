@@ -21,9 +21,9 @@
 
         <van-row class="My_class_list" type="flex" justify="space-between">
             <van-col span="6" class="My_class_list_"><router-link to="/Membership"><img src="../../assets/img/personal.png" alt=""></router-link></van-col>
-            <van-col span="6" class="My_class_list_"><router-link to=""><img src="../../assets/img/CommonOrder.png" alt=""></router-link></van-col>
+            <van-col span="6" class="My_class_list_"><router-link to="/CommonOrder"><img src="../../assets/img/CommonOrder.png" alt=""></router-link></van-col>
             <van-col span="6" class="My_class_list_"><router-link to="/GroupPurchaseOrder"><img src="../../assets/img/GroupPurchaseOrder.png" alt=""></router-link></van-col>
-            <van-col span="6" class="My_class_list_"><router-link to=""><img src="../../assets/img/exchange.png" alt=""></router-link></van-col>
+            <van-col span="6" class="My_class_list_"><router-link to="/Integralshop"><img src="../../assets/img/exchange.png" alt=""></router-link></van-col>
         </van-row>
         <van-row class="My_class_list" type="flex" justify="space-between">
             <van-col span="6" class="My_class_list_"><a href="http://www.homeamc.cn/h5/car/auth"><img src="../../assets/img/ParkingPayment.png" alt=""></a></van-col>
@@ -55,8 +55,9 @@ export default {
             return this.$store.state.user
         },
         isFloats(){
-            var regPos = /^[0-9]*[1-9][0-9]*$/  // 判断是否是正整数
-            return regPos.test(this.user.wtCustomer.amount) ? this.user.wtCustomer.amount +'.00' : this.user.wtCustomer.amount
+            // var regPos = /^[0-9]*[1-9][0-9]*$/  // 判断是否是正整数
+            // return regPos.test(this.user.wtCustomer.amount) ? this.user.wtCustomer.amount +'.00' : this.user.wtCustomer.amount
+            return Number.isInteger(this.user.wtCustomer.amount) ? `${this.user.wtCustomer.amount}.00` : this.user.wtCustomer.amount
         }
     },
     created(){

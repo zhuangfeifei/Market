@@ -37,7 +37,7 @@ export default {
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531462002438&di=e061bf459cfedfddc668e4336da6ca46&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Da4742242da1373f0e13267dfcd772e97%2F8718367adab44aed5b4404ddb81c8701a18bfb85.jpg',
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
             ],
-            list:{ limit:5, current:1, isPage: false, tabIndex: 0 }
+            list:{ limit:10, current:1, isPage: false, tabIndex: 0 }
         }
     },
     components: {
@@ -101,7 +101,7 @@ export default {
 
 <style lang="less" scoped>
     #GroupPurchaseOrder{
-        width: 100%; min-height: 100vh; background:rgba(232,232,232,1); padding-top: calc(0.76rem); font-size: 0.3rem;
+        width: 100%; min-height: 100vh; background:rgba(232,232,232,1); padding-top: calc(0.76rem - 0.2rem); font-size: 0.3rem;
     }
 
     *{
@@ -134,7 +134,7 @@ export default {
     .GroupPurchaseOrders{
         width: 100%;
         .GroupPurchaseOrder_list{
-            width: 100%; height: 3.43rem; background-color: white; margin-bottom: 0.2rem;
+            width: 100%; height: 3.43rem; background-color: white; margin-top: 0.2rem;
             .GroupPurchaseOrder_num{
                 width: 100%; height: 0.63rem; line-height: 0.63rem; padding: 0 0.4rem; font-size: 0.24rem; .font1; color:rgba(43,43,43,1);
                 span:nth-child(2){ float: right; color:rgba(255,139,75,1); }

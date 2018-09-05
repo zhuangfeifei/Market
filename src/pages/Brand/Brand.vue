@@ -6,7 +6,7 @@
             <div @click="focus"><img src="../../assets/img/search.png" alt=""></div>
         </nav>
         <nav v-else class="search">
-            <div><input id="name" type="text" @focus="focus($event)" @blur="blur($event)" ref="input"><img @click="search" src="../../assets/img/search.png" alt=""></div>
+            <div><input id="name" type="text" autofocus="autofocus" @focus="focus($event)" @blur="blur($event)" ref="input"><img @click="search" src="../../assets/img/search.png" alt=""></div>
         </nav>
         <div v-show="change" class="changeList">
             <div v-show="changes == 0"><p v-for="(item,index) in List.projects" @click="getContact(index)" :class="{actives: projectsNum == index}" :key="index">{{item.PROJECT_NAME}}</p></div>
@@ -18,7 +18,7 @@
         <div v-if="shopList.length > 0" class="Brand">
             <div class="Brand_list" @click="detils(item.id)" v-for="(item,index) in shopList" :key="index">
                 <img :src="imgUrl + item.logo_pic" alt="">
-                <div class="content">
+                <div class="Brand_content">
                     <h3>{{item.shopName}}</h3>
                     <p><span>{{item.categoryName}}</span><span class="Brand_name">{{item.floor}}-{{item.shopNum}}</span></p>
                     <div>{{item.SHOP_DESCRIPTION}}</div>
@@ -38,7 +38,7 @@ export default {
         return {
             activeNames: ['项目','馆位','楼层','业态'], projectsNum:0, getContactListNum: -1,floorstNum:-1,calssfiyNum:-1,
             ishow:true,change:false,changes:-1, i:0,
-            list:{ categoryId:'', projectId:'', shopName:'', regionId:'', floorId:'', limit:5, current:1, sort:'', order:'', isPage:false }
+            list:{ categoryId:'', projectId:'', shopName:'', regionId:'', floorId:'', limit:10, current:1, sort:'', order:'', isPage:false }
         }
     },
     components: {
@@ -72,6 +72,8 @@ export default {
         document.documentElement.scrollTop = 0
         document.title = '品牌商家'
         this.$store.commit('ACTIVE', 1)
+
+        
     },
     methods:{
         changShow(index){
@@ -111,7 +113,11 @@ export default {
             // console.log(event)
             // event.currentTarget.select();  // 获取焦点时需直接选中文本内容
             this.ishow = false
-            this.$nextTick(() => {this.$refs['input'].focus()})
+            this.$nextTick(() => {
+                this.$refs['input'].focus() 
+                // $("input").trigger("click").focus()
+            })
+            
         },
         blur(value){
             // console.log(value)
@@ -201,7 +207,7 @@ export default {
             img{
                 width: 1.6rem; height: 1.6rem; float: left;
             }
-            .content{
+            .Brand_content{
                 width: calc(100% - 0.64rem - 1.6rem); height: 1.6rem; float: right;
                 h3{ font-size: 0.3rem; }
                 p{ 
@@ -213,7 +219,7 @@ export default {
                     }
                 }
                 div{
-                    width: 100%; height: 0.53rem; font-size: 0.24rem; color:rgba(68,68,68,1); line-height:0.3rem;
+                    width: 100%; height: 0.6rem; font-size: 0.24rem; color:rgba(68,68,68,1); line-height:0.3rem;
                     display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; -webkit-line-clamp: 2;
                 }
             }

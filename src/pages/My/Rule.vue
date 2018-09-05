@@ -26,7 +26,7 @@
 		name: "loginpassword-item",
         data(){
             return{
-                show:true, list: { current: 1, limit: 5, isPage: false }, title:''
+                show:true, list: { current: 1, limit: 10, isPage: false }, title:''
             }
         },
         components: {
