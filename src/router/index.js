@@ -28,6 +28,7 @@ const Setpassword = resolve => require(['@/pages/My/Setpassword'], resolve)
 const Wallet = resolve => require(['@/pages/My/Wallet'], resolve)
 const Authentication = resolve => require(['@/pages/My/Authentication'], resolve)
 const Owner = resolve => require(['@/pages/My/Owner'], resolve)
+const Recharge = resolve => require(['@/pages/My/Recharge'], resolve)
 
 const Discount = resolve => require(['@/pages/Activity/Discount'], resolve)
 const DiscountItem = resolve => require(['@/pages/Activity/DiscountItem'], resolve)
@@ -223,6 +224,13 @@ export default new Router({
     {
       path: '/CommonOrder',
       component: CommonOrder,
+      meta:{
+        index:3
+      }
+    },
+    {
+      path: '/Recharge',
+      component: Recharge,
       meta:{
         index:3
       }

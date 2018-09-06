@@ -13,7 +13,7 @@
             <router-link to="/ShopActivity"><div><img src="../../assets/img/activity.png" alt=""><p>商场活动</p></div></router-link>
             <router-link to="/Wallet"><div><img src="../../assets/img/integral.png" alt=""><p>积分礼包</p></div></router-link>
             <a href="http://www.homeamc.cn/h5/car/auth"><div><img src="../../assets/img/Parking.png" alt=""><p>停车缴费</p></div></a>
-            <router-link to=""><div><img src="../../assets/img/More.png" alt=""><p>更多</p></div></router-link>
+            <router-link to="/CouponAll"><div><img src="../../assets/img/More.png" alt=""><p>更多</p></div></router-link>
         </div>
 
         <div class="Headline">
@@ -33,7 +33,6 @@
         </div>
 
         <div class="Selecteds">
-            <!--<div><img src="../../assets/img/after.png" alt=""><span>精选品牌</span><p>随时随地&nbsp;&nbsp;想购就GO</p></div>-->
             <h3>精选品牌</h3>
             <h4>精品商店一手掌握、随时随地想购就GO</h4>
         </div>

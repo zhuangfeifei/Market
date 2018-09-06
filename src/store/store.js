@@ -366,7 +366,7 @@ const actions = {
     user({commit,state}){   // 获取用户信息
         axios.api.post('/shops/api/comment/userNew', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId }) )
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data.code == 200) {
                 Util.setLocal(res.data.data, 'user')
                 commit('USER')
