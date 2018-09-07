@@ -27,7 +27,7 @@ export const GET_INTEGRALHIS = 'GET_INTEGRALHIS'  // 获取积分记录
 
 export const GET_JFILLEGE = 'GET_JFILLEGE'  // 获取积分规则
 
-export const GROUP_LIST = 'GROUP_LIST'  // 获取商家团购设置的团购卷码信息列表
+export const GROUP_LIST = 'GROUP_LIST'  // 获取商家团购卷列表
 
 export const PREFERENTIAL_LIST = 'PREFERENTIAL_LIST'  // 获取商家优惠活动列表
 
@@ -44,4 +44,6 @@ export const BASICINFORMATION = 'BASICINFORMATION'  // 获取业主认证信息
 export const BALANCE = 'BALANCE'  // 余额明细
 
 export const MAINGOODS = 'MAINGOODS'  // 推荐商品（主推）
+
+export const GETCRABGROUPLIST = 'GETCRABGROUPLIST'  // 获取大闸蟹列表
 

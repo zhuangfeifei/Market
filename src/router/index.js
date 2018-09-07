@@ -7,6 +7,7 @@ const Home = resolve => require(['@/pages/Home/Home'], resolve)
 const Introduce = resolve => require(['@/pages/Home/Introduce'], resolve)
 const ShopActivity = resolve => require(['@/pages/Home/ShopActivity'], resolve)
 const CouponAll = resolve => require(['@/pages/Home/CouponAll'], resolve)
+const Crab = resolve => require(['@/pages/Home/Crab'], resolve)
 
 const Brand = resolve => require(['@/pages/Brand/Brand'], resolve)
 const ShopDetils = resolve => require(['@/pages/Brand/ShopDetils'], resolve)
@@ -80,160 +81,28 @@ export default new Router({
         }
       }]
     },
-    {
-      path: '/Introduce',
-      component: Introduce,
-      meta:{
-        index:3,
-        // keepAlive: true
-      }
-    },
-    {
-      path: '/DiscountItem',
-      component: DiscountItem,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Card',
-      component: Card,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Opencard',
-      component: Opencard,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Membership',
-      component: Membership,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Coupon',
-      component: Coupon,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/CouponContent',
-      component: CouponContent,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Wallet',
-      component: Wallet,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Integralshop',
-      component: Integralshop,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/ShopDetils',
-      component: ShopDetils,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/ShopActivity',
-      component: ShopActivity,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Rule',
-      component: Rule,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/VoucherDetails',
-      component: VoucherDetails,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Balance',
-      component: Balance,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Setpassword',
-      component: Setpassword,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/GroupPurchaseOrder',
-      component: GroupPurchaseOrder,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/GroupPurchaseOrderDetils',
-      component: GroupPurchaseOrderDetils,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Authentication',
-      component: Authentication,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Owner',
-      component: Owner,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/CouponAll',
-      component: CouponAll,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/CommonOrder',
-      component: CommonOrder,
-      meta:{
-        index:3
-      }
-    },
-    {
-      path: '/Recharge',
-      component: Recharge,
-      meta:{
-        index:3
-      }
-    },
+    { path: '/Introduce', component: Introduce },
+    { path: '/DiscountItem', component: DiscountItem },
+    { path: '/Card', component: Card },
+    { path: '/Opencard', component: Opencard },
+    { path: '/Membership', omponent: Membership },
+    { path: '/Coupon', component: Coupon },
+    { path: '/CouponContent', component: CouponContent },
+    { path: '/Wallet', component: Wallet },
+    { path: '/Integralshop', component: Integralshop, },
+    { path: '/ShopDetils', component: ShopDetils },
+    { path: '/ShopActivity', component: ShopActivity },
+    { path: '/Rule', component: Rule },
+    { path: '/VoucherDetails', component: VoucherDetails },
+    { path: '/Balance', component: Balance },
+    { path: '/Setpassword', component: Setpassword },
+    { path: '/GroupPurchaseOrder', component: GroupPurchaseOrder },
+    { path: '/GroupPurchaseOrderDetils', component: GroupPurchaseOrderDetils },
+    { path: '/Authentication', component: Authentication },
+    { path: '/Owner', component: Owner },
+    { path: '/CouponAll', component: CouponAll },
+    { path: '/CommonOrder', component: CommonOrder },
+    { path: '/Recharge', component: Recharge },
+    { path: '/Crab', component: Crab },
   ]
 })

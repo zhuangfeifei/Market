@@ -31,7 +31,7 @@ const state = {
     couponDetail: '',    // 优惠券详情列表
     getIntegralHis: '',    // 获取积分记录 获取积分规则
     getJFIllege: '',    // 获取积分规则
-    groupList: '',    // 获取商家团购设置的团购卷码信息列表
+    groupList: '',    // 获取商家团购卷列表
     preferentialList: '',    // 获取商家优惠活动列表
     order: '',    // 订单信息
     getBalance:'', // 获取余额
@@ -40,6 +40,7 @@ const state = {
     basicinformation:'', // 获取业主认证信息
     balance:'', // 余额明细
     mainGoods:'', // 推荐商品（主推）
+    crabgroupList:'', // 获取大闸蟹列表
 }
 
 const mutations = {
@@ -124,6 +125,9 @@ const mutations = {
     [types.MAINGOODS](state,res){
         state.mainGoods = res
     },
+    [types.GETCRABGROUPLIST](state,res){
+        state.crabgroupList = res
+    },
 }
 
 const actions = {
@@ -199,7 +203,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    groupList({commit,state}, shopIds){   // 获取商家团购设置的团购卷码信息列表
+    groupList({commit,state}, shopIds){   // 获取商家团购卷列表
         axios.api.post('/shops/api/groupOrder/groupList', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             shopId: shopIds, groupType: '' }) )
         .then(res => {
@@ -213,12 +217,22 @@ const actions = {
     },
     addGroupOrder({state}, list){   // 添加团购订单
         axios.api.post('/shops/api/groupOrder/addGroupOrder', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
-            shopId: list.shop_id, groupType: list.group_type, groupName: list.group_name, amount: list.present_price, groupId: list.id }) )
+            shopId: list.shop_id, groupType: list.group_type, groupName: list.group_name, amount: list.present_price, groupId: list.id, roleType: list.role_type }) )
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
                 router.push({path:'/GroupPurchaseOrderDetils', query:{ order_id: res.data.data.orderId}})
                 Toast.clear()
+            }else if(res.data.code == 251){
+                Toast.clear()
+                Dialog.confirm({
+                    title: res.data.message,
+                    confirmButtonText:'去验证'
+                }).then(() => {
+                    router.push({path:'/Authentication'})
+                }).catch(()=>{
+                   Toast.clear()
+                });
             }
         })
         .catch(err => console.log(err))
@@ -537,6 +551,29 @@ const actions = {
             if(res.data.code == 200) {
                 Util.setLocal(res.data.data, 'basicinformation')
                 commit('BASICINFORMATION')
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    promotionList({dispatch}, list){   // 获取大闸蟹列表
+        axios.api.post('/shops/api/promotion/promotionList', $.param({ current: list.current, limit: list.limit }) )
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                // Util.setLocal(res.data.data[0], 'promotionList')
+                // commit('SHOP_DETAIL')
+                dispatch('crabgroupList', { id: res.data.data[0].id, list})
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    crabgroupList({commit}, list){   // 获取大闸蟹列表
+        axios.api.post('/shops/api/promotion/groupList', $.param({ promotionId: list.id, current: list.list.current, limit: list.list.limit }) )
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                // Util.setLocal(res.data.data[0], 'promotionList')
+                commit('GETCRABGROUPLIST', res.data.data)
             }
         })
         .catch(err => console.log(err))

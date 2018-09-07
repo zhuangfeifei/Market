@@ -35,7 +35,6 @@
 </template>
 
 <script>
-import header from '../../components/header'
 export default {
     data() {
         return {
@@ -47,7 +46,7 @@ export default {
         }
     },
     components: {
-        'header-item': header,
+        
     },
     beforeCreate() {
         // this.$store.dispatch('shopDetail', this.$route.query.shopid)
