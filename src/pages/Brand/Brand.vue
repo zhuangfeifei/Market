@@ -137,7 +137,16 @@ export default {
             if (scrollTop + windowHeight === scrollHeight) {
                 this.list.current ++
                 this.list.isPage = true
-                if(this.$store.state.isPage) this.$store.dispatch('shopList', this.list)
+                if(this.$store.state.isPage) {
+                    this.$toast.loading({
+                        duration: 1000,       // 持续展示 toast
+                        mask: true,
+                        message: '加载中...'
+                    });
+                    this.$store.dispatch('shopList', this.list)
+                }else{
+                    this.$toast('没有更多了！')
+                }
             }
         }
     },

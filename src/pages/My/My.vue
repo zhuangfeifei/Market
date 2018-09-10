@@ -28,7 +28,7 @@
         <van-row class="My_class_list" type="flex" justify="space-between">
             <van-col span="6" class="My_class_list_"><a href="http://www.homeamc.cn/h5/car/auth"><img src="../../assets/img/ParkingPayment.png" alt=""></a></van-col>
             <van-col span="6" class="My_class_list_"><router-link :to="user.wtCustomer.userType == 1 ? '/Owner' :'/Authentication'"><img src="../../assets/img/OwnerCertification.png" alt=""></router-link></van-col>
-            <van-col span="6" class="My_class_list_ My_class_list_7"><img @click="vip" src="../../assets/img/MembershipCard.png" alt=""></van-col>
+            <van-col span="6" class="My_class_list_ My_class_list_7"><router-link to="/Card"><img src="../../assets/img/MembershipCard.png" alt=""></router-link></van-col>
             <van-col span="6" class="My_class_list_"><router-link to="/Setpassword"><img src="../../assets/img/PaymentSetting.png" alt=""></router-link></van-col>
         </van-row>
 
@@ -69,20 +69,6 @@ export default {
     methods:{
         sign(){
             this.$store.dispatch('addIntegration', 2)
-        },
-        vip(){
-            if(this.user.wtCustomer.phonenumber != ''){
-                this.$router.push({path:'/Card'})
-            }else{
-                this.$dialog.confirm({
-                    title: '您还没有绑定会员卡！',
-                    confirmButtonText:'去绑定'
-                }).then(() => {
-                    this.$router.push({path:'/Opencard'})
-                }).catch(()=>{
-
-                });
-            }
         },
         qrcodes() {
             this.show = !this.show

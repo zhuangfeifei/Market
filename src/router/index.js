@@ -85,7 +85,7 @@ export default new Router({
     { path: '/DiscountItem', component: DiscountItem },
     { path: '/Card', component: Card },
     { path: '/Opencard', component: Opencard },
-    { path: '/Membership', omponent: Membership },
+    { path: '/Membership', component: Membership },
     { path: '/Coupon', component: Coupon },
     { path: '/CouponContent', component: CouponContent },
     { path: '/Wallet', component: Wallet },

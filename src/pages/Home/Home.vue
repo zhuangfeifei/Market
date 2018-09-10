@@ -3,7 +3,7 @@
 
         <van-swipe class="swipe" :autoplay="3000">
             <van-swipe-item v-for="(item, index) in carousel" :key="index">
-                <a :href="item.url"><img v-lazy="imgUrl + item.picture" /></a>
+                <a :href="URL"><img :src="imgUrl + item.picture" /></a>
             </van-swipe-item>
         </van-swipe>
 
@@ -13,7 +13,7 @@
             <router-link to="/ShopActivity"><div><img src="../../assets/img/activity.png" alt=""><p>商场活动</p></div></router-link>
             <router-link to="/Wallet"><div><img src="../../assets/img/integral.png" alt=""><p>积分礼包</p></div></router-link>
             <a href="http://www.homeamc.cn/h5/car/auth"><div><img src="../../assets/img/Parking.png" alt=""><p>停车缴费</p></div></a>
-            <router-link to="/Crab"><div><img src="../../assets/img/More.png" alt=""><p>更多</p></div></router-link>
+            <router-link to="/CouponAll"><div><img src="../../assets/img/More.png" alt=""><p>更多</p></div></router-link>
         </div>
 
         <div class="Headline">
@@ -54,7 +54,7 @@ export default {
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531462002438&di=e061bf459cfedfddc668e4336da6ca46&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Da4742242da1373f0e13267dfcd772e97%2F8718367adab44aed5b4404ddb81c8701a18bfb85.jpg',
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
             ],
-            scrollWatch: true
+            scrollWatch: true,URL:'#/Crab'
         }
     },
     components: {

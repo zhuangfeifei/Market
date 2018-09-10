@@ -114,6 +114,7 @@ export default {
             this.value = this.value.slice(0, this.value.length - 1)
         },
         wxPay(){
+            this.onBridgeReady();
             if (typeof WeixinJSBridge == "undefined"){
                 if( document.addEventListener ){
                     document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);

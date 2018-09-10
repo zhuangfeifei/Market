@@ -1,7 +1,6 @@
 <template>
 	
     <div class="Membership">
-        <!--<header-item>会员中心</header-item>-->
         
         <div v-if="user" class="Membership_main">
             <section><img :src="user.avatar" alt=""></section>
@@ -47,7 +46,6 @@
 <script>
 import { Calendar,Datetime } from 'vux'
 import { TransferDom, Actionsheet, Group, XSwitch, Toast } from 'vux'
-import header from '../../components/header'
 	export default {
 		name: "loginpassword-item",
         data(){
@@ -58,7 +56,6 @@ import header from '../../components/header'
             }
         },
         components: {
-            'header-item': header,
             Calendar,Actionsheet,
             Group,
             XSwitch,
@@ -77,7 +74,7 @@ import header from '../../components/header'
         },
         created(){
             document.title = '会员信息'
-
+            
             this.$nextTick(() => {
                 this.list.name = this.user.name
                 this.list.birthday = this.user.birthday != '' ? this.user.birthday.substring(0,10) : ''

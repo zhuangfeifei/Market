@@ -5,7 +5,7 @@
             <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: list.tabIndex == index}"><span>{{item}}</span><section v-show="list.tabIndex == index"></section></div>
         </nav>
 
-        <div v-if="true" class="CouponAll_">
+        <div v-if="false" class="CouponAll_">
             <van-row v-if="list.tabIndex == 0" class="CouponAll_list_Cash" v-for="(item,index) in 3" :key="index">
                 <van-col span="16" class="CouponAll_list_Cash_title"><h4>80元抵扣100元</h4><h5>周一至周日午餐可用</h5><p>长期有效</p></van-col>
                 <van-col span="8" class="CouponAll_list_Cash_ammont"><div>¥80抢购</div></van-col>

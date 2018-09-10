@@ -260,7 +260,7 @@ const actions = {
         axios.api.post('/shops/api/groupOrder/pay', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             orderId: list.orderId, payType: list.payType, payPwd: list.payPwd }) )
         .then(res => {
-            // console.log(res.data)
+            console.log(res.data)
             if(res.data.code == 200) {
                 if(list.payType === 3){
                     Toast.success('支付完成！')
@@ -273,15 +273,15 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    wsPay(data){   // 微信支付
+    wsPay({}, list){   // 微信支付
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
-                "appId": data.appid,     //公众号名称，由商户传入     
-                "timeStamp": data.timestamp,         //时间戳，自1970年以来的秒数     
-                "nonceStr": data.noncestr, //随机串     
-                "package": data.package,
-                "signType": 'MD5',         //微信签名方式     
-                "paySign": data.sign //微信签名 
+                "appId": list.appId,     //公众号名称，由商户传入     
+                "timeStamp": list.timestamp ,         //时间戳，自1970年以来的秒数     
+                "nonceStr": list.nonce, //随机串     
+                "package": list.packageName,
+                "signType": list.signType,         //微信签名方式     
+                "paySign": list.signature //微信签名 
             },
             (res) => {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
@@ -490,11 +490,14 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    getJFIllege({commit}){   // 获取积分规则
-        axios.api.post('/shops/api/card/getJFIllege')
+    getJFIllege({commit}){   // 获取积分和会员卡规则
+        axios.api.post('/shops/api/card/getIllege')
         .then(res => {
             // console.log(res.data)
-            if(res.data.code == 200) commit('GET_JFILLEGE', res.data.data)
+            if(res.data.code == 200) {
+                commit('GET_JFILLEGE', res.data.data)
+                commit('HTML',res.data.data.equity)
+            }
         })
         .catch(err => console.log(err))
     },

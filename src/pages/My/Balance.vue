@@ -5,7 +5,7 @@
         <div class="Balance">
             <div class="Balance_">
                 <p>当前余额</p><h4><span>¥ </span>{{user.wtCustomer.amount || 0}}</h4>
-                <router-link to="/Recharge"><div class="Balance_Recharge">充值</div></router-link>
+                <router-link to=""><div class="Balance_Recharge">充值</div></router-link>
             </div>
             <nav>
                 <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: list.tabIndex == index}"><span>{{item}}</span><section v-show="list.tabIndex == index"></section></div>
