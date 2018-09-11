@@ -3,7 +3,7 @@
 
         <van-swipe class="swipe" :autoplay="3000">
             <van-swipe-item v-for="(item, index) in carousel" :key="index">
-                <a :href="URL"><img :src="imgUrl + item.picture" /></a>
+                <a :href="item.url"><img :src="imgUrl + item.picture" /></a>
             </van-swipe-item>
         </van-swipe>
 
@@ -50,11 +50,7 @@
 export default {
     data() {
         return {
-            images: [
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531462002438&di=e061bf459cfedfddc668e4336da6ca46&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Da4742242da1373f0e13267dfcd772e97%2F8718367adab44aed5b4404ddb81c8701a18bfb85.jpg',
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
-            ],
-            scrollWatch: true,URL:'#/Crab'
+            scrollWatch: true,
         }
     },
     components: {
@@ -175,10 +171,12 @@ export default {
                     width: 100%; height: 100%;
                 }
                 div{
-                    width: 100%; height: 0.86rem; position: absolute; bottom: 0; left: 0; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7));
-                    text-shadow: 0.018rem 0.018rem 0.018rem black; line-height: 0.4rem; 
+                    width: 100%; max-height: 0.86rem; position: absolute; bottom: 0; left: 0; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7));
+                    text-shadow: 0.018rem 0.018rem 0.018rem black; line-height: 0.35rem; padding: 0 0.1rem 0.08rem 0.1rem;
                     overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
                     font-size: 0.28rem; font-family:PingFang-SC-Medium; font-weight: Medium;
+                    p{ overflow: hidden; }
+                    // writing-mode:vertical-lr;  文字旋转90度
                 }
             }
         }

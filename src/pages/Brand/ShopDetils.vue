@@ -128,7 +128,7 @@ import { setTimeout } from 'timers';
 
 <style lang="less" scoped>
 .ShopDetils{
-    width: 100%; font-size: 0.3rem; padding-bottom: 1rem;
+    width: 100%; font-size: 0.3rem;
 }
 
 *{

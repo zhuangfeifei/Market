@@ -1,7 +1,7 @@
 <template>
     <div id="card" v-if="user.wtCustomer">
 
-        <div v-if="user.wtCustomer.phonenumber" class="card">
+        <div class="card">
             <div class="card_vip">
                 <img class="vipend" src="../../assets/img/vipend.png" alt="">
                 <img class="qrcode" v-if="user.wtCustomer.phonenumber" @click="qrcodes" src="../../assets/img/qrcode.png" alt="">

@@ -1,25 +1,28 @@
 <template>
-    <div id="GroupPurchaseOrder">
+    <div id="CommonOrder">
 
         <nav>
             <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: list.tabIndex == index}"><span>{{item}}</span><section v-show="list.tabIndex == index"></section></div>
         </nav>
 
-        <div v-if="false" class="GroupPurchaseOrders">
-            <!-- <div class="GroupPurchaseOrder_list" @click="detils(item.order_id)" v-for="(item,index) in getHistoryGroupOrder" :key="index">
-                <div class="GroupPurchaseOrder_num"><span>订单编号：{{item.order_num}}</span><span v-if="item.order_status === '1'">已完成</span><span v-else>待付款</span></div>
-                <div class="GroupPurchaseOrder_content">
-                    <div class="GroupPurchaseOrder_content_logo"><img :src="imgUrl + item.thumbnail_pic" alt=""></div>
-                    <div class="GroupPurchaseOrder_content_">
-                        <p>{{item.group_name}}</p>
-                        <p>数量：1</p>
-                        <p>实付款：{{item.amount}}元</p>
-                    </div>
+        <div v-if="false" class="CommonOrders">
+            <div class="CommonOrder_list" @click="detils(item.order_id)" v-for="(item,index) in 2" :key="index">
+                <div class="CommonOrder_num"><span>订单编号：12312312</span><span v-if="item.order_status === '1'">已完成</span><span v-else>待付款</span></div>
+                <div class="CommonOrder_content">
+                    <h4>潮宏基珠宝旗舰店</h4>
+                    <van-row>
+                        <van-col span="6"><img :src="images[1]" alt=""></van-col>
+                        <van-col span="18">
+                            <p class="CommonOrder_content_title">CHJ/潮宏基滴恋 18K钻石项链玫瑰阿大阿斯顿</p>
+                            <p class="CommonOrder_content_Specifications">规格：白K 约0.03t，约1克，链长约40cm尾链</p>
+                            <p class="CommonOrder_content_num"><span>×1</span><span>3000元</span></p>
+                        </van-col>
+                    </van-row>
                 </div>
-                <div class="GroupPurchaseOrder_date">
-                    <span>{{item.order_time}}</span><div v-if="item.order_status === '0'">付款</div>
+                <div class="CommonOrder_date">
+                    <span>2018.02.28  12:28</span><div v-if="item.order_status === '0'">付款</div>
                 </div>
-            </div> -->
+            </div>
         </div>
 
         <div v-else class="nos"><img src="../../assets/img/noOrder.png" alt=""><p>您目前还没有任何订单哦~</p></div>
@@ -98,7 +101,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-    #GroupPurchaseOrder{
+    #CommonOrder{
         width: 100%; min-height: 100vh; background:rgba(232,232,232,1); padding-top: calc(0.76rem - 0.2rem); font-size: 0.3rem;
     }
 
@@ -129,35 +132,33 @@ export default {
     }
 
 
-    .GroupPurchaseOrders{
+    .row{
+        overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1;
+    }
+    .CommonOrders{
         width: 100%;
-        .GroupPurchaseOrder_list{
-            width: 100%; height: 3.43rem; background-color: white; margin-top: 0.2rem;
-            .GroupPurchaseOrder_num{
+        .CommonOrder_list{
+            width: 100%; height: 4.8rem; background-color: white; margin-top: 0.2rem;
+            .CommonOrder_num{
                 width: 100%; height: 0.63rem; line-height: 0.63rem; padding: 0 0.4rem; font-size: 0.24rem; .font1; color:rgba(43,43,43,1);
                 span:nth-child(2){ float: right; color:rgba(255,139,75,1); }
             }
-            .GroupPurchaseOrder_content{
-                width: 100%; height: 1.8rem; background-color: rgba(247,247,247,1); display: flex; padding: 0.3rem 0.4rem;
-                .GroupPurchaseOrder_content_logo{
-                    width: 1.2rem; height: 1.2rem;
-                    img{ width: 100%; height: 100%; border-radius: 0.1rem; }
+            .CommonOrder_content{
+                width: 100%; height: 2.29rem; background-color: rgba(247,247,247,1); padding: 0.3rem 0.4rem 0 0.4rem;
+                & h4{ color:rgba(43,43,43,1); .font3; line-height: 0.29rem; margin-bottom: 0.3rem; }
+                img{ width: 1.2rem; height: 1.2rem; border-radius: 0.1rem; }
+                .CommonOrder_content_title{
+                    display: inline-block; width: 100%; height: 0.29rem; line-height: 0.29rem; .font1; .row; color:rgba(43,43,43,1);
                 }
-                .GroupPurchaseOrder_content_{
-                    width: calc(100% - 0.49rem - 0.8rem); height: 100%; margin-left: 0.49rem;
-                    p:nth-child(1){ 
-                        overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; 
-                        color:rgba(43,43,43,1); .font3;
-                    }
-                    p:nth-child(2){ 
-                        color:rgba(128,128,128,1); font-size: 0.24rem; line-height: 0.4rem; .font2;
-                    }
-                    p:nth-child(2){ 
-                        color:rgba(75,75,75,1); .font2; font-size: 0.28rem;
-                    }
+                .CommonOrder_content_Specifications{
+                    display: inline-block; width: 100%; height: 0.6rem; line-height: 0.6rem; .font2; .row; color:rgba(128,128,128,1); font-size: 0.24rem;
+                }
+                .CommonOrder_content_num{
+                    font-size: 0.24rem; color:rgba(75,75,75,1); .font1;
+                    & span:nth-child(2){ .font2; color:rgba(43,43,43,1); font-size: 0.3rem; float: right; line-height: 0.38rem; }
                 }
             }
-            .GroupPurchaseOrder_date{
+            .CommonOrder_date{
                 width: 100%; height: 1rem; line-height: 1rem; color:rgba(128,128,128,1); font-size: 0.24rem;
                 display: flex; justify-content: space-between; padding: 0 0.4rem;
                 div{ 

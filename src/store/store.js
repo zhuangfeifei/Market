@@ -260,32 +260,34 @@ const actions = {
         axios.api.post('/shops/api/groupOrder/pay', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             orderId: list.orderId, payType: list.payType, payPwd: list.payPwd }) )
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data.code == 200) {
                 if(list.payType === 3){
                     Toast.success('支付完成！')
-                    var lists = { orderIds: list.orderId, status: 1 }
+                    let lists = { orderIds: list.orderId, status: 1 }
                     dispatch('getHistoryGroupOrderDetail', lists)
                 }else{
-                    dispatch('wsPay', res.data.data)
+                    let order_list = { orderIds: list.orderId, status: 1, result: res.data.data }
+                    dispatch('wsPay', order_list)
                 }
             }
         })
         .catch(err => console.log(err))
     },
-    wsPay({}, list){   // 微信支付
+    wsPay({commit,dispatch}, list){   // 微信支付
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
-                "appId": list.appId,     //公众号名称，由商户传入     
-                "timeStamp": list.timestamp ,         //时间戳，自1970年以来的秒数     
-                "nonceStr": list.nonce, //随机串     
-                "package": list.packageName,
-                "signType": list.signType,         //微信签名方式     
-                "paySign": list.signature //微信签名 
+                "appId": list.result.appId,     //公众号名称，由商户传入     
+                "timeStamp": list.result.timestamp ,         //时间戳，自1970年以来的秒数     
+                "nonceStr": list.result.nonce, //随机串     
+                "package": list.result.packageName,
+                "signType": list.result.signType,         //微信签名方式     
+                "paySign": list.result.signature //微信签名 
             },
             (res) => {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
-                    this.$router.replace({ path: 'GroupPurchaseOrder' })
+                    commit('SET_PAY', false)
+                    dispatch('getHistoryGroupOrderDetail', list)
                 } else {
                     if (res.err_msg != 'get_brand_wcpay_request:cancel') {
                         Toast.fail(res.err_msg)
