@@ -32,6 +32,7 @@ const state = {
     getIntegralHis: '',    // 获取积分记录 获取积分规则
     getJFIllege: '',    // 获取积分规则
     groupList: '',    // 获取商家团购卷列表
+    groupListDetail: '',    // 获取商家团购卷列表详情
     preferentialList: '',    // 获取商家优惠活动列表
     order: '',    // 订单信息
     getBalance:'', // 获取余额
@@ -100,6 +101,9 @@ const mutations = {
     },
     [types.GROUP_LIST](state){
         state.groupList = Util.getLocal('groupList')
+    },
+    [types.GROUP_LISTDETAIL](state){
+        state.groupListDetail = Util.getLocal('groupListDetail')
     },
     [types.PREFERENTIAL_LIST](state){
         state.preferentialList = Util.getLocal('preferentialList')
@@ -215,6 +219,18 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
+    groupListDetail({commit,state}, groupId){   // 获取商家团购卷列表详情
+        axios.api.post('/shops/api/groupOrder/groupListDetail', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
+            groupId:groupId }) )
+        .then(res => {
+            // console.log(res.data)   
+            if(res.data.code == 200) {
+                Util.setLocal(res.data.data[0], 'groupListDetail')
+                commit('GROUP_LISTDETAIL')
+            }
+        })
+        .catch(err => console.log(err))
+    },
     addGroupOrder({state}, list){   // 添加团购订单
         axios.api.post('/shops/api/groupOrder/addGroupOrder', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             shopId: list.shop_id, groupType: list.group_type, groupName: list.group_name, amount: list.present_price, groupId: list.id, roleType: list.role_type }) )
@@ -257,10 +273,11 @@ const actions = {
         .catch(err => console.log(err))
     },
     pay({state,dispatch}, list){   // 团购订单支付
+        console.log(list)
         axios.api.post('/shops/api/groupOrder/pay', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
-            orderId: list.orderId, payType: list.payType, payPwd: list.payPwd }) )
+            orderId: list.orderId, payType: list.payType, payPwd: list.payPwd, yueAmount: list.yueAmount, wxAmount: list.wxAmount }) )
         .then(res => {
-            // console.log(res.data)
+            console.log(res.data)
             if(res.data.code == 200) {
                 if(list.payType === 3){
                     Toast.success('支付完成！')
@@ -563,7 +580,7 @@ const actions = {
     promotionList({dispatch}, list){   // 获取大闸蟹列表
         axios.api.post('/shops/api/promotion/promotionList', $.param({ current: list.current, limit: list.limit }) )
         .then(res => {
-            // console.log(res.data)
+            console.log(res.data)
             if(res.data.code == 200) {
                 // Util.setLocal(res.data.data[0], 'promotionList')
                 // commit('SHOP_DETAIL')
@@ -575,7 +592,7 @@ const actions = {
     crabgroupList({commit}, list){   // 获取大闸蟹列表
         axios.api.post('/shops/api/promotion/groupList', $.param({ promotionId: list.id, current: list.list.current, limit: list.list.limit }) )
         .then(res => {
-            // console.log(res.data)
+            console.log(res.data)
             if(res.data.code == 200) {
                 // Util.setLocal(res.data.data[0], 'promotionList')
                 commit('GETCRABGROUPLIST', res.data.data)

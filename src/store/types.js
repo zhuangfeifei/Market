@@ -29,6 +29,8 @@ export const GET_JFILLEGE = 'GET_JFILLEGE'  // 获取积分规则
 
 export const GROUP_LIST = 'GROUP_LIST'  // 获取商家团购卷列表
 
+export const GROUP_LISTDETAIL = 'GROUP_LISTDETAIL'  // 获取商家团购卷列表详情
+
 export const PREFERENTIAL_LIST = 'PREFERENTIAL_LIST'  // 获取商家优惠活动列表
 
 export const ORDER = 'ORDER'  // 订单信息

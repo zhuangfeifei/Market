@@ -45,6 +45,7 @@ export default {
     },
     methods:{
         details(index){
+            this.$store.dispatch('groupListDetail', this.groupList[index].id)
             this.$router.push({path:"/VoucherDetails", query:{index:index}})
         },
     },

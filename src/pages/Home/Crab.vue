@@ -8,13 +8,13 @@
                 <div class="Crab_title"></div>
                 <div class="Crab_list" v-for="(item,index) in crabgroupList" :key="index">
                     <img class="Crab_list_logo" src="../../assets/img/CrabLogo.png" alt="">
-                    <img class="Crab_list_content" :src="imgUrl + item.thumbnail_pic" alt="">
+                    <img class="Crab_list_content" @click="details(index)" :src="imgUrl + item.thumbnail_pic" alt="">
                     <div class="Crab_list_ammont">
                         <span>库存：{{item.inventory}}</span>
                         <div @click="pay(index)" :class="{CrabNo:item.inventory == 0}">¥<span>{{item.present_price}}</span><span>{{item.inventory == 0 ? '已抢完' : '立即购买'}}</span></div>
                     </div>
                 </div>
-                <div class="Crab_footer"><span>注:</span><span>注意事项注意事项注意事项注意事项注意事项注意事项注意事项注意事项</span></div>
+                <div class="Crab_footer"><p>提货方式:</p><span>电话联系客服<br><a href='tel:0512-66831208'>0512-66831208</a>、<a href='tel:0512-66830887'>0512-66830887</a><br>周一至周五9点至17点半电话预约</span></div>
             </div>
         </div>
 
@@ -56,6 +56,10 @@ export default {
         // window.addEventListener('scroll', this.get)
     },
     methods:{
+        details(index){
+            this.$store.dispatch('groupListDetail', this.crabgroupList[index].id)
+            this.$router.push({path:"/VoucherDetails", query:{index:index}})
+        },
         pay(index){
             this.$toast.loading({
                 mask: true,
@@ -126,10 +130,10 @@ export default {
                 }
             }
             .Crab_footer{ 
-                width: 100%; position: absolute; bottom: 2.3rem; left: 0; padding: 0 1.3rem 0 1.4rem; color:rgba(255,255,255,1); line-height: 0.36rem;
+                width: 100%; position: absolute; bottom: 2rem; left: 0; padding: 0 1.3rem 0 1rem; color:rgba(255,255,255,1); line-height: 0.4rem;
                 text-indent: -0.6rem; .font2;
-                span:nth-child(1){ .font1; } 
-                span:nth-child(2){ padding-left: 0.23rem; } 
+                p{ .font1; margin-bottom: 0.1rem;} 
+                a{ text-decoration: underline; }
             }
         }
     }

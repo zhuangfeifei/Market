@@ -8,7 +8,7 @@
             <p v-if="order.verification_status == '1'" class="tip">订单已使用</p>
         </nav>
 
-        <div v-if="order" class="GroupPurchaseOrderDetils">
+        <div v-if="order != '' && user != ''" class="GroupPurchaseOrderDetils">
             <div class="GroupPurchaseOrderDetils_list">
                 <div class="GroupPurchaseOrderDetils_content">
                     <div class="GroupPurchaseOrderDetils_content_logo"><img :src="imgUrl + order.thumbnail_pic" alt=""></div>
@@ -23,8 +23,13 @@
             </div>
             <div class="GroupPurchaseOrderDetils_list_s">
                 <div class="GroupPurchaseOrderDetils_list_"><span>订单编号</span><span>{{order.order_num}}</span></div>
-                <div class="GroupPurchaseOrderDetils_list_ time"><span>下单时间</span><span>{{order.order_time}}</span></div>
+                <div class="GroupPurchaseOrderDetils_list_"><span>下单时间</span><span>{{order.order_time}}</span></div>
                 <div class="GroupPurchaseOrderDetils_list_"><span>订单金额</span><span class="amount">¥{{order.amount}}</span></div>
+                <div v-if="order.order_status != '1'" class="GroupPurchaseOrderDetils_list_">
+                    <span>当前余额 ( ¥{{checke_show ? user.wtCustomer.amount : user.wtCustomer.amount > order.amount ? (user.wtCustomer.amount - order.amount).toFixed(2) : 0 }} )</span>
+                    <img @click="change" class="Pay_checke" :src="checke_show ? img[0] : img[1]" alt=""><span @click="change" class="Pay_status">{{user.wtCustomer.amount > 0 ? '可用' : '不可用'}}</span>
+                </div>
+                <div v-if="order.order_status != '1'" class="GroupPurchaseOrderDetils_list_"><span>实际付款</span><span class="amount">¥{{ checke_show ? order.amount : user.wtCustomer.amount > order.amount ? 0 : (order.amount - user.wtCustomer.amount).toFixed(2) }}</span></div>
             </div>
             <div v-if="order.order_status == '1'" class="GroupPurchaseOrderDetils_code">
                 <div><span>兑换码</span><div><span>{{order.coupon_code}}</span><img v-if="order.verification_status == '1'" src="../../assets/img/fork.png" alt=""></div></div>
@@ -32,14 +37,12 @@
             </div>
         </div>
 
-        <!--<div v-else class="nos"><img src="../../assets/img/noOrder.png" alt=""><p>您目前还没有任何订单哦~</p></div>-->
-
 
         <div v-if="order.order_status == '0'" class="GroupPurchaseOrderDetils_footer">
             <div @click="cancel">取消订单</div><div @click="isPay">确认付款</div>
         </div>
 
-        <pay-item v-if="isPays"></pay-item>
+        <pay-item v-if="isPays" :isWx="checke_show"></pay-item>
         
     </div>
 </template>
@@ -50,6 +53,8 @@ export default {
     data() {
         return {
             active: 0, title:['全部','待付款','已完成'], data:'1',
+            img:[require('../../assets/img/checke.png'),require('../../assets/img/checked.png')],
+            checke_show:true,
             status:[require('../../assets/img/notUsed.png'),require('../../assets/img/Undue.png'),require('../../assets/img/Expired.png')],
             list:{ limit:5, current:1, isPage: false, tabIndex: 0 },order_id:''
         }
@@ -60,6 +65,7 @@ export default {
     beforeCreate(){
         var list = { orderIds: this.$route.query.order_id, status: 1 }
         this.$store.dispatch('getHistoryGroupOrderDetail', list)
+        this.$store.dispatch('user')
     },
     computed:{
         imgUrl(){
@@ -67,6 +73,9 @@ export default {
         },
         order(){
             return this.$store.state.order
+        },
+        user(){
+            return this.$store.state.user
         },
         isPays(){
             return this.$store.state.isPay
@@ -78,12 +87,40 @@ export default {
         document.title = '订单详情'
 
         this.order_id = this.$route.query.order_id
+
+        this.$nextTick(()=>{
+
+        })
     },
     activated(){
         // console.log('hah')
     },
     methods:{
+        change(){
+            this.user.wtCustomer.amount > 0 ? this.checke_show = !this.checke_show : ''
+        },
         isPay(){
+            if(!this.checke_show){
+                // if(this.user.wtCustomer.amount < this.order.amount){
+                //     this.$dialog.alert({
+                //         title: '余额不足！',
+                //     }).then(() => {
+                        
+                //     })
+                //     return
+                // }
+                if(this.user.wtCustomer.payPassword == '' || this.user.wtCustomer.payPassword == null){
+                    this.$dialog.confirm({
+                        title: '您还没有设置密码！',
+                        confirmButtonText:'去设置'
+                    }).then(() => {
+                        this.$router.push({path:'/Setpassword'})
+                    }).catch(()=>{
+
+                    });
+                    return
+                }
+            }
             this.$store.commit('SET_PAY', true)
         },
         cancel(){
@@ -150,18 +187,21 @@ export default {
             .GroupPurchaseOrderDetils_date,.GroupPurchaseOrderDetils_shop{
                 width: 100%; height: 0.88rem; line-height: 0.88rem; .font1;
                 border-top: 0.02rem dashed rgba(206,206,206,1); border-bottom: 0.02rem dashed rgba(206,206,206,1);
-                span:nth-child(2){ color: rgba(75,75,75,1); font-size: 0.28rem; margin-left: 0.81rem; .font2; }
+                span:nth-child(2){ color: rgba(75,75,75,1); font-size: 0.28rem; margin-left: 0.7rem; .font2; }
             }
-            .GroupPurchaseOrderDetils_shop{ border: 0; span:nth-child(2){ margin-left: 0.5rem; } }
+            .GroupPurchaseOrderDetils_shop{ border: 0; span:nth-child(2){ margin-left: 0.45rem; } }
         }
         .GroupPurchaseOrderDetils_list_s{
-            width: 100%; height: 2.68rem; background-color: white; padding: 0 0.4rem;
+            width: 100%; background-color: white; padding: 0 0.4rem;
             .GroupPurchaseOrderDetils_list_{
                 width: 100%; height: 0.88rem; line-height: 0.88rem; .font1;
                 span:nth-child(2){ color: rgba(75,75,75,1); font-size: 0.28rem; margin-left: 0.51rem; .font2; }
             }
-            .time{ border-top: 0.02rem dashed rgba(206,206,206,1); border-bottom: 0.02rem dashed rgba(206,206,206,1); }
+            & div{  border-bottom: 0.02rem dashed rgba(206,206,206,1); }
+            & div:last-child{ border: 0; }
             .amount{ color: rgba(234,22,22,1)!important; font-size: 0.36rem!important; .font1!important; }
+            .Pay_checke{ width: 0.3rem; height: 0.3rem; float: right; margin: 0.28rem 0.1rem 0 0.1rem; }
+            .Pay_status{ float: right; color: rgba(75,75,75,1); font-size: 0.28rem; .font2; }
         }
         .GroupPurchaseOrderDetils_code{
             width: 100%; height: 5.5rem; padding: 0.2rem 0.4rem; background-color: white; margin-top: 0.2rem; position: relative;

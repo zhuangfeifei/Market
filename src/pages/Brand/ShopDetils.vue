@@ -14,7 +14,7 @@
                 <div><h4>{{shopDetail.shopName}}</h4><p>{{shopDetail.categoryName}}</p></div>
             </div>
             <div class="ShopDetils_nav_time"><img src="../../assets/img/clock.png" alt=""><span>营业时间：{{shopDetail.START_TIME}}~{{shopDetail.END_TIME}}</span></div>
-            <div class="ShopDetils_nav_address"><img src="../../assets/img/address.png" alt=""><div @click="map">{{shopDetail.ADDRESS}}</div><a :href="'tel:'+ shopDetail.PHONE"><img class="ShopDetils_nav_phone" src="../../assets/img/phone.png" alt=""></a></div>
+            <div class="ShopDetils_nav_address"><img src="../../assets/img/address.png" alt=""><div @click="map">{{shopDetail.ADDRESS}}</div><a :href="'tel:'+ (shopDetail.PHONE || shopDetail.FIX_PHONE)"><img class="ShopDetils_nav_phone" src="../../assets/img/phone.png" alt=""></a></div>
         </div>
 
         <div class="ShopDetils_Recommend">
@@ -97,9 +97,6 @@ import { setTimeout } from 'timers';
         methods: {
             map(){
                 window.location.href = 'https://uri.amap.com/navigation?from=&to='+this.shopDetail.LNG+','+this.shopDetail.LAT+','+this.shopDetail.ADDRESS+'&mode=walk&policy=1&src=mypage&coordinate=gaode&callnative=0'
-            },
-            details(index){
-                this.$router.push({path:"/VoucherDetails", query:{index:index}})
             },
             tab(index){
                 this.tabIndex = index

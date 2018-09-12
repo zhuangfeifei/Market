@@ -1,22 +1,22 @@
 <template>
-    <div id="VoucherDetails" v-if="groupList">
+    <div id="VoucherDetails" v-if="groupListDetail">
 
-        <div class="logo"><img :src="imgUrl + groupList.thumbnail_pic" alt=""></div>
+        <div class="logo"><img :src="imgUrl + groupListDetail.thumbnail_pic" alt=""></div>
         <div class="VoucherDetails">
             <div class="detail">
-                <h4>{{groupList.group_name}}</h4>
-                <p><span>广场指定餐饮商户{{groupList.group_name}}</span><span>库存{{groupList.inventory}}</span></p>
-                <p><span>{{groupList.present_price}}元</span><span>/价值{{groupList.discount}}元</span></p>
-                <p v-if="groupList.period_validity == 0">有效期：长期有效</p>
-                <p v-else>有效期：{{groupList.start_time}} ~ {{groupList.end_time}}</p>
+                <h4>{{groupListDetail.group_name}}</h4>
+                <p><span>广场指定餐饮商户{{groupListDetail.group_name}}</span><span>库存{{groupListDetail.inventory}}</span></p>
+                <p><span>{{groupListDetail.present_price}}元</span><span>/价值{{groupListDetail.discount}}元</span></p>
+                <p v-if="groupListDetail.period_validity == 0">有效期：长期有效</p>
+                <p v-else>有效期：{{groupListDetail.start_time}} ~ {{groupListDetail.end_time}}</p>
             </div>
             <div class="VoucherDetails_business">
-                <div class="VoucherDetails_business_logo"><img :src="imgUrl + shopDetail.logo_pic" alt=""></div>
+                <div class="VoucherDetails_business_logo"><img :src="imgUrl + groupListDetail.logo_pic" alt=""></div>
                 <div class="VoucherDetails_business_contact">
-                    <p>{{groupList.update_man}}</p>
-                    <p><span class="VoucherDetails_business_address">{{shopDetail.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
+                    <p>{{groupListDetail.shopName}}</p>
+                    <p><span class="VoucherDetails_business_address">{{groupListDetail.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
                     <div>
-                        <a :href="'tel:' + shopDetail.PHONE"><div class="contact">联系门店</div></a><div class="reach" @click="map">到这去</div>
+                        <a :href="'tel:' + (groupListDetail.PHONE || groupListDetail.FIX_PHONE)"><div class="contact">联系门店</div></a><div class="reach" @click="map">到这去</div>
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
         </div>
 
         <div class="footers">
-            <button @click="pay">¥{{groupList.present_price}}立即购买</button>
+            <button @click="pay">¥{{groupListDetail.present_price}}立即购买</button>
         </div>
 
 
@@ -57,18 +57,14 @@ export default {
         imgUrl() {
             return this.$store.state.imgUrl
         },
-        groupList() {
-            if(this.$store.state.groupList == ''){
-                this.$store.commit('GROUP_LIST')
-                this.$store.commit('SHOP_DETAIL')
+        groupListDetail() {
+            if(this.$store.state.groupListDetail == ''){
+                this.$store.commit('GROUP_LISTDETAIL')
             }
-            return this.$store.state.groupList[this.$route.query.index]
-        },
-        shopDetail(){
-            return this.$store.state.shopDetail
+            return this.$store.state.groupListDetail
         },
         htmls(){
-            this.$store.commit('HTML', this.groupList.description)
+            this.$store.commit('HTML', this.groupListDetail.description)
             return this.$store.getters.htmls
         },
     },
@@ -83,7 +79,7 @@ export default {
     },
     methods:{
         map(){
-            window.location.href = 'https://uri.amap.com/navigation?from=&to='+this.shopDetail.LNG+','+this.shopDetail.LAT+','+this.shopDetail.ADDRESS+'&mode=walk&policy=1&src=mypage&coordinate=gaode&callnative=0'
+            window.location.href = 'https://uri.amap.com/navigation?from=&to='+this.groupListDetail.LNG+','+this.groupListDetail.LAT+','+this.groupListDetail.ADDRESS+'&mode=walk&policy=1&src=mypage&coordinate=gaode&callnative=0'
         },
         pay(){
             // var list = { shopId: groupList.shop_id, groupType: groupList.groupType, groupName: groupList.group_name, amount: groupList.discount, groupId: groupList.id }
@@ -92,7 +88,7 @@ export default {
                 message: '加载中...',
                 duration: 0
             })
-            this.$store.dispatch('addGroupOrder', this.groupList)
+            this.$store.dispatch('addGroupOrder', this.groupListDetail)
         },
     },
 }
