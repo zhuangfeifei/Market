@@ -39,7 +39,6 @@ export default {
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
         window.document.title = '支付订单'
-        console.log(this.isWx)
     },
     computed:{
         order(){
@@ -62,14 +61,14 @@ export default {
         onInput(key) {
             this.value = (this.value + key).slice(0, 6)
             if(this.value.length == 6){
+                this.$store.commit('SET_PAY', false)
                 if(!this.isWx && this.user.wtCustomer.amount > this.order.amount){
-                    this.$store.commit('SET_PAY', false)
                     this.$toast.loading({
                         mask: true,
                         message: '支付中...',
                         duration: 0
                     })
-                    var list = { orderId: this.order.order_id, payType: 3, payPwd: this.value }
+                    var list = { orderId: this.order.order_id, payType: 3, payPwd: this.value, yueAmount: this.order.amount, wxAmount: this.order.amount, }
                     this.$store.dispatch('pay', list)
                 }else{
                     this.wxPay()
@@ -80,7 +79,7 @@ export default {
             this.value = this.value.slice(0, this.value.length - 1)
         },
         wxPay(){
-            this.onBridgeReady();
+            this.$store.commit('SET_PAY', false)
             if (typeof WeixinJSBridge == "undefined"){
                 if( document.addEventListener ){
                     document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
@@ -93,8 +92,8 @@ export default {
             }
         },
         onBridgeReady(){
-            var list = { orderId: this.order.order_id, payType: 2 }
-            var lists = { orderId: this.order.order_id, payType: 4, payPwd: this.value, yueAmount: this.user.wtCustomer.amount, wxAmount: this.order.amount - this.user.wtCustomer.amount }
+            var list = { orderId: this.order.order_id, payType: 2, yueAmount: this.order.amount, wxAmount: this.order.amount }
+            var lists = { orderId: this.order.order_id, payType: 4, payPwd: this.value, yueAmount: this.user.wtCustomer.amount, wxAmount: parseFloat((this.order.amount - this.user.wtCustomer.amount).toFixed(2)) }
             this.isWx ? this.$store.dispatch('pay', list) : this.$store.dispatch('pay', lists)
         }
     }

@@ -273,11 +273,10 @@ const actions = {
         .catch(err => console.log(err))
     },
     pay({state,dispatch}, list){   // 团购订单支付
-        console.log(list)
         axios.api.post('/shops/api/groupOrder/pay', $.param({ access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.unionId, 
             orderId: list.orderId, payType: list.payType, payPwd: list.payPwd, yueAmount: list.yueAmount, wxAmount: list.wxAmount }) )
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data.code == 200) {
                 if(list.payType === 3){
                     Toast.success('支付完成！')
@@ -291,7 +290,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    wsPay({commit,dispatch}, list){   // 微信支付
+    wsPay({dispatch}, list){   // 微信支付
         WeixinJSBridge.invoke(
             'getBrandWCPayRequest', {
                 "appId": list.result.appId,     //公众号名称，由商户传入     
@@ -303,7 +302,6 @@ const actions = {
             },
             (res) => {
                 if (res.err_msg == "get_brand_wcpay_request:ok") {// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
-                    commit('SET_PAY', false)
                     dispatch('getHistoryGroupOrderDetail', list)
                 } else {
                     if (res.err_msg != 'get_brand_wcpay_request:cancel') {

@@ -133,7 +133,7 @@ export default {
                 width: 100%; position: absolute; bottom: 2rem; left: 0; padding: 0 1.3rem 0 1rem; color:rgba(255,255,255,1); line-height: 0.4rem;
                 text-indent: -0.6rem; .font2;
                 p{ .font1; margin-bottom: 0.1rem;} 
-                a{ text-decoration: underline; }
+                a{ text-decoration: underline; color: rgba(255,139,75,1); }
             }
         }
     }
