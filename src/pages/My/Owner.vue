@@ -12,13 +12,13 @@
                         <van-col span="8">业主姓名</van-col><van-col span="16"><span>{{basicinformation.wtCustomer.name}}</span></van-col>
                     </van-row>
                     <van-row class="Owner_information_Basics_">
-                        <van-col span="8">联系方式</van-col><van-col span="16"><span>{{basicinformation.wtCustomer.phonenumber}}</span></van-col>
+                        <van-col span="8">联系方式</van-col><van-col span="16"><span v-if="basicinformation.wtCustomer.phonenumber">{{basicinformation.wtCustomer.phonenumber | filter}}</span></van-col>
                     </van-row>
                     <van-row class="Owner_information_Basics_">
                         <van-col span="8">证件类型</van-col><van-col span="16"><span>{{documentType[basicinformation.wtCustomer.identType]}}</span></van-col>
                     </van-row>
                     <van-row class="Owner_information_Basics_">
-                        <van-col span="8">证件号</van-col><van-col span="16"><span>{{basicinformation.wtCustomer.identnumber}}</span></van-col>
+                        <van-col span="8">证件号</van-col><van-col span="16"><span v-if="basicinformation.wtCustomer.identnumber">{{basicinformation.wtCustomer.identnumber | filter}}</span></van-col>
                     </van-row>
                     <van-row class="Owner_information_Basics_">
                         <van-col span="8">权益人</van-col><van-col span="16"><span class="isOwner">{{basicinformation.wtCustomer.isRepresentative == 1 ? '是' : '否'}}</span></van-col>
@@ -86,6 +86,11 @@
                 this.show = !this.show
             },
         },
+        filters:{
+            filter(val){
+                return val.substring(0,2) + '****' + val.substring(val.length - 3, val.length)
+            }
+        }
 	}
 </script>
 

@@ -88,8 +88,18 @@ export default {
 
         this.order_id = this.$route.query.order_id
 
-        this.$nextTick(()=>{
 
+        this.$nextTick(()=>{
+            if(order.order_status == '1' && order.verification_status != '1'){
+                this.$dialog.confirm({
+                    title: '提货热线！',
+                    confirmButtonText:'拨打'
+                }).then(() => {
+                    window.location.href = 'tel:0512-66830887'
+                }).catch(()=>{
+
+                });
+            }
         })
     },
     activated(){

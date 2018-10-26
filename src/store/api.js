@@ -4,7 +4,7 @@ import router from '../router'
 import { Toast, Dialog } from 'vant'
 
 
-let localhostDev = false
+let localhostDev = true
 let urls = localhostDev ? '/market' : 'http://www.homeamc.cn'
 
 const api = axios.create()
@@ -29,6 +29,7 @@ api.interceptors.response.use(function (response) {
         title: '您还没有绑定会员卡！',
         confirmButtonText:'去绑定'
     }).then(() => {
+        Toast.clear()
         router.push({path:'/Opencard'})
     }).catch(()=>{
        Toast.clear()

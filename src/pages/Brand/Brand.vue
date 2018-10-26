@@ -6,7 +6,7 @@
             <div @click="focus"><img src="../../assets/img/search.png" alt=""></div>
         </nav>
         <nav v-else class="search">
-            <div><input id="name" type="text" autofocus="autofocus" @focus="focus($event)" @blur="blur($event)" ref="input"><img @click="search" src="../../assets/img/search.png" alt=""></div>
+            <div><input id="name" type="text" v-model="list.shopName" autofocus="autofocus" @focus="focus($event)" @blur="blur($event)" ref="input"><img @click="search" src="../../assets/img/search.png" alt=""></div>
         </nav>
         <div v-show="change" class="changeList">
             <div v-show="changes == 0"><p v-for="(item,index) in List.projects" @click="getContact(index)" :class="{actives: projectsNum == index}" :key="index">{{item.PROJECT_NAME}}</p></div>
@@ -15,34 +15,52 @@
             <div v-show="changes == 3"><p v-for="(item,index) in List.calssfiy" @click="calssfiy(index)" :class="{actives: calssfiyNum == index}" :key="index">{{item.categoryName}}</p></div>
         </div>
 
-        <div v-if="shopList.length > 0" class="Brand">
-            <div class="Brand_list" @click="detils(item.id)" v-for="(item,index) in shopList" :key="index">
-                <img :src="imgUrl + item.logo_pic" alt="">
-                <div class="Brand_content">
-                    <h3>{{item.shopName}}</h3>
-                    <p><span>{{item.categoryName}}</span><span class="Brand_name">{{item.floor}}-{{item.shopNum}}</span></p>
-                    <div>{{item.SHOP_DESCRIPTION}}</div>
+
+        <mescroll-vue class="BrandMescroll" ref="mescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
+            <div v-if="shopList.length > 0" class="Brand">
+                <div class="Brand_list" @click="detils(item.id)" v-for="(item,index) in shopList" :key="index">
+                    <img :src="imgUrl + item.logo_pic" alt="">
+                    <div class="Brand_content">
+                        <h3>{{item.shopName}}</h3>
+                        <p><span>{{item.categoryName}}</span><span class="Brand_name">{{item.floor}}-{{item.shopNum}}</span></p>
+                        <div>{{item.SHOP_DESCRIPTION}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div v-else class="no"><img src="../../assets/img/nohuo.png" alt=""></div>
+            
+            <div v-else class="no"><img src="../../assets/img/nohuo.png" alt=""></div>
+        </mescroll-vue>
 
 
     </div>
 </template>
 
 <script>
+import MescrollVue from 'mescroll.js/mescroll.vue'
 export default {
     data() {
         return {
             activeNames: ['项目','馆位','楼层','业态'], projectsNum:0, getContactListNum: -1,floorstNum:-1,calssfiyNum:-1,
             ishow:true,change:false,changes:-1, i:0,
-            list:{ categoryId:'', projectId:'', shopName:'', regionId:'', floorId:'', limit:10, current:1, sort:'', order:'', isPage:false }
+            list:{ categoryId:'', projectId:'', shopName:'', regionId:'', floorId:'', sort:'', order:'',  },
+            mescroll: null, mescrollDown:{}, 
+            mescrollUp: { 
+                isBounce: false,
+                callback: this.upCallback, 
+                noMoreSize: 10,
+                page: { num: 0, size: 10 },
+                htmlNodata: '<p class="upwarp-nodata">-- 没有更多了！ --</p>',
+                toTop: {
+					//回到顶部按钮
+					src: require("../../assets/img/totop.png"), //图片路径,默认null,支持网络图
+					offset: 500 //列表滚动1000px才显示回到顶部按钮
+				},
+            },
+            shopList:''
         }
     },
     components: {
-        
+        MescrollVue
     },
     beforeCreate(){
         
@@ -54,27 +72,28 @@ export default {
         List(){
             return this.$store.state.List
         },
-        shopList(){
-            return this.$store.state.shopList
-        },
         getContactList(){
             return this.$store.state.getContactList
         },
     },
     mounted(){
         // this.$nextTick(() => {this.$refs['input'].focus()})
-        this.$store.dispatch('shopList', this.list)
-        this.$store.commit('SET_PAGE', true)
-        window.addEventListener('scroll', this.handleScroll)
     },
     created(){
-        document.body.scrollTop = 0
-        document.documentElement.scrollTop = 0
         document.title = '品牌商家'
         this.$store.commit('ACTIVE', 1)
 
         
     },
+    beforeRouteEnter (to, from, next) { // 如果没有配置回到顶部按钮或isBounce,则beforeRouteEnter不用写
+		next(vm => {
+			vm.$refs.mescroll.beforeRouteEnter() // 进入路由时,滚动到原来的列表位置,恢复回到顶部按钮和isBounce的配置
+		})
+	},
+	beforeRouteLeave (to, from, next) { // 如果没有配置回到顶部按钮或isBounce,则beforeRouteLeave不用写
+		this.$refs.mescroll.beforeRouteLeave() // 退出路由时,记录列表滚动的位置,隐藏回到顶部按钮和isBounce的配置
+		next()
+	},
     methods:{
         changShow(index){
             this.i % 2 == 0 ? this.change = true : this.change = false
@@ -104,10 +123,7 @@ export default {
         func(){
             this.changes = -1  // 显示
             this.i++           // 再次点击关闭
-            this.list.current = 1   // 第一页
-            this.list.isPage = false  // 更新shop列表
-            this.$store.commit('SET_PAGE', true)
-            this.$store.dispatch('shopList', this.list)
+            this.mescroll.resetUpScroll()
         },
         focus(event) {
             // console.log(event)
@@ -124,35 +140,34 @@ export default {
             this.ishow = true
         },
         search(){  // 搜索
-            var list = { categoryId:'', projectId:'', shopName:$('#name').val(), regionId:'', floorId:'', limit:5, current:1, sort:'', order:'', isPage:false }
-            this.$store.dispatch('shopList', list)
+            this.mescroll.resetUpScroll()
         },
         detils(shopid){
             this.$router.push({path:'/ShopDetils',query:{ shopid: shopid }})
         },
-        handleScroll(){
-            let scrollTop = $(window).scrollTop()
-            let scrollHeight = $(document).height()
-            let windowHeight = $(window).height()
-            if (scrollTop + windowHeight === scrollHeight) {
-                this.list.current ++
-                this.list.isPage = true
-                if(this.$store.state.isPage) {
-                    this.$toast.loading({
-                        duration: 1000,       // 持续展示 toast
-                        mask: true,
-                        message: '加载中...'
-                    });
-                    this.$store.dispatch('shopList', this.list)
-                }else{
-                    this.$toast('没有更多了！')
+        mescrollInit (mescroll) {
+            this.mescroll = mescroll
+        },
+        upCallback (page, mescroll) {
+            this.$axios.api.post('/shops/api/shop/list', $.param({ categoryId: this.list.categoryId, projectId: this.list.projectId, shopName: this.list.shopName, regionId: this.list.regionId, 
+                floorId: this.list.floorId, limit: page.size, current: page.num, sort: this.list.sort, order: this.list.order }) )
+            .then(res => {
+                // console.log(res.data)
+                if(res.data.code == 200) {
+                    this.$store.dispatch('getContactList', this.list.projectId ? this.list.projectId : res.data.data.projects[0].ID)
+                    this.$store.commit('LIST', res.data.data)
+                    let arr = res.data.data.shops
+                    if (page.num === 1) this.shopList = []
+                    this.shopList = this.shopList.concat(arr)
+                    this.$nextTick(() => {
+                        res.data.data.shops.length == 0 ? mescroll.endSuccess(this.shopList.length, false) : mescroll.endSuccess(this.shopList.length)
+                    })
                 }
-            }
-        }
+            })
+            .catch(err => mescroll.endErr())
+        },
     },
-    destroyed () {
-        window.removeEventListener('scroll', this.handleScroll)
-    }
+    
 }
 </script>
 
@@ -168,6 +183,13 @@ export default {
     .font1{ font-family:PingFang-SC-Medium; font-weight: Medium; }
     .font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
     .font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
+
+    .BrandMescroll {
+        position: fixed;
+        top: 1.03rem;
+        bottom: 0.8rem;
+        height: auto;
+    }
 
     .floor{
         width: 100%; height: 1.03rem; font-size: 0.3rem; display: flex; justify-content: space-around; background-color: white;
@@ -197,7 +219,7 @@ export default {
 
 
     .changeList{
-        width: 100%; color:rgba(68,68,68,1); font-size: 0.3rem;
+        width: 100%; color:rgba(68,68,68,1); font-size: 0.3rem; z-index: 10;
         position: fixed; top: 1.03rem; left: 0;
         div{
             width: 100%; height: 3.96rem; line-height: 0.6rem; background-color: rgba(232,232,232,1); padding: 0.1rem 0.4rem;

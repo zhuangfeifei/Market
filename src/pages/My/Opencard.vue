@@ -113,10 +113,10 @@
     line-height: 1.22rem; width: 100%; height: 1.22rem; font-size: 0.28rem; .font1; border-bottom: 0.01rem solid rgba(206,206,206,1);
 }
 #phone{
-    margin-left: 3vw; width: 59.5vw; height: 0.6rem; color: gray; border: none!important; line-height: 0.6rem;
+    margin-left: 3vw; width: 59.5vw; height: 0.6rem; color: gray; border: none!important; line-height: 0.6rem; background: none!important;
 }
 #yma{
-    margin-left: 3vw; width: 30vw; height: 0.6rem; color: gray; border: none!important; line-height: 0.6rem;
+    margin-left: 3vw; width: 30vw; height: 0.6rem; color: gray; border: none!important; line-height: 0.6rem; background: none!important;
 }
 input:-moz-placeholder{
     font-weight: 500!important;

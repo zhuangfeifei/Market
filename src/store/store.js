@@ -518,7 +518,7 @@ const actions = {
         })
         .catch(err => console.log(err))
     },
-    code(list){   // 获取验证码
+    code({}, list){   // 获取验证码      第一个参数不能为空
         axios.api.post('/puman/api/system/code', $.param({ phone: list.phones, msgType:3 }))
         .then(res => {
             // console.log(res.data)
@@ -578,7 +578,7 @@ const actions = {
     promotionList({dispatch}, list){   // 获取大闸蟹列表
         axios.api.post('/shops/api/promotion/promotionList', $.param({ current: list.current, limit: list.limit }) )
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data.code == 200) {
                 // Util.setLocal(res.data.data[0], 'promotionList')
                 // commit('SHOP_DETAIL')
@@ -590,7 +590,7 @@ const actions = {
     crabgroupList({commit}, list){   // 获取大闸蟹列表
         axios.api.post('/shops/api/promotion/groupList', $.param({ promotionId: list.id, current: list.list.current, limit: list.list.limit }) )
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data.code == 200) {
                 // Util.setLocal(res.data.data[0], 'promotionList')
                 commit('GETCRABGROUPLIST', res.data.data)

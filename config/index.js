@@ -12,8 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       "/market":{       
-        target:"http://192.168.1.95:8090",  
-        // target:"http://www.homeamc.cn",
+        // target:"http://192.168.1.50:8090",  
+        target:"http://www.homeamc.cn",
     		changeOrigin: true,
     		pathRewrite: {
           '^/market': ''
@@ -22,7 +22,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: '192.168.1.142', // can be overwritten by process.env.HOST
+    host: '192.168.1.53', // can be overwritten by process.env.HOST
     port: 8010, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

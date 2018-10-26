@@ -64,13 +64,13 @@ import header from '../../components/header'
             document.title = '会员积分'
             this.$store.commit('SET_PAGE', true)
             this.$store.dispatch('getIntegralHis', this.list)
-            window.addEventListener('scroll', this.handleScroll)
+            window.addEventListener('scroll', this.getIntegralHisGet)
         },
         methods: {
             class_change(){
                 this.show = !this.show
             },
-            handleScroll(){
+            getIntegralHisGet(){
                 let scrollTop = $(window).scrollTop()
                 let scrollHeight = $(document).height()
                 let windowHeight = $(window).height()
@@ -82,7 +82,7 @@ import header from '../../components/header'
             },
         },
         destroyed () {
-            window.removeEventListener('scroll', this.handleScroll)
+            window.removeEventListener('scroll', this.getIntegralHisGet)
         }
 	}
 </script>

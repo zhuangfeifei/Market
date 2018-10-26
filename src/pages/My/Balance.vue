@@ -8,19 +8,22 @@
                 <router-link to=""><div class="Balance_Recharge">充值</div></router-link>
             </div>
             <nav>
-                <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: list.tabIndex == index}"><span>{{item}}</span><section v-show="list.tabIndex == index"></section></div>
+                <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: tabIndex == index}"><span>{{item}}</span><section v-show="tabIndex == index"></section></div>
             </nav>
         </div>
         
-        <div v-if="balance != ''" class="Balance_content">
-            <div class="add_reduce" v-for="(item,index) in balance" :key="index">
-                <div><span>{{item.flow}}</span><br><span class="date">{{item.create_time}}</span></div>
-                <div><span :class="{colors:item.status == 1}">{{item.status === 0 ? '-¥' : '+¥'}} {{item.amount}}</span></div>
+
+        <mescroll-vue class="BalanceMescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
+            <div v-if="balance != ''" class="Balance_content">
+                <div class="add_reduce" v-for="(item,index) in balance" :key="index">
+                    <div><span>{{item.flow}}</span><br><span class="date">{{item.create_time}}</span></div>
+                    <div><span :class="{colors:item.status == 1}">{{item.status === 0 ? '-¥' : '+¥'}} {{item.amount}}</span></div>
+                </div>
             </div>
-        </div>
 
 
-        <div v-else class="no"><img src="../../assets/img/nohuo.png" alt="">暂无</div>
+            <div v-else class="no"><img src="../../assets/img/nohuo.png" alt="">暂无</div>
+        </mescroll-vue>
 
 
 
@@ -28,24 +31,30 @@
 </template>
 
 <script>
-// import header from '../../components/header'
+import MescrollVue from 'mescroll.js/mescroll.vue'
 export default {
     data() {
         return {
             active: 0, title:['全部','支出','收入'],
-            list:{ limit:10, current:1, isPage: false, tabIndex: 0 }
+            tabIndex: 0 ,
+            mescroll: null, mescrollDown:{}, 
+            mescrollUp: { 
+                isBounce: false,
+                callback: this.upCallback, 
+                noMoreSize: 5,
+                page: { num: 0, size: 5 },
+                htmlNodata: ''
+            },
+            balance:''
         }
     },
     components: {
-        // 'header-item': header
+        MescrollVue
     },
     beforeCreate(){
             // this.$store.dispatch('documentType')
         },
     computed:{
-        balance(){
-            return this.$store.state.balance
-        },
         user(){
             if(this.$store.state.user == ''){
                 this.$store.commit('USER')
@@ -54,39 +63,35 @@ export default {
         },
     },
     created(){
-        this.top()
         document.title = '余额'
 
         this.$store.commit('SET_PAGE', true)
-        this.$store.dispatch('balance', this.list)
-        window.addEventListener('scroll', this.handleScroll)
     },
     methods:{
-        top(){
-            document.body.scrollTop = 0
-            document.documentElement.scrollTop = 0
-        },
         tab(index){
-            this.top()
-            this.list.tabIndex = index
-            this.list.current = 1
-            this.$store.commit('SET_PAGE', true)
-            this.$store.dispatch('balance', this.list)
+            this.tabIndex = index
+            this.mescroll.resetUpScroll()
         },
-        handleScroll() {
-            let scrollTop = $(window).scrollTop()
-            let scrollHeight = $(document).height()
-            let windowHeight = $(window).height()
-            if (scrollTop + windowHeight === scrollHeight) {
-                this.list.current ++
-                this.list.isPage = true
-                if (this.$store.state.isPage) this.$store.dispatch('balance', this.list)
-            }
+        mescrollInit (mescroll) {
+            this.mescroll = mescroll
+        },
+        upCallback (page, mescroll) {
+            this.$axios.api.post('/shops/api//bind/yue', $.param({ access_type:'WXH5', wxh: this.$store.state.market_wxh, openId: this.$store.state.market_openId, unionId: this.$store.state.unionId,
+                queryType: this.tabIndex, limit: page.size, current: page.num }) )
+            .then(res => {
+                // console.log(res.data)
+                if(res.data.code == 200) {
+                    let arr = res.data.data.yueList
+                    if (page.num === 1) this.balance = []
+                    this.balance = this.balance.concat(arr)
+                    this.$nextTick(() => {
+                        res.data.data.yueList.length == 0 ? mescroll.endSuccess(this.balance.length, false) : mescroll.endSuccess(this.balance.length)
+                    })
+                }
+            })
+            .catch(err => mescroll.endErr())
         },
     },
-    destroyed () {
-        window.removeEventListener('scroll', this.handleScroll)
-    }
 }
 </script>
 
@@ -103,6 +108,13 @@ export default {
     .font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
     .font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
     .font4{ font-family:PingFang-SC-Light; font-weight: Light; }
+
+    .BalanceMescroll {
+        position: fixed;
+        top: calc(4.27rem + 0.93rem);
+        bottom: 0;
+        height: auto;
+    }
 
     .Balance{
         width: 100%; height: calc(4.27rem + 0.93rem); padding-top: 1rem; background-color: #e8e8e8;

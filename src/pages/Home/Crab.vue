@@ -3,18 +3,31 @@
 
 
         <div v-if="crabgroupList != ''" class="Crab">
-            <nav><img class="Crab_list_logos" src="../../assets/img/Crab_vip.png" alt=""></nav>
+            <nav>
+                <img class="Crab_list_logos" src="../../assets/img/CrabBacks.png" alt="">
+                <div>
+                    <video muted id="videos" width="100%" height="100%" src="../../assets/img/1.mp4" controls autoplay="autoplay" playsinline="true" loop type="video/mp4">
+                        您的浏览器不支持 video 标签。 
+                    </video>
+                </div>
+            </nav>
             <div class="Crab_main">
-                <div class="Crab_title"></div>
-                <div class="Crab_list" v-for="(item,index) in crabgroupList" :key="index">
-                    <img class="Crab_list_logo" src="../../assets/img/CrabLogo.png" alt="">
-                    <img class="Crab_list_content" @click="details(index)" :src="imgUrl + item.thumbnail_pic" alt="">
-                    <div class="Crab_list_ammont">
-                        <span>库存：{{item.inventory}}</span>
-                        <div @click="pay(index)" :class="{CrabNo:item.inventory == 0}">¥<span>{{item.present_price}}</span><span>{{item.inventory == 0 ? '已抢完' : '立即购买'}}</span></div>
+                <div class="Crab_Recommend"><img src="../../assets/img/Recommend.png" alt=""></div>
+                <div class="Crab_list_">
+                    <div class="Crab_list" v-for="(item,index) in crabgroupList" :key="index">
+                        <img v-if="index%2 == 0" class="Crab_list_content" @click="details(index)" :src="imgUrl + item.thumbnail_pic" alt="">
+                        <div class="Crab_list_ammont">
+                            <span>{{item.group_name}}</span>
+                            <div class="Crab_pay" @click="pay(index)" :class="{CrabNo:item.inventory == 0}">¥<span>{{item.present_price}}</span></div>
+                            <div class="Crab_">
+                                <p>已售{{item.soldRate}}%</p>
+                                <div class="Crab_Progressbar"><div class="Crab_Progressbar_" :style="{width: item.soldRate+'%'}"><div></div></div></div>
+                            </div>
+                        </div>
+                        <img v-if="index%2 != 0" class="Crab_list_content" @click="details(index)" :src="imgUrl + item.thumbnail_pic" alt="">
                     </div>
                 </div>
-                <div class="Crab_footer"><p>提货方式:</p><span>电话联系客服<br><a href='tel:0512-66831208'>0512-66831208</a>、<a href='tel:0512-66830887'>0512-66830887</a><br>周一至周五9点至17点半电话预约</span></div>
+                <div class="Crab_footer">提货热线：<a href="tel:0512-66830887">0512-66830887</a><br><a class="Crab_phone" href="tel:0512-66831208">0512-66831208</a></div>
             </div>
         </div>
 
@@ -36,6 +49,7 @@ export default {
         
     },
     beforeCreate(){
+        this.$store.dispatch('user')
         let list = { current: 1, limit: 50, isPage: false }
         this.$store.dispatch('promotionList', list)
     },
@@ -53,7 +67,11 @@ export default {
         document.title = '大闸蟹火热抢购...'
         
         this.$store.commit('SET_PAGE', true)
-        // window.addEventListener('scroll', this.get)
+        // window.addEventListener('scroll', this.promotionListGet)
+
+        this.$nextTick(()=>{
+            setTimeout( ()=> {this.videoMethod()}, 500);
+        })
     },
     methods:{
         details(index){
@@ -61,14 +79,16 @@ export default {
             this.$router.push({path:"/VoucherDetails", query:{index:index}})
         },
         pay(index){
-            this.$toast.loading({
-                mask: true,
-                message: '加载中...',
-                duration: 0
-            })
-            this.$store.dispatch('addGroupOrder', this.crabgroupList[index])
+            if(this.crabgroupList[index].inventory > 0){
+                this.$toast.loading({
+                    mask: true,
+                    message: '加载中...',
+                    duration: 0
+                })
+                this.$store.dispatch('addGroupOrder', this.crabgroupList[index])
+            }
         },
-        get(){
+        promotionListGet(){
             var scrollTop = $(window).scrollTop()
             var windowHeight = $(window).height()
             var documentHeight = $(document).height()
@@ -78,9 +98,24 @@ export default {
                 if(this.$store.state.isPage) this.$store.dispatch('promotionList', this.list)
             }
         },
+        videoMethod() {
+            wx.config({
+                // 配置信息, 即使不正确也能使用 wx.ready
+                debug: false,
+                appId: '',
+                timestamp: 1,
+                nonceStr: '',
+                signature: '',
+                jsApiList: []
+            });
+            wx.ready(function() {
+                var globalAudio = document.getElementById("videos");
+                globalAudio.play();
+            });
+        }
     },
     destroyed(){
-        window.removeEventListener('scroll', this.get)
+        window.removeEventListener('scroll', this.promotionListGet)
     },
 }
 </script>
@@ -96,44 +131,59 @@ export default {
     .font1{ font-family:PingFang-SC-Medium; font-weight: Medium; }
     .font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
     .font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
+    .font4{ font-family:PingFang-SC-Light; font-weight: Light; }
 
     .Crab{
         width: 100%; height: 100%;
-        & nav{
-            width: 100%; height: 9.19rem; background: url('../../assets/img/CrabTitle.png') no-repeat; background-size: 100% 100%;
-            .Crab_list_logos{ width: 1.78rem; height: 1.1rem; position: absolute; top: 0; right: 0.66rem;}
+        & nav{ 
+            width: 100%; background:rgba(34,32,37,1);
+            img{ width: 100%; height: 4.53; } 
+            div{ 
+                width: 100%; height: 4.41rem; padding: 0 0.3rem 0.25rem 0.3rem;
+            }
         }
         .Crab_main{
-            width: 100%; background: url('../../assets/img/CrabBack.png') no-repeat; background-size: 100% 100%; position: relative;
-            padding: calc(2.02rem - 0.6rem) 0.4rem 3.6rem 0.4rem;
-            .Crab_title{
-                width: 5.59rem; height: 2.02rem; background: url('../../assets/img/CrabNav.png') no-repeat; background-size: 100% 100%;
-                position: absolute; top: -0.6rem; left: calc((100% - 5.59rem) / 2);
+            width: 100%; background: url('../../assets/img/CrabBacks_bottom.png') no-repeat; background-size: 100% 100%;
+            padding: 0.2rem 0.4rem 2rem 0.4rem;
+            .Crab_Recommend{ width: 100%; height: 0.48rem; margin: 0.36rem 0; text-align: center;
+                img{ width: 5.54rem; height: 100%; }
             }
+            .Crab_list_{ width: 6.4rem; background-color: rgba(255,255,255,1); margin: 0 auto; padding: 0.22rem 0.26rem;  }
             .Crab_list{
-                width: 100%; height: 5.55rem; border: 0.03rem solid rgba(252,206,131,1); background-color: rgba(255,255,255,1); position: relative;
-                padding: 0 0.3rem; margin-bottom: 0.48rem;
-                .Crab_list_logo{ width: 2.01rem; height: 0.56rem; position: absolute; top: 0; left: 0;}
-                .Crab_list_content{ width: 100%; height: 3.47rem; margin-top: 0.78rem; }
+                width: 100%; height: 2.94rem; background-color: rgba(239,239,239,1); position: relative; display: flex;
+                .Crab_list_content{ width: 50%; height: 100%; }
                 .Crab_list_ammont{
-                    width: 100%; height: 0.8rem; line-height: 0.8rem; margin-top: 0.1rem;
-                    span{ .font1; color:rgba(43,43,43,1); }
-                    div{ 
-                        width: 2.72rem; height: 0.79rem; float: right; padding: 0 0.35rem 0 0.15rem; line-height: 0.76rem; .font1;
+                    width: 100%; height: 0.8rem; line-height: 0.4rem; margin-top: 0.1rem; text-align: center; padding: 0 0.1rem; padding-top: 0.3rem;
+                    span{ .font1; color:rgba(0,0,0,1); font-size: 0.28rem; }
+                    .Crab_pay{ 
+                        width: 2.72rem; height: 0.79rem; padding: 0 0.35rem 0 0.25rem; line-height: 0.76rem; .font1; margin: 0.3rem auto; text-align: left; margin-bottom: 0;
                         background: url('../../assets/img/CrabPay.png') no-repeat; background-size: 100% 100%; font-size: 0.23rem; color: rgba(255,255,255,1);
                         span:nth-child(1){ font-size: 0.36rem; color:rgba(255,255,255,1); }
-                        span:nth-child(2){ font-size: 0.23rem; color:rgba(139,94,21,1); .font1; float: right; }
                     }
-                    .CrabNo{ background: url('../../assets/img/CrabNo.png') no-repeat; background-size: 100% 100%; padding-right: 0.45rem;
-                        span:nth-child(2){ color:rgba(255,255,255,1); }
+                    .CrabNo{ 
+                        background: url('../../assets/img/CrabNo.png') no-repeat; background-size: 100% 100%; padding-right: 0.45rem;
+                    }
+                    .Crab_{
+                        width: 2.72rem; height: 0.4rem; margin: 0 auto; display: flex; line-height: 0.4rem;
+                        p{ font-size: 0.2rem; color: #E89F1F; .font4; }
+                        .Crab_Progressbar{
+                            width: 1.3rem; height: 0.1rem; border-radius: 0.05rem; border:1px solid rgba(232,159,31,1); margin-top: 0.15rem; margin-left: 0.1rem;
+                            .Crab_Progressbar_{ 
+                                height: 100%;
+                                div{
+                                    width: 100%; height: 100%; border-top-left-radius: 0.05rem; border-bottom-left-radius: 0.05rem; background:#E89F1F; 
+                                    -webkit-animation:dong 0.5s linear 0s 1 alternate;
+                                    animation: dong 0.5s linear 0s 1 alternate;
+                                }
+                            }
+                        }
                     }
                 }
             }
             .Crab_footer{ 
-                width: 100%; position: absolute; bottom: 2rem; left: 0; padding: 0 1.3rem 0 1rem; color:rgba(255,255,255,1); line-height: 0.4rem;
-                text-indent: -0.6rem; .font2;
-                p{ .font1; margin-bottom: 0.1rem;} 
-                a{ text-decoration: underline; color: rgba(255,139,75,1); }
+                width: 100%; height: 1rem; line-height: 0.4rem; text-align: center; color:rgba(255,255,255,1); .font1; margin-top: 0.6rem;
+                a{ color:rgba(255,255,255,1); text-decoration: underline;  }
+                .Crab_phone{ position: relative; left: 0.75rem; }
             }
         }
     }
@@ -144,6 +194,23 @@ export default {
     }
 
 
+
+@keyframes dong{
+    from{
+        width: 0;
+    }
+    to{
+        width: 100%;
+    }
+}
+@-webkit-keyframes dong{
+    from{
+        width: 0;
+    }
+    to{
+        width: 100%;
+    }
+}
 </style>
 
 

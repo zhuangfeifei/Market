@@ -58,7 +58,7 @@ export default {
 
         this.$store.commit('SET_PAGE', true)
         this.$store.dispatch('coupon', this.list)
-        window.addEventListener('scroll', this.get)
+        window.addEventListener('scroll', this.CouponAllGet)
     },
     activated(){
         // console.log('hah')
@@ -78,7 +78,7 @@ export default {
         coupon_content(id){
             this.$router.push({path:'/couponContent', query:{status: this.list.tabIndex, ids: id}})
         },
-        get(){
+        CouponAllGet(){
             var scrollTop = $(window).scrollTop()
             var windowHeight = $(window).height()
             var documentHeight = $(document).height()
@@ -91,7 +91,7 @@ export default {
         
     },
     destroyed(){
-        window.removeEventListener('scroll', this.get)
+        window.removeEventListener('scroll', this.CouponAllGet)
     }
 }
 </script>

@@ -38,7 +38,7 @@
         </div>
         <div class="brand">
             <span v-for="(item,index) in isFineList" :key="index">
-                <img @click="Selected(item.id)" :src="imgUrl + item.logo_pic">
+                <img @click="Selected(item.id)" :src="(imgUrl + item.logo_pic) || defaults">
                 <p>{{item.shopName}}</p>
             </span>
         </div>
@@ -50,7 +50,7 @@
 export default {
     data() {
         return {
-            scrollWatch: true,
+            scrollWatch: true, defaults:require('../../assets/img/default.png'),
         }
     },
     components: {

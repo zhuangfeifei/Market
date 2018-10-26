@@ -10,6 +10,8 @@ import FontSize from './FontSize'
 
 import store from './store/store'
 Vue.prototype.$store = store
+import axios from './store/api'
+Vue.prototype.$axios = axios
 
 import Vant from 'vant';
 import 'vant/lib/vant-css/index.css';

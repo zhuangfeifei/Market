@@ -1,7 +1,7 @@
 <template>
     <div id="VoucherDetails" v-if="groupListDetail">
 
-        <div class="logo"><img :src="imgUrl + groupListDetail.thumbnail_pic" alt=""></div>
+        <div class="logo"><img :src="imgUrl + groupListDetail.path" alt=""></div>
         <div class="VoucherDetails">
             <div class="detail">
                 <h4>{{groupListDetail.group_name}}</h4>
@@ -11,9 +11,9 @@
                 <p v-else>有效期：{{groupListDetail.start_time}} ~ {{groupListDetail.end_time}}</p>
             </div>
             <div class="VoucherDetails_business">
-                <div class="VoucherDetails_business_logo"><img :src="imgUrl + groupListDetail.logo_pic" alt=""></div>
+                <div class="VoucherDetails_business_logo"><img :src="imgUrl + groupListDetail.LOGO_PIC" alt=""></div>
                 <div class="VoucherDetails_business_contact">
-                    <p>{{groupListDetail.shopName}}</p>
+                    <!-- <p>{{groupListDetail.shopName}}</p> -->
                     <p><span class="VoucherDetails_business_address">{{groupListDetail.ADDRESS}}</span><img src="../../assets/img/addresss.png" alt=""></p>
                     <div>
                         <a :href="'tel:' + (groupListDetail.PHONE || groupListDetail.FIX_PHONE)"><div class="contact">联系门店</div></a><div class="reach" @click="map">到这去</div>
@@ -27,7 +27,7 @@
         </div>
 
         <div class="footers">
-            <button @click="pay">¥{{groupListDetail.present_price}}立即购买</button>
+            <button @click="pay" :class="{ispay: groupListDetail.inventory == 0}">¥{{groupListDetail.present_price}}立即购买</button>
         </div>
 
 
@@ -83,12 +83,14 @@ export default {
         },
         pay(){
             // var list = { shopId: groupList.shop_id, groupType: groupList.groupType, groupName: groupList.group_name, amount: groupList.discount, groupId: groupList.id }
-            this.$toast.loading({
-                mask: true,
-                message: '加载中...',
-                duration: 0
-            })
-            this.$store.dispatch('addGroupOrder', this.groupListDetail)
+            if(this.groupListDetail.inventory > 0){
+                this.$toast.loading({
+                    mask: true,
+                    message: '加载中...',
+                    duration: 0
+                })
+                this.$store.dispatch('addGroupOrder', this.groupListDetail)
+            }
         },
     },
 }
@@ -173,6 +175,10 @@ export default {
             width: 6.7rem; height: 0.96rem; margin: 0.16rem 0.4rem; background-color: rgba(255,139,75,1); outline: none!important; border: 0; border-radius: 0.1rem;
             color: white; .font3; font-size: 0.36rem;
         }
+    }
+
+    .ispay{
+        background-color: gray!important;
     }
 
 

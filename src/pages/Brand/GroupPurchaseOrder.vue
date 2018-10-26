@@ -2,32 +2,36 @@
     <div id="GroupPurchaseOrder">
 
         <nav>
-            <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: list.tabIndex == index}"><span>{{item}}</span><section v-show="list.tabIndex == index"></section></div>
+            <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: tabIndex == index}"><span>{{item}}</span><section v-show="tabIndex == index"></section></div>
         </nav>
 
-        <div v-if="getHistoryGroupOrder.length > 0" class="GroupPurchaseOrders">
-            <div class="GroupPurchaseOrder_list" @click="detils(item.order_id)" v-for="(item,index) in getHistoryGroupOrder" :key="index">
-                <div class="GroupPurchaseOrder_num"><span>订单编号：{{item.order_num}}</span><span v-if="item.order_status === '1'">已完成</span><span v-else>待付款</span></div>
-                <div class="GroupPurchaseOrder_content">
-                    <div class="GroupPurchaseOrder_content_logo"><img :src="imgUrl + item.thumbnail_pic" alt=""></div>
-                    <div class="GroupPurchaseOrder_content_">
-                        <p>{{item.group_name}}</p>
-                        <p>数量：1</p>
-                        <p>实付款：{{item.amount}}元</p>
+
+        <mescroll-vue class="GroupPurchaseOrderMescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
+            <div v-if="getHistoryGroupOrder.length > 0" class="GroupPurchaseOrders">
+                <div class="GroupPurchaseOrder_list" @click="detils(item.order_id)" v-for="(item,index) in getHistoryGroupOrder" :key="index">
+                    <div class="GroupPurchaseOrder_num"><span>订单编号：{{item.order_num}}</span><span v-if="item.order_status === '1'">已完成</span><span v-else>待付款</span></div>
+                    <div class="GroupPurchaseOrder_content">
+                        <div class="GroupPurchaseOrder_content_logo"><img :src="imgUrl + item.thumbnail_pic" alt=""></div>
+                        <div class="GroupPurchaseOrder_content_">
+                            <p>{{item.group_name}}</p>
+                            <p>数量：1</p>
+                            <p>实付款：{{item.amount}}元</p>
+                        </div>
+                    </div>
+                    <div class="GroupPurchaseOrder_date">
+                        <span>{{item.order_time}}</span><div @click.stop="tels" v-if="item.order_status === '1'">提货热线</div><div v-else>付款</div>
                     </div>
                 </div>
-                <div class="GroupPurchaseOrder_date">
-                    <span>{{item.order_time}}</span><div v-if="item.order_status === '0'">付款</div>
-                </div>
             </div>
-        </div>
 
-        <div v-else class="nos"><img src="../../assets/img/noOrder.png" alt=""><p>您目前还没有任何订单哦~</p></div>
+            <div v-else class="nos"><img src="../../assets/img/noOrder.png" alt=""><p>您目前还没有任何订单哦~</p></div>
+        </mescroll-vue>
         
     </div>
 </template>
 
 <script>
+import MescrollVue from 'mescroll.js/mescroll.vue'
 export default {
     data() {
         return {
@@ -37,11 +41,20 @@ export default {
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531462002438&di=e061bf459cfedfddc668e4336da6ca46&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Da4742242da1373f0e13267dfcd772e97%2F8718367adab44aed5b4404ddb81c8701a18bfb85.jpg',
                 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
             ],
-            list:{ limit:10, current:1, isPage: false, tabIndex: 0 }
+            tabIndex: 0 ,
+            mescroll: null, mescrollDown:{}, 
+            mescrollUp: { 
+                isBounce: false,
+                callback: this.upCallback, 
+                noMoreSize: 10,
+                page: { num: 0, size: 10 },
+                htmlNodata: '<p class="upwarp-nodata">-- 没有更多了！ --</p>'
+            },
+            getHistoryGroupOrder:''
         }
     },
     components: {
-        
+        MescrollVue
     },
     beforeCreate(){
         
@@ -50,52 +63,48 @@ export default {
         imgUrl(){
             return this.$store.state.imgUrl
         },
-        getHistoryGroupOrder(){
-            return this.$store.state.getHistoryGroupOrder
-        },
+        // getHistoryGroupOrder(){
+        //     return this.$store.state.getHistoryGroupOrder
+        // },
     },
     created(){
-        this.top()
         document.title = '团购订单'
 
-        this.$store.commit('SET_PAGE', true)
-        this.$store.dispatch('getHistoryGroupOrder', this.list)
-        window.addEventListener('scroll', this.get)
     },
     activated(){
         // console.log('hah')
     },
     methods:{
-        top(){
-            document.body.scrollTop = 0
-            document.documentElement.scrollTop = 0
-        },
         tab(index){
-            this.top()
-            this.list.tabIndex = index
-            this.list.current = 1
-            this.$store.commit('SET_PAGE', true)
-            this.$store.dispatch('getHistoryGroupOrder', this.list)
+            this.tabIndex = index
+            this.mescroll.resetUpScroll()
         },
         detils(order_id){
             this.$router.push({path:'/GroupPurchaseOrderDetils', query:{ order_id: order_id}})
         },
-        get(){
-            this.$nextTick(()=>{
-                var scrollTop = $(window).scrollTop()
-                var windowHeight = $(window).height()
-                var documentHeight = $(document).height()
-                if(scrollTop + windowHeight === documentHeight){
-                    this.list.current ++
-                    this.list.isPage = true
-                    if(this.$store.state.isPage) this.$store.dispatch('getHistoryGroupOrder', this.list)
+        tels(){
+            window.location.href = 'tel:0512-66830887'
+        },
+        mescrollInit (mescroll) {
+            this.mescroll = mescroll
+        },
+        upCallback (page, mescroll) {
+            this.$axios.api.post('/shops/api/groupOrder/getHistoryGroupOrder', $.param({ access_type:'WXH5', wxh: this.$store.state.market_wxh, openId: this.$store.state.market_openId, 
+                unionId: this.$store.state.unionId, limit: page.size, current: page.num, orderStatus: this.tabIndex == 0 ? '' : this.tabIndex == 1 ? 0 : 1 }) ) 
+            .then(res => {
+                // console.log(res.data)
+                if(res.data.code == 200) {
+                    let arr = res.data.data
+                    if (page.num === 1) this.getHistoryGroupOrder = []
+                    this.getHistoryGroupOrder = this.getHistoryGroupOrder.concat(arr)
+                    this.$nextTick(() => {
+                        res.data.data.length == 0 ? mescroll.endSuccess(this.getHistoryGroupOrder.length, false) : mescroll.endSuccess(this.getHistoryGroupOrder.length)
+                    })
                 }
             })
+            .catch(err => mescroll.endErr())
         },
     },
-    destroyed(){
-        window.removeEventListener('scroll', this.get)
-    }
 }
 </script>
 
@@ -111,6 +120,13 @@ export default {
     .font1{ font-family:PingFang-SC-Medium; font-weight: Medium; }
     .font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
     .font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
+
+    .GroupPurchaseOrderMescroll{
+        position: fixed;
+        top: 1.03rem;
+        bottom: 0.8rem;
+        height: auto;
+    }
 
     nav{
         width: 100%; height: 0.76rem; .font1; background:rgba(255,255,255,1); display: flex; justify-content: space-around;
