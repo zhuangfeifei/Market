@@ -55,7 +55,7 @@ export default {
     },
     created(){
         document.title = '商家优惠'
-        this.$store.commit('ACTIVE', 2)
+        this.$store.commit('ACTIVE', 3)
     },
     methods:{
         details(index){
@@ -65,7 +65,8 @@ export default {
             this.mescroll = mescroll
         },
         upCallback (page, mescroll) {
-            this.$axios.api.post('/shops/api/activity/preferentialList', $.param({ limit: page.size, current: page.num }) )
+            let list = { limit: page.size, current: page.num }
+            this.$store.dispatch('preferentialList', list)
             .then(res => {
                 // console.log(res.data)
                 if(res.data.code == 200) {

@@ -81,7 +81,7 @@ export default {
     },
     created(){
         document.title = '品牌商家'
-        this.$store.commit('ACTIVE', 1)
+        this.$store.commit('ACTIVE', 2)
 
         
     },
@@ -149,8 +149,9 @@ export default {
             this.mescroll = mescroll
         },
         upCallback (page, mescroll) {
-            this.$axios.api.post('/shops/api/shop/list', $.param({ categoryId: this.list.categoryId, projectId: this.list.projectId, shopName: this.list.shopName, regionId: this.list.regionId, 
-                floorId: this.list.floorId, limit: page.size, current: page.num, sort: this.list.sort, order: this.list.order }) )
+            let list = { categoryId: this.list.categoryId, projectId: this.list.projectId, shopName: this.list.shopName, regionId: this.list.regionId, 
+                floorId: this.list.floorId, limit: page.size, current: page.num, sort: this.list.sort, order: this.list.order }
+            this.$store.dispatch('shopList', list)
             .then(res => {
                 // console.log(res.data)
                 if(res.data.code == 200) {

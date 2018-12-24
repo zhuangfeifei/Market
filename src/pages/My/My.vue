@@ -4,7 +4,7 @@
         <nav class="My_nav">
             <div class="My_code" :class="{My_code_active:user.wtCustomer.phonenumber}">
                 <div class="My_title">
-                    <section><img :src="user.wtCustomer.avatar" alt=""></section><h4>{{user.wtCustomer.nickname}}</h4>
+                    <section><img :src="user.wtCustomer.avatar" alt=""></section><h4 @click="$router.push('/Address')">{{user.wtCustomer.nickname}}</h4>
                     <img @click="sign" class="My_sign" src="../../assets/img/sign.png" alt="">
                 </div>
                 <van-row class="My_class" type="flex" justify="space-between">
@@ -12,7 +12,7 @@
                     <van-col span="6" class="My_class_"><router-link to="/Balance"><p>{{'¥'+(isFloats || 0)}}</p><p>余额</p></router-link></van-col>
                     <van-col span="6" class="My_class_"><router-link to="/Coupon"><p>{{user.couponNum || 0}}</p><p>优惠券</p></router-link></van-col>
                 </van-row>
-                <div v-if="user.card.length > 0" class="My_cardno"><span>NO：{{user.card[0].cardno}}</span><div @click="qrcodes" class="open_code"></div></div>
+                <div v-if="user.card != ''" class="My_cardno"><span>NO：{{user.card[0].cardno}}</span><div @click="qrcodes" class="open_code"></div></div>
                 <router-link v-else to="/Opencard"><div class="My_bind">绑定会员卡</div></router-link>
             </div>
         </nav>
@@ -33,6 +33,14 @@
         </van-row>
 
         <van-popup class="QR" v-model="show"><div class="QR_codes"><p>会员码</p><div id="qrcode"></div></div></van-popup>
+
+        <van-popup class="registered" v-model="registered">
+            <img src="../../assets/img/registered.png" alt="" usemap="#planetmap">
+            <map name="planetmap">
+                <area @click="close" shape="rect" coords="230,0,265,40">
+                <area @click="$router.push('/Opencard')" shape="rect" coords="0,60,300,300">
+            </map>
+        </van-popup>
         
     </div>
 </template>
@@ -41,7 +49,7 @@
 export default {
     data() {
         return {
-            show:false,isCode:true
+            show:false,isCode:true,registered:false
         }
     },
     components: {
@@ -64,7 +72,13 @@ export default {
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
         document.title = '会员中心'
-        this.$store.commit('ACTIVE', 3)
+        this.$store.commit('ACTIVE', 4)
+
+        this.$nextTick(()=>{
+            if(this.user.card == ''){
+                this.registered = true
+            }
+        })
     },
     methods:{
         sign(){
@@ -82,6 +96,9 @@ export default {
                 })
                 this.isCode = false
             }
+        },
+        close(){
+            this.registered = false
         },
     },
     filters:{
@@ -147,6 +164,13 @@ export default {
 .QR_codes{
     padding: 0.3rem 0.6rem 0.5rem 0.6rem; background-color: white; text-align: center; font-size: 0.36rem; border-radius: 0.3rem; font-weight: bold;
     p{ margin-bottom: 0.2rem; }
+}
+
+
+.registered{
+    background: none; 
+    img{ width: 6.24rem; height: 6.61rem; }
+    area{ outline: none!important; }
 }
     
 </style>

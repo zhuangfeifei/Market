@@ -16,8 +16,8 @@
         <mescroll-vue class="BalanceMescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
             <div v-if="balance != ''" class="Balance_content">
                 <div class="add_reduce" v-for="(item,index) in balance" :key="index">
-                    <div><span>{{item.flow}}</span><br><span class="date">{{item.create_time}}</span></div>
-                    <div><span :class="{colors:item.status == 1}">{{item.status === 0 ? '-¥' : '+¥'}} {{item.amount}}</span></div>
+                    <div class="Balance_title"><span>{{item.flow}}</span><br><span class="date">{{item.create_time}}</span></div>
+                    <div class="Balance_s"><p :class="{colors:item.status == 1}">{{item.status === 0 ? '-¥ '+item.amount : '+¥ '+item.amount}}</p></div>
                 </div>
             </div>
 
@@ -52,7 +52,7 @@ export default {
         MescrollVue
     },
     beforeCreate(){
-            // this.$store.dispatch('documentType')
+            this.$store.dispatch('user')
         },
     computed:{
         user(){
@@ -76,8 +76,8 @@ export default {
             this.mescroll = mescroll
         },
         upCallback (page, mescroll) {
-            this.$axios.api.post('/shops/api//bind/yue', $.param({ access_type:'WXH5', wxh: this.$store.state.market_wxh, openId: this.$store.state.market_openId, unionId: this.$store.state.unionId,
-                queryType: this.tabIndex, limit: page.size, current: page.num }) )
+            let list = { queryType: this.tabIndex, limit: page.size, current: page.num }
+            this.$store.dispatch('balance', list)
             .then(res => {
                 // console.log(res.data)
                 if(res.data.code == 200) {
@@ -146,13 +146,15 @@ export default {
     .Balance_content{
         width: 100%; .font2;
         .add_reduce{
-            width: 90%; height: 1.3rem; margin: 0 auto; display: flex; justify-content: space-between; font-size: 0.28rem;
-            border-bottom: 0.01rem solid rgba(206,206,206,1); line-height: 0.4rem; padding-top: 0.29rem; .font1;
+            width: 90%; margin: 0 auto; display: flex; justify-content: space-between; font-size: 0.28rem; align-items: center;
+            border-bottom: 0.01rem solid rgba(206,206,206,1); line-height: 0.4rem; padding: 0.29rem 0; .font1;
             .date{
                 color:rgba(128,128,128,1); font-size: 0.24rem; .font4;
             }
-            div:nth-child(2){  height: 100%; font-size: 0.36rem; margin-top: 0.15rem; } 
+            div:nth-child(2){  height: 100%; font-size: 0.36rem; } 
             .colors{ color:rgba(234,22,22,1); }
+            .Balance_title{ width: calc(100% - 2rem); }
+            .Balance_s{ width: 2rem; text-align: right; }
         }
     }
 

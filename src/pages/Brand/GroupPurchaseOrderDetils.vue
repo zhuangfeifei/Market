@@ -14,7 +14,7 @@
                     <div class="GroupPurchaseOrderDetils_content_logo"><img :src="imgUrl + order.thumbnail_pic" alt=""></div>
                     <div class="GroupPurchaseOrderDetils_content_">
                         <p>{{order.group_name}}</p>
-                        <p>数量：1</p>
+                        <p>数量：{{order.num}}</p>
                         <p>实付款：{{order.amount}}元</p>
                     </div>
                 </div>
@@ -90,7 +90,7 @@ export default {
 
 
         this.$nextTick(()=>{
-            if(order.order_status == '1' && order.verification_status != '1'){
+            if(this.order.order_status == '1' && this.order.verification_status != '1'){
                 this.$dialog.confirm({
                     title: '提货热线！',
                     confirmButtonText:'拨打'

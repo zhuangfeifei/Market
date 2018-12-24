@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       "/market":{       
-        // target:"http://192.168.1.50:8090",  
+        // target:"http://192.168.1.61:8090",  
         target:"http://www.homeamc.cn",
     		changeOrigin: true,
     		pathRewrite: {
@@ -22,8 +22,8 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: '192.168.1.53', // can be overwritten by process.env.HOST
-    port: 8010, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    host: '192.168.1.27', // can be overwritten by process.env.HOST
+    port: 8020, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
@@ -52,7 +52,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../market'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: 'http://www.homeamc.cn/shops/static/wx/',
+    assetsPublicPath: 'http://www.homeamc.cn/shopss/static/wx/',
 
     /**
      * Source Maps

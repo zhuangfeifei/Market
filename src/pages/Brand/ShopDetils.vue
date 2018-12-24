@@ -192,7 +192,7 @@ import { setTimeout } from 'timers';
 }
 
 .ShopDetils_table{
-    width: 100%; height: 1.2rem;
+    width: 100%; height: 1.2rem; position: relative; z-index: 10;
     .ShopDetils_table_nav{
         width: 100%; height: 1.2rem; padding-top: 0.4rem; .font3; background:rgba(255,255,255,1); padding-left: 0.4rem;
         border-bottom: 0.01rem solid rgba(206,206,206,1); 

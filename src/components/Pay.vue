@@ -25,7 +25,7 @@ import wx from 'weixin-js-sdk'
 export default {
     data(){
         return{
-            checke_show:true, value: '', showKeyboard: true, isYu:true, PageShow:true
+            value: '', showKeyboard: true, isYu:true, PageShow:true
         }
     },
     components: {

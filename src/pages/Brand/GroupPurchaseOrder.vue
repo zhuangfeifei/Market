@@ -37,10 +37,6 @@ export default {
         return {
             active: 0, title:['全部','待付款','已完成'], data:'1',
             status:[require('../../assets/img/notUsed.png'),require('../../assets/img/Undue.png'),require('../../assets/img/Expired.png')],
-            images: [
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531462002438&di=e061bf459cfedfddc668e4336da6ca46&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Da4742242da1373f0e13267dfcd772e97%2F8718367adab44aed5b4404ddb81c8701a18bfb85.jpg',
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
-            ],
             tabIndex: 0 ,
             mescroll: null, mescrollDown:{}, 
             mescrollUp: { 
@@ -89,8 +85,8 @@ export default {
             this.mescroll = mescroll
         },
         upCallback (page, mescroll) {
-            this.$axios.api.post('/shops/api/groupOrder/getHistoryGroupOrder', $.param({ access_type:'WXH5', wxh: this.$store.state.market_wxh, openId: this.$store.state.market_openId, 
-                unionId: this.$store.state.unionId, limit: page.size, current: page.num, orderStatus: this.tabIndex == 0 ? '' : this.tabIndex == 1 ? 0 : 1 }) ) 
+            let list = { limit: page.size, current: page.num, orderStatus: this.tabIndex == 0 ? '' : this.tabIndex == 1 ? 0 : 1 }
+            this.$store.dispatch('getHistoryGroupOrder', list)
             .then(res => {
                 // console.log(res.data)
                 if(res.data.code == 200) {
@@ -110,7 +106,7 @@ export default {
 
 <style lang="less" scoped>
     #GroupPurchaseOrder{
-        width: 100%; min-height: 100vh; background:rgba(232,232,232,1); padding-top: calc(0.76rem - 0.2rem); font-size: 0.3rem;
+        width: 100%; min-height: 100vh; background:rgba(232,232,232,1); padding-top: calc(0.76rem ); font-size: 0.3rem;
     }
 
     *{
@@ -123,8 +119,8 @@ export default {
 
     .GroupPurchaseOrderMescroll{
         position: fixed;
-        top: 1.03rem;
-        bottom: 0.8rem;
+        top: 0.76rem;
+        bottom: 0rem;
         height: auto;
     }
 

@@ -1,52 +1,53 @@
 <template>
-    <div id="home">
+    <div id="home" v-if="market_unionId">
 
         <van-swipe class="swipe" :autoplay="3000">
             <van-swipe-item v-for="(item, index) in carousel" :key="index">
-                <a :href="item.url"><img :src="imgUrl + item.picture" /></a>
+                <router-link v-if="item.titlename === '太湖专题'" to="/Crab"><img :src="imgUrl + item.picture" /></router-link>
+                <a v-else :href="item.url"><img :src="imgUrl + item.picture" /></a>
             </van-swipe-item>
         </van-swipe>
 
         <div class="classification">
-            <router-link to="/Introduce"><div><img src="../../assets/img/introduce.png" alt=""><p>商场介绍</p></div></router-link>
-            <div @click="changes"><img src="../../assets/img/brand.png" alt=""><p>品牌商家</p></div>
-            <router-link to="/ShopActivity"><div><img src="../../assets/img/activity.png" alt=""><p>商场活动</p></div></router-link>
-            <router-link to="/Wallet"><div><img src="../../assets/img/integral.png" alt=""><p>积分礼包</p></div></router-link>
-            <a href="http://www.homeamc.cn/h5/car/auth"><div><img src="../../assets/img/Parking.png" alt=""><p>停车缴费</p></div></a>
-            <router-link to="/CouponAll"><div><img src="../../assets/img/More.png" alt=""><p>更多</p></div></router-link>
+            <router-link to="/Introduce"><div><img src="../../assets/img/Introduces.png" alt=""></div></router-link>
+            <router-link to="/ShopActivity"><div><img src="../../assets/img/ShopActivity.png" alt=""></div></router-link>
+            <a href="http://www.homeamc.cn/h5/car/auth"><div><img src="../../assets/img/car.png" alt=""></div></a>
+            <router-link to="/Wallet"><div><img src="../../assets/img/Wallet.png" alt=""></div></router-link>
+            <div @click="shops(1)"><img src="../../assets/img/newgood.png" alt=""></div>
+            <div @click="shops(0)"><img src="../../assets/img/good.png" alt=""></div>
+            <router-link to="/CouponAll"><div><img src="../../assets/img/securities.png" alt=""></div></router-link>
+            <router-link to="/CouponAll"><div><img src="../../assets/img/CouponAlls.png" alt=""></div></router-link>
         </div>
 
         <div class="Headline">
             <img src="../../assets/img/Headline.png" alt="">
             <span v-if="announceList != ''">{{announceList[0].title}}</span>
         </div>
-
-        <div class="Discount">
-            <h3>商家优惠<span @click="Discount_gets" class="Discount_get">查看全部</span></h3>
-            <h4>限时福利、数量有限、抢完即止</h4>
-            <div class="Discount_">
-                <div class="Discount_list" @click="details(index)" v-for="(item,index) in preferentialList" :key="index" v-if="index < 4">
-                    <img :src="imgUrl + item.topchartpic" alt="">
-                    <div><p>{{item.title}}</p></div>
-                </div>
+        
+        <div class="home_list" v-for="(item,index) in index_goods" :key="index">
+            <div class="home_list_title" @click="$router.push('/Classification')">
+                <img class="home_list_title_img" src="../../assets/home/wine.png" alt=""><span>{{item.categoryName}}</span>
+                <div>更多<img class="home_list_title_more" src="../../assets/home/more.png" alt=""></div>
             </div>
-        </div>
-
-        <div class="Selecteds">
-            <h3>精选品牌</h3>
-            <h4>精品商店一手掌握、随时随地想购就GO</h4>
-        </div>
-        <div class="brand">
-            <span v-for="(item,index) in isFineList" :key="index">
-                <img @click="Selected(item.id)" :src="(imgUrl + item.logo_pic) || defaults">
-                <p>{{item.shopName}}</p>
-            </span>
+            <div class="home_list_wines" @click="$router.push('/Classification')"><img :src="imgUrl + item.coverImage" alt=""></div>
+            <div>
+                <grid :cols="3" :show-lr-borders="false">
+                    <grid-item v-for="(val,i) in item.goodsInfo" :key="i">
+                        <div @click="details(val.id)" class="grid-center"><img :src="imgUrl + val.thumbnailPic" alt=""></div>
+                        <div @click="details(val.id)" class="grid-centers">
+                            <p>{{val.goodsName}}</p><span>满2斤送1500积分</span><p class="grid-center-money">¥{{val.inventory}}</p>
+                        </div>
+                    </grid-item>
+                </grid>
+            </div>
         </div>
 
     </div>
 </template>
 
 <script>
+import { Grid, GridItem, GroupTitle } from 'vux'
+import { mapState } from 'vuex'
 export default {
     data() {
         return {
@@ -54,7 +55,9 @@ export default {
         }
     },
     components: {
-        
+        Grid,
+    GridItem,
+    GroupTitle
     },
     beforeCreate(){
         // this.$store.dispatch('carousel')
@@ -62,23 +65,28 @@ export default {
         let list = { current: 1, limit: 5, isPage: false }
         this.$store.dispatch('preferentialList', list)
         this.$store.dispatch('announceList')
+        let lists = { current: 1, limit: 10, categoryId:'', categoryLevel: '', goodsLabel: 0 }
+        this.$store.dispatch('goodsList', lists)
+        this.$store.dispatch('index_goods')
     },
     computed:{
-        imgUrl(){
-            return this.$store.state.imgUrl
-        },
-        carousel(){
-            return this.$store.state.carousel
-        },
-        isFineList(){
-            return this.$store.state.isFineList
-        },
-        preferentialList(){
-            return this.$store.state.preferentialList
-        },
-        announceList(){
-            return this.$store.state.announceList
-        },
+        ...mapState({
+            imgUrl: state => state.imgUrl,
+            carousel: state => state.carousel,
+            isFineList: state => state.isFineList,
+            preferentialList: state => state.preferentialList,
+            announceList: state => state.announceList,
+            market_unionId: state => state.market_unionId,
+            goodsList: state => state.goodsList,
+            index_goods: state => {
+                let array = []
+                for(let val of state.index_goods){
+                    val.goodsInfo = [ val.goodsInfo1, val.goodsInfo2, val.goodsInfo3 ]
+                    array.push(val)
+                }
+                return array
+            },
+        }),
     },
     created(){
         // document.body.scrollTop = 0
@@ -99,106 +107,97 @@ export default {
         this.scrollWatch = false;
     },
     methods:{
-        details(index){
-            this.$router.push({path:'/DiscountItem',query:{indexs: index}})
+        details(id){
+            this.$router.push({path:'/GoodsDetails',query:{id: id}})
+            // this.$router.push({path:'/DiscountItem',query:{indexs: index}})
         },
         Selected(shopid){
             this.$router.push({path:'/ShopDetils',query:{ shopid: shopid }})
         },
-        changes(){
-            this.$store.commit('ACTIVE', 1)
-            this.$router.push({path:'/Brand'})
-        },
-        Discount_gets(){
-            this.$store.commit('ACTIVE', 2)
-            this.$router.push({path:'/Discount'})
-        },
+        // Discount_gets(){
+        //     this.$store.commit('ACTIVE', 2)
+        //     this.$router.push({path:'/Discount'})
+        // },
+        shops(index){
+            this.$router.push({path:'/Goods',query:{ goodsLabel: index, title: index == 0 ? '热销商品' : '最新商品' }})
+        }
     },
     
 }
 </script>
 
 <style lang="less" scoped>
-    #home{
-        width: 100%; height: 100%; padding-bottom: 1.1rem; background-color: white; font-size: 0.3rem;
-    }
-    
-    *{
-        margin: 0; padding: 0; box-sizing: border-box;
-    }
+#home{
+    width: 100%; height: 100%; padding-bottom: 1.1rem; background-color: rgba(232,232,232,1); font-size: 0.3rem;
+}
 
-    .font1{ font-family:PingFang-SC-Medium; font-weight: Medium; }
-    .font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
-    .font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
+*{
+    margin: 0; padding: 0; box-sizing: border-box;
+}
 
-    .swipe{
-        width: 100%; height: 4.26rem;
-        & img{
-            width: 100%; height: 100%;
+.font1{ font-family:PingFang-SC-Medium; font-weight: Medium; }
+.font2{ font-family:PingFang-SC-Regular; font-weight: Regular; }
+.font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
+
+.swipe{
+    width: 100%; height: 4.26rem;
+    & img{
+        width: 100%; height: 100%;
+    }
+}
+
+.classification{
+    width: 100%; height: 3.6rem; font-size: 0.25rem; text-align: center; background-color: white;
+    a{color:rgba(43,43,43,1);font-family:YouYuan;}
+    & div{
+        width: 25%; height: 1.4rem; float: left; margin-top: 0.2rem;
+        text-align: center; padding-top: 0.16rem;
+        img{
+            width: 0.94rem; height: 1.18rem;
         }
     }
+}
 
-    .classification{
-        width: 100%; height: 3.6rem; padding: 0.1rem 0 0.25rem 0.4rem; font-size: 0.25rem; text-align: center;
-        a{color:rgba(43,43,43,1);font-family:YouYuan;}
-        & div{
-            width: 2.1rem; height: 1.4rem; float: left; margin-right: 0.2rem; margin-top: 0.2rem;
-            text-align: center; padding-top: 0.16rem;
-            img{
-                width: 0.74rem; height: 0.74rem;
-            }
+.Headline{
+    width: 100%; height: 0.88rem; background-color: white; margin-top: 0.2rem;
+    font-size: 0.28rem; line-height: 0.88rem; padding-left: 0.39rem;
+    & img{
+        width: 1.19rem; height: 0.29rem; position: relative; top: 0.05rem; margin-right: 0.42rem
+    }
+}
+
+.home_list{
+    width: 100%; height: calc(0.78rem + 2.4rem + 3.46rem); background-color: white; margin-top: 0.2rem; overflow: hidden;
+    .home_list_title{
+        width: 100%; height: 0.78rem; text-align: center; position: relative; color: #F09513; .font1; line-height: 0.78rem;
+        .home_list_title_img{ width: 0.12rem; height: 0.34rem; position: relative; top: 0.05rem; margin-right: 0.2rem; }
+        div{ 
+            position: absolute; right: 0.3rem; top: 0; font-size: 0.24rem; color: #808080; .font2;
+            .home_list_title_more{ width: 0.08rem; height: 0.14rem; position: relative; top: -0.03rem; left: 0.1rem; }
         }
     }
-
-    .Headline{
-        width: 100%; height: 1.28rem; border-top: 0.2rem solid rgba(232,232,232,1); border-bottom: 0.2rem solid rgba(232,232,232,1);
-        font-size: 0.28rem; line-height: 0.88rem; padding-left: 0.39rem;
-        & img{
-            width: 1.19rem; height: 0.29rem; position: relative; top: 0.05rem; margin-right: 0.42rem
-        }
-    }
-
-    .Discount{
-        width: 100%; padding: 0.48rem 0 0.3rem 0.4rem;
-        & h3{ font-size: 0.36rem; }
-        .Discount_get{ float: right; font-size: 0.28rem; color:rgba(255,139,75,1); .font2; margin-right: 0.4rem; line-height: 0.55rem; }
-        & h4{ font-size: 0.28rem; .font2; color:rgba(128,128,128,1); }
-        .Discount_{
-            display: inline-block; width: 100%; color: rgba(255,255,255,1);
-            .Discount_list{
-                width: 3.25rem; height: 3.25rem; float: left; margin-right: 0.2rem; margin-top: 0.2rem; position: relative;
-                img{
-                    width: 100%; height: 100%;
-                }
-                div{
-                    width: 100%; max-height: 0.86rem; position: absolute; bottom: 0; left: 0; background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.7));
-                    text-shadow: 0.018rem 0.018rem 0.018rem black; line-height: 0.35rem; padding: 0 0.1rem 0.08rem 0.1rem;
-                    overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
-                    font-size: 0.28rem; font-family:PingFang-SC-Medium; font-weight: Medium;
-                    p{ overflow: hidden; }
-                    // writing-mode:vertical-lr;  文字旋转90度
-                }
-            }
-        }
-    }
-
-    .Selecteds{
-        width: 100%; height: 1.9rem; position: relative; margin-top: 0.2rem; padding-left: 0.4rem; 
-        border-top: 0.2rem solid rgba(232,232,232,1); padding-top: 0.48rem;
-        & h3{ font-size: 0.36rem;  }
-        & h4{ font-size: 0.28rem; .font2; color:rgba(128,128,128,1); }
-    }
-
-    .brand{
-        width: calc(100% - 0.8rem); margin: 0 auto; padding-bottom: 0.3rem;
-        border:1px solid rgba(206,206,206,1);
-        span{
-            display: inline-block;
-            width: 33.33%; height: 1.7rem; text-align: center; margin-top: 0.3rem;
-            img{ width: 1.2rem; height: 1.2rem; border-radius: 50%; }
-            p{ font-size: 0.24rem; .font3; color:rgba(26,26,26,1); white-space: nowrap; overflow: hidden; }
-        }
-    }
+    .home_list_wines{ width: 100%; height: 2.4rem; img{ width: 100%; height: 100%; } }
+}
+.grid-center {
+    width: 100%; color: #4B4B4B; padding: calc((100% - 2.1rem) / 2);
+    img{ width: 2.1rem; height: 1.6rem; }
+}
+.grid-centers {
+    width: 100%; color: #4B4B4B; padding: calc((100% - 2.1rem) / 2); border-top: 0.008rem solid #FF8B4B;
+    p{ font-size: 0.2rem; line-height: 0.25rem; }
+    span{ background-color: #F15C4E; border-radius: 0.03rem; color: white; padding: 0.02rem 0.06rem; font-size: 0.14rem!important; }
+    .grid-center-money{ font-size: 0.24rem; color: #EA1616; .font1; margin-top: 0.15rem; }
+}
+.weui-grid {
+    margin: 0; padding: 0!important;
+}
+.weui-grids:before {
+    border-top: 0!important; 
+}
+.weui-grid:before {
+    border-right: 1px solid #FF8B4B; border-top: 0; 
+}
+.weui-grid:after{ border-bottom: 0; }
 
 
 </style>

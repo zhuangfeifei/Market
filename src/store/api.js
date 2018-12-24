@@ -4,16 +4,15 @@ import router from '../router'
 import { Toast, Dialog } from 'vant'
 
 
-let localhostDev = true
+let localhostDev = true  
 let urls = localhostDev ? '/market' : 'http://www.homeamc.cn'
 
-const api = axios.create()
-api.defaults.baseURL = urls
-api.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+axios.defaults.baseURL = urls
 
 // 请求拦截
-api.interceptors.request.use(function (config) {
-
+axios.interceptors.request.use(function (config) {
+ 
+   if(config.url !== '/market/shopss/api/order/pay' && config.url !== '/market/shopss/api/address/addadress') store.commit('isLoading', true)
     return config
 
   }, function (error) {
@@ -21,9 +20,31 @@ api.interceptors.request.use(function (config) {
     return Promise.reject(error)
 })
 
-// 添加响应拦截器
-api.interceptors.response.use(function (response) {
+// 请求
+const fetch = (url, params = '', headers = { 'Content_Type':'application/x-www-form-urlencoded' }) => {
+  if(store.state.market_unionId == null){
+    window.location.reload()
+    return
+  }
 
+  axios.defaults.headers.post['Content-Type'] = headers.Content_Type
+  
+  // 判断是否是FormData
+  const data = Object.prototype.toString.call(params) === '[object FormData]' ? params : headers.Content_Type === 'application/json' ? params : $.param(params)   
+  return new Promise((resolve, reject) => {
+    axios.post(url, data)
+      .then(response => {
+        resolve(response)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+} 
+
+// 添加响应拦截器
+axios.interceptors.response.use(function (response) {
+  store.commit('isLoading', false)
   if(response.data.code == 9999) {
     Dialog.confirm({
         title: '您还没有绑定会员卡！',
@@ -39,9 +60,9 @@ api.interceptors.response.use(function (response) {
     return response;
 
   }, function (error) {
-    
+    store.commit('isLoading', false)
     Toast.fail('网络异常！')
     return Promise.reject(error)
 })
 
-export default {api , urls}
+export default {fetch , urls}

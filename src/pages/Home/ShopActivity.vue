@@ -66,7 +66,8 @@ export default {
             this.mescroll = mescroll
         },
         upCallback (page, mescroll) {
-            this.$axios.api.post('/shops/api/activity/activityList', $.param({ limit: page.size, current: page.num }) )
+            let list = { limit: page.size, current: page.num }
+            this.$store.dispatch('activityList', list)
             .then(res => {
                 // console.log(res.data)
                 if(res.data.code == 200) {

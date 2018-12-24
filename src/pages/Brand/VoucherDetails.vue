@@ -6,7 +6,8 @@
             <div class="detail">
                 <h4>{{groupListDetail.group_name}}</h4>
                 <p><span>广场指定餐饮商户{{groupListDetail.group_name}}</span><span>库存{{groupListDetail.inventory}}</span></p>
-                <p><span>{{groupListDetail.present_price}}元</span><span>/价值{{groupListDetail.discount}}元</span></p>
+                <p><span>{{groupListDetail.price}}元</span><span>/价值{{groupListDetail.discount}}元</span></p>
+                <p><span>数量：</span><van-stepper class="VoucherDetails_num" v-model="num" @change="change"/></p>
                 <p v-if="groupListDetail.period_validity == 0">有效期：长期有效</p>
                 <p v-else>有效期：{{groupListDetail.start_time}} ~ {{groupListDetail.end_time}}</p>
             </div>
@@ -27,7 +28,7 @@
         </div>
 
         <div class="footers">
-            <button @click="pay" :class="{ispay: groupListDetail.inventory == 0}">¥{{groupListDetail.present_price}}立即购买</button>
+            <button @click="pay" :class="{ispay: groupListDetail.inventory == 0}">¥{{(groupListDetail.price * num).toFixed(2)}}立即购买</button>
         </div>
 
 
@@ -38,11 +39,7 @@
 export default {
     data() {
         return {
-            images: [
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531462002438&di=e061bf459cfedfddc668e4336da6ca46&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimage%2Fc0%253Dpixel_huitu%252C0%252C0%252C294%252C40%2Fsign%3Da4742242da1373f0e13267dfcd772e97%2F8718367adab44aed5b4404ddb81c8701a18bfb85.jpg',
-                'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1531461952740&di=6ad5282d2d30f8ba0d75cd2bade8eed8&imgtype=0&src=http%3A%2F%2Fpic.58pic.com%2F58pic%2F11%2F25%2F79%2F58PIC4B58PICbtD.jpg'
-            ],
-            activeNames: ['0']
+            activeNames: ['0'],num:1
         }
     },
     components: {
@@ -78,6 +75,9 @@ export default {
         })
     },
     methods:{
+        change(){
+
+        },
         map(){
             window.location.href = 'https://uri.amap.com/navigation?from=&to='+this.groupListDetail.LNG+','+this.groupListDetail.LAT+','+this.groupListDetail.ADDRESS+'&mode=walk&policy=1&src=mypage&coordinate=gaode&callnative=0'
         },
@@ -89,7 +89,8 @@ export default {
                     message: '加载中...',
                     duration: 0
                 })
-                this.$store.dispatch('addGroupOrder', this.groupListDetail)
+                var list = { groupListDetail: this.groupListDetail, num: this.num }
+                this.$store.dispatch('addGroupOrder', list)
             }
         },
     },
@@ -116,7 +117,7 @@ export default {
     .VoucherDetails{
         width: 100%; height: 100%; padding: 0.41rem;
         .detail{
-            width: 100%; height: 3.13rem; padding-top: 0.07rem;
+            width: 100%; padding-top: 0.07rem;
             & h4{ font-size: 0.36rem; .font3; }
             & p:nth-child(2){
                 .font2; font-size: 0.24rem; color:rgba(128,128,128,1); line-height: 0.5rem;
@@ -127,7 +128,10 @@ export default {
                 span:nth-child(1){ color: #EA1616; }
             }
             & p:nth-child(4){
-                .font1; font-size: 0.24rem; color:rgba(43,43,43,1); line-height: 1rem;
+                display: flex;
+            }
+            & p:nth-child(5){
+                .font1; font-size: 0.24rem; color:rgba(43,43,43,1); line-height: 0.7rem;
             }
         }
         .VoucherDetails_business{

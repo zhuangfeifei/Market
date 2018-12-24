@@ -8,13 +8,15 @@ import FontSize from './FontSize'
 // import jQuery from 'jquery'
 // Vue.prototype.$ = jQuery
 
+import MescrollVue from 'mescroll.js/mescroll.vue'
+
 import store from './store/store'
 Vue.prototype.$store = store
 import axios from './store/api'
 Vue.prototype.$axios = axios
 
 import Vant from 'vant';
-import 'vant/lib/vant-css/index.css';
+import 'vant/lib/index.css';
 Vue.use(Vant);
 
 import VueLazyLoad from 'vue-lazyload'

@@ -73,8 +73,8 @@ export default {
             this.mescroll = mescroll
         },
         upCallback (page, mescroll) {
-            this.$axios.api.post('/shops/api/order/coupon', $.param({ access_type:'WXH5', wxh: this.$store.state.market_wxh, openId: this.$store.state.market_openId, unionId: this.$store.state.unionId,
-                queryType: this.tabIndex, limit: page.size, current: page.num }) )
+            let list = { queryType: this.tabIndex, limit: page.size, current: page.num }
+            this.$store.dispatch('coupon', list)
             .then(res => {
                 // console.log(res.data)
                 if(res.data.code == 200) {
