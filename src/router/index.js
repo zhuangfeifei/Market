@@ -16,6 +16,8 @@ const Goods = resolve => require(['@/pages/Home/Goods'], resolve)
 const Address = resolve => require(['@/pages/Home/address/Address'], resolve)
 const AddAddress = resolve => require(['@/pages/Home/address/AddAddress'], resolve)
 const NewYears = resolve => require(['@/pages/Home/NewYears'], resolve)
+const Vouchers = resolve => require(['@/pages/Home/Vouchers'], resolve)
+const LuckyDraw = resolve => require(['@/pages/Home/LuckyDraw'], resolve)
 
 const ShoppingCart = resolve => require(['@/pages/ShoppingCart/ShoppingCart'], resolve)
 const CreateGoodsCart = resolve => require(['@/pages/ShoppingCart/CreateGoodsCart'], resolve)
@@ -44,6 +46,10 @@ const Wallet = resolve => require(['@/pages/My/Wallet'], resolve)
 const Authentication = resolve => require(['@/pages/My/Authentication'], resolve)
 const Owner = resolve => require(['@/pages/My/Owner'], resolve)
 const Recharge = resolve => require(['@/pages/My/Recharge'], resolve)
+const IntegralshopDetails = resolve => require(['@/pages/My/IntegralshopDetails'], resolve)
+const MyIntegral = resolve => require(['@/pages/My/MyIntegral'], resolve)
+const Password = resolve => require(['@/pages/My/Password'], resolve)
+const NewPassword = resolve => require(['@/pages/My/NewPassword'], resolve)
 
 const Discount = resolve => require(['@/pages/Activity/Discount'], resolve)
 const DiscountItem = resolve => require(['@/pages/Activity/DiscountItem'], resolve)
@@ -144,5 +150,11 @@ export default new Router({
     { path: '/Result', component: Result },
     { path: '/Return', component: Return },
     { path: '/NewYears', component: NewYears },
+    { path: '/Vouchers', component: Vouchers },
+    { path: '/LuckyDraw', component: LuckyDraw },
+    { path: '/IntegralshopDetails', component: IntegralshopDetails },
+    { path: '/MyIntegral', component: MyIntegral },
+    { path: '/Password', component: Password },
+    { path: '/NewPassword', component: NewPassword },
   ]
 })

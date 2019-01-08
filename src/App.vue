@@ -46,9 +46,11 @@ export default {
 
 <style lang="less">
 #app {
-   min-height: 100vh;
+   min-height: 100vh; background-color: white;
 }
-
+*{
+    box-sizing: border-box; margin: 0; padding: 0;
+}
 
 .apploading{
   position: absolute; top: calc(50% - 20px); left: calc(50% - 20px); z-index: 10000;

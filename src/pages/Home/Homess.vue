@@ -38,7 +38,7 @@
             <h4>限时福利、数量有限、抢完即止</h4> -->
             <div class="Discount_">
                 <div class="Discount_list" @click="details(item.id)" v-for="(item,index) in goodsList" :key="index" v-if="index < 6">
-                    <img :src="imgUrl+'file/gallery/'+ item.thumbnail_pic" alt="">
+                    <img :src="imgUrlGoods+ item.thumbnail_pic" alt="">
                     <div><p>{{item.goods_name}}</p></div>
                     <span class="rmb">¥</span><span>{{item.price}}</span>
                 </div>
@@ -85,6 +85,9 @@ export default {
     computed:{
         imgUrl(){
             return this.$store.state.imgUrl
+        },
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
         },
         carousel(){
             return this.$store.state.carousel

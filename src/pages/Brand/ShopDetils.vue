@@ -145,7 +145,7 @@ import { setTimeout } from 'timers';
 }
 
 .ShopDetils_nav{
-    width: calc(100% - 0.8rem); padding: 0.48rem 0; margin: 0 auto; border-bottom: 0.02rem dashed rgba(206,206,206,1);
+    width: calc(100% - 0.8rem); padding: 0.48rem 0; margin: 0 auto; border-bottom: 0.02rem dashed rgba(206,206,206,1); 
     & .ShopDetils_nav_title{
         width: 100%; height: 1.2rem; display: flex;
         img{ width: 1.2rem; height: 100%; border-radius: 50%; margin-right: 0.3rem; }

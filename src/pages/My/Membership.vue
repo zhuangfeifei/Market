@@ -24,11 +24,11 @@
             <div class="main_inputs" @click="sexChange">
                 <div>性别</div><div><span>{{sex}}</span><img src="../../assets/img/Mores.png" alt=""></div>
             </div>
-            <!--<router-link to="/Address">
+            <router-link to="/Address">
                 <div class="main_add">
                     <div>收货地址</div><img src="../../assets/img/Mores.png" alt="">
                 </div>
-            </router-link>-->
+            </router-link>
             <button class="Preservation" @click="Preservation">保存</button>
         </div>
 
@@ -151,7 +151,7 @@ import { TransferDom, Actionsheet, Group, XSwitch, Toast } from 'vux'
         // img{ width: 0.16rem; height: 0.29rem; position: relative; top: 0.27rem; margin-left: 0.1rem; }
     }
     .main_inputs{
-        display: flex; justify-content: space-between; border-bottom: 0.01rem solid rgba(206,206,206,1);
+        display: flex; justify-content: space-between;
         & div:nth-child(2){
             text-align: right; .font2;
             img{ width: 0.1rem; height: 0.2rem; position: relative; top: 0rem; margin-left: 0.1rem; }

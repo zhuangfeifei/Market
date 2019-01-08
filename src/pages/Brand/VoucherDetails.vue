@@ -1,7 +1,12 @@
 <template>
     <div id="VoucherDetails" v-if="groupListDetail">
 
-        <div class="logo"><img :src="imgUrl + groupListDetail.path" alt=""></div>
+        <!-- <div class="logo"><img :src="imgUrlGoods + groupListDetail.path.split(',')[0]" alt=""></div> -->
+        <van-swipe v-if="groupListDetail.path" class="ShopDetils_swipe" :autoplay="3000">
+            <van-swipe-item v-for="(item, index) in groupListDetail.path.split(',')" :key="index">
+                <img v-lazy="imgUrlGoods + item" />
+            </van-swipe-item>
+        </van-swipe>
         <div class="VoucherDetails">
             <div class="detail">
                 <h4>{{groupListDetail.group_name}}</h4>
@@ -53,6 +58,9 @@ export default {
     computed: {
         imgUrl() {
             return this.$store.state.imgUrl
+        },
+        imgUrlGoods() {
+            return this.$store.state.imgUrlGoods
         },
         groupListDetail() {
             if(this.$store.state.groupListDetail == ''){
@@ -114,6 +122,13 @@ export default {
         width: 100%; height: 4.2rem;
         img{ width: 100%; height: 100%; }
     }
+.ShopDetils_swipe{
+    width: 100%; height: 4.2rem;
+    & img{
+        width: 100%; height: 100%;
+    }
+}
+
     .VoucherDetails{
         width: 100%; height: 100%; padding: 0.41rem;
         .detail{

@@ -19,7 +19,7 @@ import scroller from '../../components/_scroller'
 export default {
     data() {  
         return {
-            activeKey: 1
+            activeKey: 1,
         }
     },
     components: {
@@ -33,6 +33,7 @@ export default {
         document.documentElement.scrollTop = 0
         document.title = '分类'
         // console.log(12)
+
     },
     computed:{
         CategoryOneList(){

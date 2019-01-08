@@ -12,7 +12,7 @@ axios.defaults.baseURL = urls
 // 请求拦截
 axios.interceptors.request.use(function (config) {
  
-   if(config.url !== '/market/shopss/api/order/pay' && config.url !== '/market/shopss/api/address/addadress') store.commit('isLoading', true)
+   if(config.url !== '/market/shops/api/order/pay' && config.url !== '/market/shops/api/address/addadress') store.commit('isLoading', true)
     return config
 
   }, function (error) {

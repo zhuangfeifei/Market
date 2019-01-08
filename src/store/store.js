@@ -17,7 +17,8 @@ const state = {
     market_wxh: Util.getLocal('market_wxh'),
     market_openId: Util.getLocal('market_openId'),
     market_unionId: Util.getLocal('market_unionId'),
-    imgUrl: axios.urls + '/shopss/kaptcha/',
+    imgUrl: axios.urls + '/shops/kaptcha/',
+    imgUrlGoods: axios.urls + '/shops/kaptcha/file/gallery/',
     isPage: true,
     isPay: false,
     isPassword: false,
@@ -69,6 +70,13 @@ const state = {
 
 
     index_goods:'', // 首页商品列表
+    CATEGORY_NAME:null, // 首页商品列表选中的title
+
+    redPacketList:'', // 获取所有自领优惠券列表
+
+
+    scoreGoodDteail:'', // 查看积分商城商品详情
+    myScoreGoodsList:'', // 我的积分兑换列表
 }
 
 export default new Vuex.Store({

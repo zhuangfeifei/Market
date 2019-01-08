@@ -2,13 +2,14 @@
     <div id="Goods">
         
         <nav class="search">
-            <div><input id="name" type="text" v-model="goodsName" ref="input"><img @click="search" src="../../assets/img/search.png" alt=""></div>
+            <div><input id="name" type="text" v-model="goodsName" ref="input" placeholder="搜索你想要的商品"></div>
+            <img @click="search" src="../../assets/img/search.png" alt="">
         </nav>
         <!-- <div class="Goods_title"><span>默认</span><span>销量</span><span>价格</span></div> -->
         <mescroll-vue class="GoodsMescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
             <div class="goods">
                 <div class="goods_list" v-for="(item,index) in goodsList" :key="index" @click="$router.push({path:'/GoodsDetails', query:{id: item.id}})">
-                    <img :src="imgUrl+'file/gallery/'+item.thumbnail_pic" alt="">
+                    <img v-lazy="imgUrlGoods + item.thumbnail_pic" alt="">
                     <div>
                         <p>{{item.goods_name}}</p>
                     </div>
@@ -45,8 +46,8 @@ export default {
         
     },
     computed:{
-        imgUrl(){
-            return this.$store.state.imgUrl
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
         },
     },
     created(){
@@ -111,16 +112,17 @@ export default {
 }
 
 .search{
-    width: 100%; height: 1.03rem; border-bottom: 0.02rem solid rgba(206,206,206,1); padding-top: 0.195rem; position: fixed; top: 0; left: 0; background-color: white;
+    width: 100%; height: 1.03rem; border-bottom: 0.02rem solid rgba(128,128,128,1); position: fixed; top: 0; left: 0; background-color: white;
+    display: flex; justify-content: space-around; align-items: center; padding: 0 0.2rem;
     div{
-        width: 5.54rem; height: 0.64rem; border: 0.02rem solid #FF8B4B; margin: 0 auto; position: relative; border-radius: 0.32rem;
+        width: 5.54rem; height: 0.64rem; border-radius: 0.32rem; background:rgba(246,246,246,1); padding-top: 0.07rem;
         input{
             width: 100%; height: 0.45rem; border: 0; background: none; outline: none!important;
-            position: absolute; top: 0.07rem; left: 0; padding-left: 0.3rem; line-height: 0.45rem!important;
+            padding-left: 0.3rem; line-height: 0.45rem!important;
         }
-        img{
-            width: 0.42rem; height: 0.42rem; position: absolute; top: 0.1rem; right: 0.31rem;
-        }
+    }
+    img{
+        width: 0.42rem; height: 0.42rem;
     }
 }
 

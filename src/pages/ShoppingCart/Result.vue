@@ -11,7 +11,7 @@
         </div>
 
         <div class="Result_view">
-            <div @click="details">查看订单</div><div>去使用</div>
+            <div @click="details">查看订单</div><div @click="$router.go(-1)">继续</div>
         </div>
         
     </div>

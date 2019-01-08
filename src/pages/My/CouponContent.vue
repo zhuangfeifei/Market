@@ -2,17 +2,18 @@
     <div id="CouponContent">
 
         <nav></nav>
-        <div class="CouponContent_content">
+        <div v-if="couponDetail" class="CouponContent_content">
             <h3>{{couponDetail.title}}</h3>
             <van-row class="CouponContent_title">
                 <van-col span="7">使用条件</van-col>
-                <van-col span="17"><p>· {{couponDetail.conditionDesc}}</p><p>· {{couponDetail.shopName}}</p></van-col>
+                <van-col span="17"><p>· {{couponDetail.use_codition == 0 ? '无条件' : '满'+couponDetail.condition_price+'减'+couponDetail.price}}</p></van-col>
             </van-row>
             <van-row class="CouponContent_time">
                 <van-col span="7">有效期</van-col>
-                <van-col span="17"><p>· {{couponDetail.limitDateStart}} ~ {{couponDetail.limitDateEnd}}</p></van-col>
+                <van-col span="17"><p>· {{couponDetail.limit_date_start}} ~ {{couponDetail.limit_date_end}}</p></van-col>
             </van-row>
-            <van-row class="CouponContent_code">
+
+            <!-- <van-row class="CouponContent_code">
                 <van-col span="7">校验码</van-col>
                 <van-col class="CouponContent_code_2" span="17">
                     <p>· {{couponDetail.qrcode}}</p>
@@ -20,10 +21,11 @@
                     <img class="couponStatus" :src="img[status]" alt="">
                 </van-col>
             </van-row>
-            <div id="qrcode"></div>
+            <div id="qrcode"></div> -->
+
             <van-row class="CouponContent_tip">
                 <van-col span="7">使用须知</van-col>
-                <van-col span="17"><p>· 仅限于方圆里中商家使</p><p>· 每人每次最多核销一张</p></van-col>
+                <van-col span="17"><p v-for="(item,index) in couponDetail.remark.split('；')" :key="index">{{item}}</p></van-col>
             </van-row>
         </div>
 
@@ -41,11 +43,11 @@ export default {
         
     },
     beforeCreate(){
-        this.$store.dispatch('couponDetail', this.$route.query.ids)
+        this.$store.dispatch('redPacketListDetail', this.$route.query.ids)
     },
     computed:{
         couponDetail(){
-            return this.$store.state.couponDetail
+            return this.$store.state.couponDetail[0]
         },
     },
     created(){
@@ -76,6 +78,11 @@ export default {
     //     to.meta.keepAlive = true; // B 跳转到 A 时，让 A 缓存，即不刷新（代码写在B页面）
     //     next();
     // }
+    filters:{
+        filter(val){
+            return val.replace("\n","")
+        }
+    }
 }
 </script>
 
@@ -93,11 +100,11 @@ export default {
     .font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
 
     nav{
-        width: 100%; height: 13.2rem; background: url('../../assets/img/titlebac.png') no-repeat; background-size: 100% 100%;
+        width: 100%; height: 100vh; background: url('../../assets/img/titlebac.png') no-repeat; background-size: 100% 100%;
     }
 
     .CouponContent_content{
-        width: 6.7rem; position: absolute; top: 0.73rem; left: 0.4rem; padding: 0.64rem 0.29rem; color: black;
+        width: 6.7rem; height: 10rem; position: absolute; top: 0.73rem; left: 0.4rem; padding: 0.64rem 0.29rem; color: black;
         background: url('../../assets/img/use.png') no-repeat; background-size: 100% 100%; 
         h3{ text-align: center; .font1; font-size: 0.36rem; }
         .CouponContent_title,.CouponContent_time,.CouponContent_code,.CouponContent_tip{ 
@@ -115,10 +122,10 @@ export default {
             .CouponContent_code_no{ width: 2.5rem; height: 0.34rem; position: absolute; left: -0.1rem; top: 0; }
         }
         #qrcode{
-            width: 3.6rem; height: 3.6rem; margin: 0.32rem auto;
+            width: 3.6rem; height: 3.6rem; margin: 0.32rem auto; 
         }
         .CouponContent_tip{
-            margin-top: 0.48rem; padding-top: 0.49rem; border-top: 0.02rem dashed rgba(206,206,206,1);
+            margin-top: 0.48rem;
         }
     }
 

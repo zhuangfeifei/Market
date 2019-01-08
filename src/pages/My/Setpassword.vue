@@ -38,9 +38,6 @@ export default {
         document.documentElement.scrollTop = 0
         document.title = '支付设置'
         
-        this.$nextTick(()=>{
-            this.$store.commit('isPassword', this.$store.state.user.wtCustomer.payPassword == '' ? true : false )
-        })
     },
     methods:{
         onInput(key) {

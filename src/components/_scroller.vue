@@ -3,7 +3,7 @@
         
         <div class="scroller_">
             <div class="scrollers">
-                <div class="scroller_list" :class="{scroller_actives: active == index}" v-for="(item,index) in CategoryOneList" :key="index" @click="change(index)">
+                <div class="scroller_list" :class="{scroller_actives: item.CATEGORY_NAME == CATEGORY_NAME}" v-for="(item,index) in CategoryOneList" :key="index" @click="change(index)">
                     <p>{{item.CATEGORY_NAME}}</p>
                     <section></section> 
                 </div>
@@ -22,14 +22,16 @@ export default {
     },
     props:['CategoryOneList'],
     computed:{
-        
+        CATEGORY_NAME(){
+            return this.$store.state.CATEGORY_NAME
+        }
     },
     created(){
         
     },
     methods:{
         change(index){
-            this.active = index
+            this.active = this.$store.commit('CATEGORY_NAME', this.CategoryOneList[index].CATEGORY_NAME)
             this.$store.dispatch('CategoryTwoOrThreeList', this.CategoryOneList[index].ID)
         }
     }

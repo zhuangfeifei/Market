@@ -9,10 +9,10 @@
         <mescroll-vue class="CouponMescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
             <div v-if="coupon.length > 0" class="list">
                 <div class="coupon_list" @click="coupon_content(item.id)" v-for="(item,index) in coupon" :key="index">
-                    <div class="money"><h3 :class="{Coupon_list_active: tabIndex > 0}"><span>¥</span>{{item.discount}}</h3></div>
-                    <div class="content" :class="{Coupon_list_active: tabIndex > 0}"><h3 :class="{Coupon_list_active: tabIndex > 0}">{{item.conditionDesc}}</h3><div>{{item.title}}</div></div>
+                    <div class="money"><h3 :class="{Coupon_list_active: tabIndex > 0}"><span>¥</span>{{item.price}}</h3></div>
+                    <div class="content" :class="{Coupon_list_active: tabIndex > 0}"><h3 :class="{Coupon_list_active: tabIndex > 0}">{{item.title}}</h3><div>{{item.use_codition == 0 ? '无条件' : '满'+item.condition_price+'减'+item.price}}</div></div>
                     <div class="status"><img :src="status[tabIndex]" alt=""></div>
-                    <p class="time" :class="{Coupon_list_active: tabIndex > 0}">有效期：{{item.limitDateStart}} ~ {{item.limitDateEnd}}</p>
+                    <p class="time" :class="{Coupon_list_active: tabIndex > 0}">有效期：{{item.limit_date_start}} ~ {{item.limit_date_end}}</p>
                 </div>
             </div>
             <div v-else class="nos"><img src="../../assets/img/no.png" alt=""><p>目前还没有优惠券哦~</p></div>
@@ -73,8 +73,8 @@ export default {
             this.mescroll = mescroll
         },
         upCallback (page, mescroll) {
-            let list = { queryType: this.tabIndex, limit: page.size, current: page.num }
-            this.$store.dispatch('coupon', list)
+            let list = { stateType: this.tabIndex == 0 ? 3 : this.tabIndex == 1 ? 4 : 1, limit: page.size, current: page.num }
+            this.$store.dispatch('mySelfRedPacketList', list)
             .then(res => {
                 // console.log(res.data)
                 if(res.data.code == 200) {

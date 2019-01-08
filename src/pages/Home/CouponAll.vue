@@ -1,40 +1,23 @@
 <template>
     <div id="CouponAll">
 
-        <nav>
-            <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: list.tabIndex == index}"><span>{{item}}</span><section v-show="list.tabIndex == index"></section></div>
-        </nav>
-
-        <div v-if="groupList.length > 0" class="CouponAll_">
-            <div v-if="list.tabIndex == 0" class="CouponAll_list_Cash" @click="groupListdetails(index)" v-for="(item,index) in groupList" :key="index">
-                <van-row>
-                    <van-col span="5" class="CouponAll_list_Cash_title"><img :src="imgUrl + item.thumbnail_pic" alt=""></van-col>
-                    <van-col span="19" class="CouponAll_list_Cash_ammont">
-                        <p>{{item.group_name}}</p>
-                        <div><del>原价：¥{{item.discount}}</del><span>¥{{item.present_price}}</span></div>
-                    </van-col>
-                </van-row>
-                <!-- <van-row>
-                    <van-col span="16" class="CouponAll_list_Cash_title"><h4>{{item.group_name}}</h4><h5>原价：¥{{item.discount}}</h5><p></p></van-col>
-                    <van-col span="8" class="CouponAll_list_Cash_ammont"><div>¥{{item.present_price}}抢购</div></van-col>
-                </van-row> -->
-            </div>
-            <div v-if="list.tabIndex == 1" class="CouponAll_list_" v-for="(item,index) in couponList" :key="index" :class="{oldNo:item.isSinceCollar === '1'}">
+        <div v-if="redPacketList.length > 0" class="CouponAll_">
+            <div class="CouponAll_list_" v-for="(item,index) in redPacketList" :key="index" :class="{oldNo:item.isSinceCollar === '1'}">
                 <van-row>
                     <van-col span="17" class="CouponAll_list_title">
                         <div class="CouponAll_list_titles">
-                            <div><span :class="{old:item.COUPON_STATUS != 2}">¥</span><span :class="{old:item.COUPON_STATUS != 2}">{{item.discount}}</span></div>
-                            <div><div :class="{old:item.COUPON_STATUS != 2}">{{item.title}}</div><div :class="{old:item.COUPON_STATUS != 2}">{{item.shopName === "所有商户" ? "所有商户" : '仅限于'+item.shopName}}</div></div>
-                            <p class="CouponAll_list_time" :class="{old:item.COUPON_STATUS != 2}">有效期：{{item.limitDateStart}}~{{item.limitDateEnd}}</p>
-                            <img v-if="item.UNIT_TYPE == 1 && item.COUPON_STATUS != 2" src="../../assets/img/platformNo.png" alt="">
-                            <img v-if="item.UNIT_TYPE == 2 && item.COUPON_STATUS != 2" src="../../assets/img/businessNo.png" alt="">
-                            <img v-if="item.UNIT_TYPE == 1 && item.COUPON_STATUS == 2" src="../../assets/img/platform.png" alt="">
-                            <img v-if="item.UNIT_TYPE == 2 && item.COUPON_STATUS == 2" src="../../assets/img/business.png" alt="">
+                            <div><span :class="{old:item.COUPON_STATUS != 2}">¥</span><span :class="{old:item.COUPON_STATUS != 2}">{{item.price}}</span></div>
+                            <div><div :class="{old:item.COUPON_STATUS != 2}">{{item.title}}</div><div :class="{old:item.COUPON_STATUS != 2}">{{item.use_codition === 0 ? "无条件" : '满'+item.condition_price+'减'+item.price}}</div></div>
+                            <p class="CouponAll_list_time" :class="{old:item.COUPON_STATUS != 2}">有效期：{{item.limit_date_start}}~{{item.limit_date_end}}</p>
+                            <!-- <img v-if="item.UNIT_TYPE == 1 && item.COUPON_STATUS != 2" src="../../assets/img/platformNo.png" alt="">
+                            <img v-if="item.UNIT_TYPE == 2 && item.COUPON_STATUS != 2" src="../../assets/img/businessNo.png" alt=""> -->
+                            <img src="../../assets/img/platform.png" alt="">
+                            <!-- <img v-if="item.UNIT_TYPE == 2 && item.COUPON_STATUS == 2" src="../../assets/img/business.png" alt=""> -->
                         </div>
                     </van-col>
                     <van-col span="7" class="CouponAll_list_ammont">
-                        <img v-if="item.isSinceCollar === '1'" src="../../assets/img/Collared.png" alt=""><img v-else @click="receive(item.id)" src="../../assets/img/Collar.png" alt="">
-                        <p v-if="item.COUPON_STATUS == 2 && item.isSinceCollar === '0'">剩余{{item.NUMBER - item.PUSH_NUM}}张</p>
+                        <img @click="receive(item.id)" src="../../assets/img/Collar.png" alt="">
+                        <p>剩余{{item.storage_num}}张</p>
                     </van-col>
                 </van-row>
             </div>
@@ -59,24 +42,20 @@
 export default {
     data() {
         return {
-            active: 0, title:['代金券','优惠券'], data:'1',shows:true,
+            active: 0, data:'1',shows:true,
             status:[require('../../assets/img/notUsed.png'),require('../../assets/img/Undue.png'),require('../../assets/img/Expired.png')],
-            list:{ limit:5, current:1, isPage: false, tabIndex: 0 }
+            list:{ limit:100, current:1, isPage: false, tabIndex: 1 }
         }
     },
     components: {
         
     },
     beforeCreate(){
-        this.$store.dispatch('groupList')
-        this.$store.dispatch('couponList')
+        this.$store.dispatch('redPacketList')
     },
     computed:{
-        coupon(){
-            return this.$store.state.coupon
-        },
-        groupList(){
-            return this.$store.state.groupList
+        redPacketList(){
+            return this.$store.state.redPacketList
         },
         couponList(){
             return this.$store.state.couponList
@@ -102,27 +81,9 @@ export default {
             document.body.scrollTop = 0
             document.documentElement.scrollTop = 0
         },
-        tab(index){
-            this.top()
-            this.list.tabIndex = index
-            this.list.current = 1
-            this.$store.commit('SET_PAGE', true)
-            this.$store.dispatch('coupon', this.list)
-        },
-        coupon_content(id){
-            this.$router.push({path:'/couponContent', query:{status: this.list.tabIndex, ids: id}})
-        },
-        groupListdetails(index){
-            this.$store.dispatch('groupListDetail', this.groupList[index].id)
-            this.$router.push({path:"/VoucherDetails", query:{index:index}})
-        },
         receive(id){
-            this.$store.dispatch('sinceCollarCoupon', id)
+            this.$store.dispatch('getRedPacket', id)
         },
-        // detail(id){
-        //     console.log(id)
-        //     this.$store.dispatch('sinceCollarCouponDetail', id)
-        // }
     },
     destroyed(){
         window.removeEventListener('scroll', this.CouponAllGet)
@@ -132,7 +93,7 @@ export default {
 
 <style lang="less" scoped>
     #CouponAll{
-        width: 100%; min-height: 100vh; background:rgba(232,232,232,1); padding-top: calc(0.76rem); font-size: 0.3rem;
+        width: 100%; min-height: 100vh; background:rgba(232,232,232,1); font-size: 0.3rem;
     }
 
     *{

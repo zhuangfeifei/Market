@@ -15,7 +15,7 @@
             <h4>商品信息</h4>
             <div class="CreateGoods_Commodity_">
                 <div class="CreateGoods_Commodity_content">
-                    <img :src="imgUrl+'file/gallery/'+CategoryTwoOrThreeListDetail.thumbnail_pic" alt="">
+                    <img :src="imgUrlGoods + CategoryTwoOrThreeListDetail.thumbnail_pic" alt="">
                     <section>
                         <p>{{CategoryTwoOrThreeListDetail.goods_name}}</p>
                         <div>
@@ -73,8 +73,8 @@ export default {
             if(this.$store.state.CategoryTwoOrThreeListDetail == '') this.$store.commit('CategoryTwoOrThreeListDetail')
             return this.$store.state.CategoryTwoOrThreeListDetail
         },
-        imgUrl(){
-            return this.$store.state.imgUrl
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
         },
     },
     created(){
@@ -96,7 +96,7 @@ export default {
         },
         createdOrder(){
             let order = { 
-                addressId: this.defaultAdress.id, orderMoney: (this.CategoryTwoOrThreeListDetail.price*this.value).toFixed(2), orderSource: 0,
+                addressId: this.defaultAdress.id, orderMoney: (this.CategoryTwoOrThreeListDetail.price*this.value).toFixed(2), orderSource: 0, dataSource: 0, killId:'',
                 orderGoods:[ 
                     { 
                         goodsId: this.CategoryTwoOrThreeListDetail.id, goodsName: this.CategoryTwoOrThreeListDetail.goods_name, goodsNum: this.value, nowPrice: this.CategoryTwoOrThreeListDetail.price, 

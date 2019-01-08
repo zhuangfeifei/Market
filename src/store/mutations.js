@@ -123,6 +123,9 @@ export default {
     orderDetail(state,res){
         state.orderDetail = res
     },
+    redPacketList(state,res){
+        state.redPacketList = res
+    },
     mySelfRedPacketList(state,res){
         state.mySelfRedPacketList = res
     },
@@ -143,6 +146,19 @@ export default {
 
     index_goods(state, res){
         state.index_goods = res
+    },
+    CATEGORY_NAME(state, res){
+        state.CATEGORY_NAME = res
+    },
+
+
+
+    
+    scoreGoodDteail(state, res){
+        state.scoreGoodDteail = res
+    },
+    myScoreGoodsList(state, res){
+        state.myScoreGoodsList = res
     },
 }
 

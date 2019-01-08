@@ -15,7 +15,7 @@
             <h4>商品信息</h4>
             <div v-if="cartList" class="CreateGoodsCart_Commodity_">
                 <div class="CreateGoodsCart_Commodity_content" v-for="(item,index) in cartList" :key="index">
-                    <img :src="imgUrl+'file/gallery/'+cartList.thumbnail_pic" alt="">
+                    <img :src="imgUrlGoods+item.picture" alt="">
                     <section>
                         <p>{{item.goodsname}}</p>
                         <div>
@@ -76,6 +76,9 @@ export default {
         imgUrl(){
             return this.$store.state.imgUrl
         },
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
+        },
     },
     created(){
         document.body.scrollTop = 0
@@ -102,7 +105,7 @@ export default {
                 )
             }
             let order = { 
-                addressId: this.listadress[this.changeIndex].id, orderMoney: this.moeny, orderSource: 0,
+                addressId: this.listadress[this.changeIndex].id, orderMoney: this.moeny, orderSource: 0, dataSource: 0, killId:'',
                 orderGoods: array
             }
             this.$store.dispatch('createGoods', order)

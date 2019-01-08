@@ -11,7 +11,7 @@
                 <div class="GroupPurchaseOrder_list" @click="detils(item.order_id)" v-for="(item,index) in getHistoryGroupOrder" :key="index">
                     <div class="GroupPurchaseOrder_num"><span>订单编号：{{item.order_num}}</span><span v-if="item.order_status === '1'">已完成</span><span v-else>待付款</span></div>
                     <div class="GroupPurchaseOrder_content">
-                        <div class="GroupPurchaseOrder_content_logo"><img :src="imgUrl + item.thumbnail_pic" alt=""></div>
+                        <div class="GroupPurchaseOrder_content_logo"><img :src="imgUrlGoods + item.thumbnail_pic" alt=""></div>
                         <div class="GroupPurchaseOrder_content_">
                             <p>{{item.group_name}}</p>
                             <p>数量：1</p>
@@ -56,8 +56,8 @@ export default {
         
     },
     computed:{
-        imgUrl(){
-            return this.$store.state.imgUrl
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
         },
         // getHistoryGroupOrder(){
         //     return this.$store.state.getHistoryGroupOrder

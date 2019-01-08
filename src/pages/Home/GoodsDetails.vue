@@ -3,7 +3,7 @@
         
         <van-swipe :autoplay="3000" v-if="CategoryTwoOrThreeListDetail">
             <van-swipe-item class="swipes" v-for="(image, index) in CategoryTwoOrThreeListDetail.goods_pic.split(',')" :key="index">
-                <img class="swipe" :src="imgUrl+'file/gallery/'+image" />
+                <img class="swipe" :src="imgUrlGoods+image" />
             </van-swipe-item>
         </van-swipe>
 
@@ -19,9 +19,8 @@
         <div id="GoodsDetails_html" v-html="htmls"></div>
 
         <van-goods-action>
-            <van-goods-action-mini-btn icon="chat" text="客服" />
-            <van-goods-action-mini-btn icon="cart" text="购物车" @click="$router.push('/ShoppingCart')"/>
-            <!-- <van-goods-action-mini-btn icon="shop" text="店铺" /> -->
+            <van-goods-action-mini-btn icon="phone-o" text="客服" @click="onClickKeBtn"/>
+            <van-goods-action-mini-btn icon="shopping-cart-o" text="购物车" @click="$router.push('/ShoppingCart')"/>
             <van-goods-action-big-btn text="加入购物车" @click="onClickMiniBtn"/>
             <van-goods-action-big-btn text="立即购买" primary @click="onClickBigBtn"/>
         </van-goods-action>
@@ -49,8 +48,8 @@ export default {
         htmls(){
             return this.$store.getters.htmls
         },
-        imgUrl(){
-            return this.$store.state.imgUrl
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
         },
     },
     created(){
@@ -67,6 +66,9 @@ export default {
         },
         onClickBigBtn() {
             this.$router.push({path:'/CreateGoods',query:{id: this.CategoryTwoOrThreeListDetail.id}})
+        },
+        onClickKeBtn(){
+            window.location.href = 'tel:0512-66831208'
         }
     },
 }

@@ -17,7 +17,7 @@
             <div v-if="balance != ''" class="Balance_content">
                 <div class="add_reduce" v-for="(item,index) in balance" :key="index">
                     <div class="Balance_title"><span>{{item.flow}}</span><br><span class="date">{{item.create_time}}</span></div>
-                    <div class="Balance_s"><p :class="{colors:item.status == 1}">{{item.status === 0 ? '-¥ '+item.amount : '+¥ '+item.amount}}</p></div>
+                    <div class="Balance_s"><span :class="{colors:item.status == 1}">{{item.status === 0 ? '-¥ '+item.amount : '+¥ '+item.amount}}</span></div>
                 </div>
             </div>
 
@@ -154,7 +154,7 @@ export default {
             div:nth-child(2){  height: 100%; font-size: 0.36rem; } 
             .colors{ color:rgba(234,22,22,1); }
             .Balance_title{ width: calc(100% - 2rem); }
-            .Balance_s{ width: 2rem; text-align: right; }
+            .Balance_s{ width: 2.5rem; text-align: right; }
         }
     }
 

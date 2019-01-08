@@ -42,6 +42,7 @@
 
 <script>
 import PayCommon from '@/components/PayCommon'
+import { mapState } from 'vuex'
 export default {
     data() {  
         return {
@@ -55,30 +56,14 @@ export default {
     beforeCreate(){
         this.$store.dispatch('orderDetail', this.$route.query.orderId)
         this.$store.dispatch('user')
-        this.$store.dispatch('mySelfRedPacketList')
+        this.$store.dispatch('mySelfRedPacketListPay')
     },
     computed:{
         orderDetail(){
             return this.$store.state.orderDetail
         },
         coupons(){
-            let list = this.$store.state.mySelfRedPacketList, array = []
-            for(let val of list){
-                array.push({
-                    available: 1,
-                    discount: 0,
-                    denominations: val.price*100,
-                    originCondition: val.use_codition == 0 ? 0 : val.condition_price*100,
-                    reason: '',
-                    value: 150,
-                    name: val.title,
-                    startAt: new Date(val.limit_date_start.replace(/-/g, "/")).getTime()/1000,
-                    endAt: new Date(val.limit_date_end.replace(/-/g, "/")).getTime()/1000,
-                    id: val.id
-                })
-            }
-            // this.coupons = array
-            return array
+            return this.$store.getters.coupons
         },
         user(){
             return this.$store.state.user
@@ -89,7 +74,7 @@ export default {
             }
         },
         moeny(){
-            return 0 > this.orderDetail.ORDER_MONEY - this.redMoneys.price ? 0 :(this.orderDetail.ORDER_MONEY - this.redMoneys.price).toFixed(2)
+            return this.orderDetail.ORDER_MONEY - this.redMoneys.price < 0 ? 0 : (this.orderDetail.ORDER_MONEY - this.redMoneys.price).toFixed(2)
         },
         isPays(){
             return this.$store.state.isPay
@@ -112,12 +97,13 @@ export default {
             this.showList = false;
             this.chosenCoupon = index;
             if(index > -1){
-                let list = { redPacketId: this.coupons[index].id, orderMoney: this.orderDetail.ORDER_MONEY }
+                let list = { couponId: this.coupons[index].couponId, orderMoney: this.orderDetail.ORDER_MONEY, goodsId: null }
                 this.$store.dispatch('validationRedPacket', list)
                 .then(res =>{
                     // console.log(res.data)
                     if(res.data.code == 200){
-                        this.redMoneys = res.data.data
+                        this.redMoneys.couponId = res.data.data.couponId
+                        this.redMoneys.price = res.data.data.price
                     }else{
                         this.$toast(res.data.message)
                     }
@@ -142,6 +128,8 @@ export default {
                 }
             }
             this.$store.commit('SET_PAY', true)
+            // console.log(this.isChecked)
+            // console.log(this.user.wtCustomer.payPassword)
         },
     },
 }

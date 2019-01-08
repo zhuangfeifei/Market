@@ -11,7 +11,7 @@
         <div v-if="order != '' && user != ''" class="GroupPurchaseOrderDetils">
             <div class="GroupPurchaseOrderDetils_list">
                 <div class="GroupPurchaseOrderDetils_content">
-                    <div class="GroupPurchaseOrderDetils_content_logo"><img :src="imgUrl + order.thumbnail_pic" alt=""></div>
+                    <div class="GroupPurchaseOrderDetils_content_logo"><img :src="imgUrlGoods + order.thumbnail_pic" alt=""></div>
                     <div class="GroupPurchaseOrderDetils_content_">
                         <p>{{order.group_name}}</p>
                         <p>数量：{{order.num}}</p>
@@ -70,6 +70,9 @@ export default {
     computed:{
         imgUrl(){
             return this.$store.state.imgUrl
+        },
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
         },
         order(){
             return this.$store.state.order

@@ -18,7 +18,7 @@
         <div class="CommonOrderDetils_order">
             <h4>方圆里商城</h4>
             <div class="CommonOrderDetils_goods" v-for="(item,index) in CommonOrderDetail.goodsList" :key="index">
-                <img :src="imgUrl + item.THUMB_PIC" alt="">
+                <img :src="imgUrlGoods + item.THUMB_PIC" alt="">
                 <div class="CommonOrderDetils_goods_content">
                     <h5>{{item.GOODS_NAME}}</h5>
                     <p>规格：{{item.goods_specif}}</p>
@@ -68,7 +68,7 @@ export default {
     },
     computed:{
         ...mapState({
-            imgUrl: state => state.imgUrl,
+            imgUrlGoods: state => state.imgUrlGoods,
             CommonOrderDetail: state => state.CommonOrderDetail,
             user: state => state.user,
             goods_Allnum(){

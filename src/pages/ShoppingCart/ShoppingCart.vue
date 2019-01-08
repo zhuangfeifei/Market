@@ -11,7 +11,12 @@
                         <div class="ShoppingCart">
                             <div class="ShoppingCartList">
                                 <van-checkbox v-model="item.checked"></van-checkbox>
-                                <van-card class="carts" :price="item.nowprice" :title="item.goodsname" :thumb="imgUrl+'file/gallery/'+item.picture" />
+                                <div class="ShoppingCartList_content">
+                                    <img :src="imgUrlGoods+item.picture" alt="">
+                                    <div>
+                                        <p>{{item.goodsname}}</p><span>¥{{item.nowprice}}</span>
+                                    </div>
+                                </div>
                                 <van-stepper class="ShoppingCart_num" v-model="item.amount" @plus="plus(item.id)" @minus="minus(item.id)"/>
                             </div>
                         </div>
@@ -23,7 +28,9 @@
         <div v-if="getList.length == 0" class="nos"><img src="../../assets/img/noOrder.png" alt=""><p>您目前还没有任何商品哦~</p></div>
 
         <van-submit-bar v-if="getList.length > 0" class="ShoppingCart_submit" :price="moeny" button-text="提交订单" @submit="onSubmit" >
-            <van-checkbox v-model="checked" @change="changeAll">全选</van-checkbox>
+            <div @click="changeAll">
+                <van-checkbox v-model="checked">全选</van-checkbox>
+            </div>
         </van-submit-bar>
         
     </div>
@@ -56,8 +63,8 @@ export default {
                 return parseFloat(moeny.toFixed(2))
             }
         },
-        imgUrl(){
-            return this.$store.state.imgUrl
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
         },
     },
     created(){
@@ -83,10 +90,8 @@ export default {
             this.$store.dispatch('deleteGoods', id)
         },
         changeAll(){
-            if(this.checked){
-                for(let i in this.getList){
-                    this.getList[i].checked = this.checked 
-                }
+            for(let i in this.getList){
+                this.getList[i].checked = this.checked 
             }
         },
         onSubmit(){
@@ -137,9 +142,19 @@ export default {
 .ShoppingCart{
     width: 100%; margin-top: 0.2rem;
     .ShoppingCartList{
-        width: 100%; height: 2rem; padding-bottom: 0.2rem; display: flex; justify-content: space-between; align-items: center; padding-left: 0.3rem; background-color: #fafafa; position: relative;
+        width: 100%; height: 2rem; padding-bottom: 0.2rem; display: flex; align-items: center; padding-left: 0.3rem; background-color: #fafafa; position: relative;
         .carts{
-            width: 93%; padding: 0.1rem 0.3rem 0rem 2.2rem;
+            width: 93%; padding: 0.1rem 0.3rem 0rem 0.2rem;
+        }
+        .ShoppingCartList_content{
+            width: 100%; height: 100%; margin-left: 0.2rem; margin-top: 0.2rem; display: flex;
+            img{ width: 1.8rem; height: 1.8rem; }
+            div{
+                width: 60%;
+                margin-left: 0.3rem; display: flex; flex-direction: column; justify-content: space-between;
+                p{ .font1; line-height: 0.4rem; }
+                span{ line-height: 0.5rem; letter-spacing: 0.02rem; color: #EA1616; }
+            }
         }
         .ShoppingCart_num{
             position: absolute; right: 0.2rem; bottom: 0.2rem;
@@ -154,6 +169,10 @@ export default {
 .nos{
     width: 100%; height: 100%; padding-top: 2rem; text-align: center; .font2; color:rgba(43,43,43,1);
     img{ width: 3rem; height: 3rem; margin-bottom: 0.6rem; }
+}
+
+.van-card__title{
+    font-size: 0.4rem;
 }
     
 </style>

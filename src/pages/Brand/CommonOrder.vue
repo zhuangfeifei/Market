@@ -6,13 +6,13 @@
         </nav>
 
         <mescroll-vue class="GroupPurchaseOrderMescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
-            <div v-if="true" class="CommonOrders">
+            <div v-if="CommonOrder != ''" class="CommonOrders">
                 <div class="CommonOrder_list" @click="detils(item.ID)" v-for="(item,index) in CommonOrder" :key="index">
                     <div class="CommonOrder_num"><span>订单编号：{{item.ORDER_NO}}</span><span>{{orderStatus[item.ORDER_STATUS]}}</span></div>
                     <div class="CommonOrder_content">
                         <h4>方圆里商城</h4>
                         <van-row class="CommonOrder_content_list" v-for="(itemChild, indexChild) in item.goodsList" :key="indexChild">
-                            <van-col span="6"><img :src="'http://192.168.1.61:8090/shopss/kaptcha/'+itemChild.THUMB_PIC" alt=""></van-col>
+                            <van-col span="6"><img :src="imgUrlGoods+itemChild.THUMB_PIC" alt=""></van-col>
                             <van-col span="18">
                                 <p class="CommonOrder_content_title">{{itemChild.GOODS_NAME}}</p>
                                 <p class="CommonOrder_content_Specifications">规格：{{itemChild.goods_specif}}</p>
@@ -67,8 +67,8 @@ export default {
         // this.$store.dispatch('')
     },
     computed:{
-        imgUrl(){
-            return this.$store.state.imgUrl
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
         },
     },
     created(){

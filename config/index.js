@@ -52,7 +52,7 @@ module.exports = {
     // Paths
     assetsRoot: path.resolve(__dirname, '../market'),
     assetsSubDirectory: 'static',
-    assetsPublicPath: 'http://www.homeamc.cn/shopss/static/wx/',
+    assetsPublicPath: 'http://www.homeamc.cn/shops/static/wx/',
 
     /**
      * Source Maps

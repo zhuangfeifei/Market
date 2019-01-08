@@ -12,7 +12,7 @@ export default {
 // 
 //
 CommonOrder({state}, list){   // 查看个人历史普通订单
-    return axios.fetch('/shopss/api/order/list', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+    return axios.fetch('/shops/api/order/list', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
          limit: list.limit, current: list.current, orderStatus: list.tabIndex })
     .then(res => { 
         // console.log(res.data)
@@ -23,7 +23,7 @@ CommonOrder({state}, list){   // 查看个人历史普通订单
     .catch(err => console.log(err))
 },
 CommonOrderDetail({commit,state}, orderIds){   // 查询普通订单详情
-    axios.fetch('/shopss/api/order/detail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+    axios.fetch('/shops/api/order/detail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
         orderId: orderIds })
     .then(res => {
         // console.log(res.data)
@@ -34,7 +34,7 @@ CommonOrderDetail({commit,state}, orderIds){   // 查询普通订单详情
     .catch(err => console.log(err))
 },
 orderCancelOrder({state}, orderIds){   // 取消订单
-    axios.fetch('/shopss/api/order/cancelOrder', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+    axios.fetch('/shops/api/order/cancelOrder', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
         orderId: orderIds })
     .then(res => {
         // console.log(res.data)
@@ -46,7 +46,7 @@ orderCancelOrder({state}, orderIds){   // 取消订单
     .catch(err => console.log(err))
 },
 confirmDelivery({state}, orderIds){   // 取消订单
-    axios.fetch('/shopss/api/order/confirmDelivery', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+    axios.fetch('/shops/api/order/confirmDelivery', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
         orderId: orderIds })
     .then(res => {
         // console.log(res.data)
@@ -66,7 +66,7 @@ async returnOrExchange({dispatch,state}, list){   // 提醒发货/退货、换�
         Exchange(img)
     }
     function Exchange(img){
-        axios.fetch('/shopss/api/order/returnOrExchange', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+        axios.fetch('/shops/api/order/returnOrExchange', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             orderId: list.orderId, sale_type: list.sale_type, isGetGoods: list.isGetGoods, reason: list.reason, remark: list.reason, credentialsPic: img.message })
         .then(res => {
             // console.log(res.data)
@@ -84,7 +84,7 @@ async returnOrExchange({dispatch,state}, list){   // 提醒发货/退货、换�
     }
 },
 uploadPicture({}, formData){   // 上传图片
-    return axios.fetch('/shopss/api/uploadPicture', formData )
+    return axios.fetch('/shops/api/uploadPicture', formData )
     .then(res => {
         // console.log(res.data)
         if(res.data.code == 200) {
@@ -103,7 +103,7 @@ uploadPicture({}, formData){   // 上传图片
         commit('cartList')
     },
     getList({commit,state}){   // 获取购物车列表
-        axios.fetch('/shopss/api/shoppingcart/getList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+        axios.fetch('/shops/api/shoppingcart/getList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
             limit:100, current:1 })
         .then(res => {
             // console.log(res.data)
@@ -118,7 +118,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     insertGoods({state}, id){   // 添加购物车
-        axios.fetch('/shopss/api/shoppingcart/insertGoods', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+        axios.fetch('/shops/api/shoppingcart/insertGoods', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
             goodsid: id, amount: 1 })
         .then(res => {
             // console.log(res.data)
@@ -129,7 +129,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     updateAmount({state}, list){   // 更新购物车商品的数量
-        axios.fetch('/shopss/api/shoppingcart/updateAmount', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+        axios.fetch('/shops/api/shoppingcart/updateAmount', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
             id: list.id, amount: list.amount })
         .then(res => {
             // console.log(res.data)
@@ -140,7 +140,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     deleteGoods({dispatch,state}, ids){   // 删除购物车商品
-        axios.fetch('/shopss/api/shoppingcart/deleteGoods', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+        axios.fetch('/shops/api/shoppingcart/deleteGoods', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
             ids: ids })
         .then(res => {
             // console.log(res.data)
@@ -155,19 +155,29 @@ uploadPicture({}, formData){   // 上传图片
 // ------------------------- 商品下单 -------------------------
 // 
 // 
-    CategoryOneList({commit,dispatch}){   // 获取商品一级分类列表
-        axios.fetch('/shopss/api/goods/CategoryOneList')
+    CategoryOneList({commit,dispatch,state}){   // 获取商品一级分类列表
+        axios.fetch('/shops/api/goods/CategoryOneList')
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
                 commit('CategoryOneList', res.data.data)
-                dispatch('CategoryTwoOrThreeList', res.data.data[0].ID)
+                if(state.CATEGORY_NAME != null){
+                    for(let val of res.data.data){
+                        if(val.CATEGORY_NAME === state.CATEGORY_NAME){
+                            dispatch('CategoryTwoOrThreeList', val.ID)
+                            break
+                        }
+                    }
+                }else{
+                    commit('CATEGORY_NAME', res.data.data[0].CATEGORY_NAME)
+                    dispatch('CategoryTwoOrThreeList', res.data.data[0].ID)
+                }
             }
         })
         .catch(err => console.log(err))
     },
     CategoryTwoOrThreeList({commit}, id){   // 根据一级分类主键id/二级分类主键id获取二级/三级商品分类信息列表
-        axios.fetch('/shopss/api/goods/CategoryTwoOrThreeList', { categoryId: parseInt(id) })
+        axios.fetch('/shops/api/goods/CategoryTwoOrThreeList', { categoryId: parseInt(id) })
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) commit('CategoryTwoOrThreeList', res.data.data)
@@ -175,7 +185,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     goodsList({commit}, list){   // 分页查询商品列表
-        return axios.fetch('/shopss/api/goods/list', { limit: list.limit, current: list.current, categoryId: list.categoryId, categoryLevel: list.categoryLevel, 
+        return axios.fetch('/shops/api/goods/list', { limit: list.limit, current: list.current, categoryId: list.categoryId, categoryLevel: list.categoryLevel, 
             goodsLabel: list.goodsLabel, goodsName: list.goodsName })
         .then(res => {
             // console.log(res.data)
@@ -185,7 +195,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     CategoryTwoOrThreeListDetail({commit,state}, id){   // 查询商品详情
-        axios.fetch('/shopss/api/goods/detail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, goodsId: parseInt(id) })
+        axios.fetch('/shops/api/goods/detail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, goodsId: parseInt(id) })
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -198,7 +208,7 @@ uploadPicture({}, formData){   // 上传图片
     },
     createGoods({commit,state}, order){   // 生成商品订单
         let headers = {'Content_Type':"application/json"}
-        axios.fetch('/shopss/api/order/create' +'?access_type=WXH5&wxh='+state.market_wxh+'&openId='+state.market_openId+'&unionId='+state.market_unionId,
+        axios.fetch('/shops/api/order/create' + '?access_type=WXH5&wxh='+state.market_wxh+'&openId='+state.market_openId+'&unionId='+state.market_unionId,
             {order} , headers )
         .then(res => {
             // console.log(res.data)
@@ -209,9 +219,9 @@ uploadPicture({}, formData){   // 上传图片
         })
         .catch(err => console.log(err))
     },
-    mySelfRedPacketList({commit,state}){   // 获取我的优惠券列表
-        axios.fetch('/shopss/api/redPacket/mySelfRedPacketList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
-            stateType: '3', limit:100, current:1 }) 
+    mySelfRedPacketListPay({commit,state}){   // 获取我的优惠券列表
+        axios.fetch('/shops/api/redPacket/mySelfRedPacketList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+            stateType: 3, limit:100, current:1 }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -221,8 +231,8 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     validationRedPacket({state}, list){   // 判断优惠券是否可用
-        return axios.fetch('/shopss/api/redPacket/validationRedPacket', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
-            redPacketId: list.redPacketId, orderMoney: list.redPacketId }) 
+        return axios.fetch('/shops/api/redPacket/validationRedPacket', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+            couponId: list.couponId, orderMoney: list.orderMoney, goodsId: list.goodsId }) 
         .then(res => {
             // console.log(res.data)
             return Promise.resolve(res)
@@ -230,7 +240,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     orderDetail({commit,state}, orderId){   // 查询订单详情
-        axios.fetch('/shopss/api/order/detail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, orderId:orderId }) 
+        axios.fetch('/shops/api/order/detail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, orderId:orderId }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -245,7 +255,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     listadress({commit,state}){   // 获取用户地址列表
-        axios.fetch('/shopss/api/address/listadress', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, limit:100, current:1 })
+        axios.fetch('/shops/api/address/listadress', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, limit:100, current:1 })
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -267,7 +277,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     deladress({dispatch,state}, id){   // 删除用户地址
-        axios.fetch('/shopss/api/address/deladress', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+        axios.fetch('/shops/api/address/deladress', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             id: id })
         .then(res => {
             // console.log(res.data)
@@ -279,7 +289,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     defaultById({dispatch,state}, id){   // 设置默认地址
-        axios.fetch('/shopss/api/address/defaultById', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+        axios.fetch('/shops/api/address/defaultById', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             id: id })
         .then(res => {
             // console.log(res.data)
@@ -292,7 +302,7 @@ uploadPicture({}, formData){   // 上传图片
     },
     addadress({dispatch,state}, list){   // 添加用户地址列表
         // console.log(list)
-        axios.fetch('/shopss/api/address/addadress', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+        axios.fetch('/shops/api/address/addadress', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
             shipName: list.shipName, phoneNum:list.phoneNum, province:list.province, city:list.city, area:list.area, address:list.address, zipCode:list.zipCode, isdefault: list.isdefault })
         .then(res => {
             // console.log(res.data)
@@ -306,7 +316,7 @@ uploadPicture({}, formData){   // 上传图片
     },
     updateadress({state}, list){   // 更新用户地址
         // console.log(list)
-        axios.fetch('/shopss/api/address/updateadress', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, id: list.id,
+        axios.fetch('/shops/api/address/updateadress', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, id: list.id,
             shipName: list.shipName, phoneNum:list.phoneNum, province:list.province, city:list.city, area:list.area, address:list.address, zipCode:list.zipCode, isdefault: list.isdefault })
         .then(res => {
             // console.log(res.data)
@@ -323,7 +333,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     carousel({commit}){   // 轮播图
-        axios.fetch('/shopss/api/basic/carousel')
+        axios.fetch('/shops/api/basic/carousel')
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) commit('CAROUSEL', res.data.data)
@@ -331,7 +341,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     announceList({commit}){   // 公告
-        axios.fetch('/shopss/api/announce/announceList', { limit: 10, current: 1 })
+        axios.fetch('/shops/api/announce/announceList', { limit: 10, current: 1 })
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) commit('ANNOUNCELIST', res.data.data)
@@ -339,18 +349,26 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     isFineList({commit}){   // 精选
-        axios.fetch('/shopss/api/shop/isFineList', { limit: 100, current: 1 }) 
+        axios.fetch('/shops/api/shop/isFineList', { limit: 100, current: 1 }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) commit('ISFINELIST', res.data.data)
         })
         .catch(err => console.log(err))
     },
-    index_goods({commit}){   // 首页商品列表
-        axios.fetch('/shopss/api/newfunc/index_goods') 
+    index_goods({state,commit}){   // 首页商品列表
+        axios.fetch('/shops/api/newfunc/index_goods', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId}) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) commit('index_goods', res.data.data)
+        })
+        .catch(err => console.log(err))
+    },
+    index_icon({commit}){   // 查询首页图标列表
+        axios.fetch('/shops/api/newfunc/index_icon') 
+        .then(res => {
+            // console.log(res.data)
+            // if(res.data.code == 200) commit('index_goods', res.data.data)
         })
         .catch(err => console.log(err))
     },
@@ -360,7 +378,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     couponList({commit,state}){   // 领取所有优惠券列表
-        axios.fetch('/shopss/api/sinceCollar/couponList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+        axios.fetch('/shops/api/sinceCollar/couponList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
             limit: 500, current: 1 }) 
         .then(res => {
             // console.log(res.data)
@@ -371,7 +389,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     sinceCollarCoupon({state,dispatch,commit}, couponId){   // 领取优惠券
-        axios.fetch('/shopss/api/sinceCollar/sinceCollarCoupon', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+        axios.fetch('/shops/api/sinceCollar/sinceCollarCoupon', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
             couponId: couponId }) 
         .then(res => {
             // console.log(res.data)
@@ -383,7 +401,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     sinceCollarCouponDetail({state}, couponId){   // 领取优惠券详情
-        axios.fetch('/shopss/api/sinceCollar/couponDetail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+        axios.fetch('/shops/api/sinceCollar/couponDetail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
             couponId: couponId }) 
         .then(res => {
             // console.log(res.data)
@@ -400,7 +418,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     shopList({commit,dispatch}, list){   // 根据条件查询商户列表
-        return axios.fetch('/shopss/api/shop/list', list ) 
+        return axios.fetch('/shops/api/shop/list', list ) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {   // 如果没有多个项目，就默认第一个
@@ -410,7 +428,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     getContactList({commit}, projectIds){   // 获取馆位列表数据
-        axios.fetch('/shopss/api/shop/getContactList', { projectId: projectIds }) 
+        axios.fetch('/shops/api/shop/getContactList', { projectId: projectIds }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) commit('GETCONTACTLIST', res.data.data)
@@ -418,7 +436,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     shopDetail({commit}, shopid){   // 查询商户详情
-        axios.fetch('/shopss/api/shop/detail', { shopId: shopid }) 
+        axios.fetch('/shops/api/shop/detail', { shopId: shopid }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -434,7 +452,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     mainGoods({commit}, shopid){   // 推荐商品（主推）
-        axios.fetch('/shopss/api/goods/mainGoods', { shopId: shopid }) 
+        axios.fetch('/shops/api/goods/mainGoods', { shopId: shopid }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) commit('MAINGOODS', res.data.data)
@@ -442,7 +460,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     groupList({commit,state}, shopIds = ''){   // 获取商家团购卷列表
-        axios.fetch('/shopss/api/groupOrder/groupList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+        axios.fetch('/shops/api/groupOrder/groupList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             shopId: shopIds, groupType: '' }) 
         .then(res => {
             // console.log(res.data)   
@@ -454,7 +472,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     groupListDetail({commit,state}, groupId){   // 获取商家团购卷列表详情
-        axios.fetch('/shopss/api/groupOrder/groupListDetail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+        axios.fetch('/shops/api/groupOrder/groupListDetail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             groupId:groupId }) 
         .then(res => {
             // console.log(res.data) 
@@ -467,8 +485,8 @@ uploadPicture({}, formData){   // 上传图片
     },
     addGroupOrder({state}, lists){   // 添加团购订单
         let list = lists.groupListDetail
-        axios.fetch('/shopss/api/groupOrder/addGroupOrder', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
-            shopId: list.shop_id, groupType: 0, groupName: list.group_name, amount: (list.price * lists.num).toFixed(2), groupId: list.id, num: lists.num }) 
+        axios.fetch('/shops/api/groupOrder/addGroupOrder', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+            shopId: list.shop_id, groupType: 0, groupName: list.group_name, amount: (list.price * lists.num).toFixed(2), groupId: list.id, num: lists.num, dataSource: 0, killId:'' }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -489,7 +507,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     getHistoryGroupOrderDetail({commit,state}, list){   // 团购订单详情
-        axios.fetch('/shopss/api/groupOrder/getHistoryGroupOrderDetail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+        axios.fetch('/shops/api/groupOrder/getHistoryGroupOrderDetail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             orderId: list.orderIds }) 
         .then(res => {
             // console.log(res.data)
@@ -513,7 +531,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     pay({state,dispatch}, list){   // 团购订单支付
-        axios.fetch('/shopss/api/groupOrder/pay', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+        axios.fetch('/shops/api/groupOrder/pay', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             orderId: list.orderId, payType: list.payType, payPwd: list.payPwd, yueAmount: list.yueAmount, wxAmount: list.wxAmount }) 
         .then(res => {
             // console.log(res.data)
@@ -531,7 +549,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     PayCommon({state,dispatch}, list){   // 普通订单支付
-        axios.fetch('/shopss/api/order/pay',  list ) 
+        axios.fetch('/shops/api/order/pay',  list ) 
         .then(res => {
             // console.log(res.data)
             Toast.clear()
@@ -577,7 +595,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     cancelOrder({state}, orderIds){   // 取消订单
-        axios.fetch('/shopss/api/groupOrder/cancelOrder', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+        axios.fetch('/shops/api/groupOrder/cancelOrder', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             orderId: orderIds }) 
         .then(res => {
             // console.log(res.data)
@@ -589,7 +607,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     getHistoryGroupOrder({commit,state}, list){   // 查看个人历史团购订单
-        return axios.fetch('/shopss/api/groupOrder/getHistoryGroupOrder', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, 
+        return axios.fetch('/shops/api/groupOrder/getHistoryGroupOrder', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, 
             unionId: state.market_unionId, limit: list.limit, current: list.current, orderStatus: list.orderStatus })
         .then(res => { 
             // console.log(res.data)
@@ -600,7 +618,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     getCode({state}, orderIds){   // 获取劵码及二维码图片路径
-        axios.fetch('/shopss/api/groupOrder/getCode', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, orderId: orderIds }) 
+        axios.fetch('/shops/api/groupOrder/getCode', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, orderId: orderIds }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -621,7 +639,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     preferentialList({commit}, list){   // 获取商家优惠活动列表
-        return axios.fetch('/shopss/api/activity/preferentialList', { limit: list.limit, current: list.current }) 
+        return axios.fetch('/shops/api/activity/preferentialList', { limit: list.limit, current: list.current }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -631,7 +649,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     activityList({commit}, list){   // 获取商场优惠活动列表
-        return axios.fetch('/shopss/api/activity/activityList', { limit: list.limit, current: list.current }) 
+        return axios.fetch('/shops/api/activity/activityList', { limit: list.limit, current: list.current }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -646,18 +664,19 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     user({commit,state}){   // 获取用户信息
-        axios.fetch('/shopss/api/comment/userNew',  { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId }) 
+        axios.fetch('/shops/api/comment/userNew',  { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
                 Util.setLocal(res.data.data, 'user')
                 commit('USER')
+                commit('isPassword', res.data.data.wtCustomer.payPassword == '' ? true : false )
             }
         })
         .catch(err => console.log(err))
     },
     editUserInfo({state}, list){   // 更新用户信息
-        axios.fetch('/shopss/api/customer/editUserInfo', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+        axios.fetch('/shops/api/customer/editUserInfo', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             name: list.name, sex: list.sex, birthday: list.birthday }) 
         .then(res => {
             // console.log(res.data)
@@ -669,7 +688,19 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     paypwd({state}, pwds){   // 设置余额密码
-        axios.fetch('/shopss/api/set/paypwd', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, pwd: pwds }) 
+        axios.fetch('/shops/api/set/paypwd', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, pwd: pwds }) 
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                Toast.success('设置成功！')
+                router.go(-1)
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    forgetPwd({state}, list){   // 忘记余额密码
+        axios.fetch('/shops/api/set/forgetPwd', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
+            pwd: list.passwords, phone: list.phones, vcode: list.codes }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -680,7 +711,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     updatePaypwd({commit,state}, newPwds){   // 修改余额密码
-        axios.fetch('/shopss/api/set/updatePaypwd', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, newPwd: newPwds }) 
+        axios.fetch('/shops/api/set/updatePaypwd', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, newPwd: newPwds }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) commit('isPassword', true)
@@ -688,7 +719,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     balance({commit,state}, list){   // 余额明细
-        return axios.fetch('/shopss/api/bind/yue', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+        return axios.fetch('/shops/api/bind/yue', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
             queryType: list.queryType, limit: list.limit, current: list.current, }) 
         .then(res => {
             // console.log(res.data)
@@ -703,28 +734,52 @@ uploadPicture({}, formData){   // 上传图片
 // ------------------------- 优惠卷 -------------------------
 // 
 //
-    coupon({commit,state}, list){   // 优惠券列表
-        return axios.fetch('/shopss/api/order/coupon', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
-            queryType: list.queryType, limit: list.limit, current: list.current, }) 
+    redPacketList({commit,state}){   // 获取所有自领优惠券列表
+        axios.fetch('/shops/api/redPacket/redPacketList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+            limit: 100, current: 1, }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
+                commit('redPacketList', res.data.data)
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    getRedPacket({dispatch,state}, id){   // 自领优惠券
+        axios.fetch('/shops/api/redPacket/getRedPacket', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+            redPacketId: id }) 
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                Toast.success('领取成功！')
+                dispatch('redPacketList')
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    mySelfRedPacketList({commit,state}, list){   // 优惠券列表
+        return axios.fetch('/shops/api/redPacket/mySelfRedPacketList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+            stateType: list.stateType, limit: list.limit, current: list.current, }) 
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                commit('mySelfRedPacketList', res.data.data)
                 return Promise.resolve(res)
             }
         })
         .catch(err => console.log(err))
     },
-    couponDetail({commit,state}, couponIds){   // 优惠券详情列表
-        axios.fetch('/shopss/api/order/coupon/detail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, couponId: couponIds }) 
+    redPacketListDetail({commit,state}, redPacketId){   // 优惠券详情列表
+        axios.fetch('/shops/api/redPacket/redPacketListDetail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, redPacketId: redPacketId }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
                 commit('COUPON_DETAIL', res.data.data)
-                var qrcode = new QRCode(document.getElementById("qrcode"), {
-                    width: 200, height: 200
-                })
-                function makeCode(e) { qrcode.makeCode(e) }
-                makeCode(res.data.data.qrcode)
+                // var qrcode = new QRCode(document.getElementById("qrcode"), {
+                //     width: 200, height: 200
+                // })
+                // function makeCode(e) { qrcode.makeCode(e) }
+                // makeCode(res.data.data.qrcode)
             }
         })
         .catch(err => console.log(err))
@@ -735,7 +790,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     getIntegralHis({commit,state}, list){   // 获取积分记录
-        axios.fetch('/shopss/api/card/getIntegralHis', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, current: list.current, limit: list.limit }) 
+        axios.fetch('/shops/api/card/getIntegralHis', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, current: list.current, limit: list.limit }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -753,7 +808,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     getJFIllege({commit}){   // 获取积分和会员卡规则
-        axios.fetch('/shopss/api/card/getIllege')
+        axios.fetch('/shops/api/card/getIllege')
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -772,7 +827,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     phone({state}, list){   // 开通会员卡
-        axios.fetch('/shopss/api/bind/phoneNew', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, phone: list.phones, vcode: list.codes })
+        axios.fetch('/shops/api/bind/phoneNew', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, phone: list.phones, vcode: list.codes })
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -783,7 +838,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     addIntegration({state,dispatch}, integration){   // 开通送积分
-        axios.fetch('/shopss/api/card/addIntegration', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, type: integration }) 
+        axios.fetch('/shops/api/card/addIntegration', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, type: integration }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -799,7 +854,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     documentType({commit}){   // 获取业主认证证件类型
-        axios.fetch('/shopss/api/bind/documentType' )
+        axios.fetch('/shops/api/bind/documentType' )
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) commit('DOCUMENTTYPE', res.data.data)
@@ -807,7 +862,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     ownerCertification({commit}, formData){   // 业主认证
-        axios.fetch('/shopss/api/bind/ownerCertification', formData )
+        axios.fetch('/shops/api/bind/ownerCertification', formData )
         .then(res => {
             // console.log(res.data)
             res.data.code == 200 ? commit('isGetAuthentication', 1) : commit('isGetAuthentication', 0)
@@ -815,7 +870,7 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     basicinformation({commit,state}){   // 业主认证信息
-        axios.fetch('/shopss/api/bind/basicinformation', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId })
+        axios.fetch('/shops/api/bind/basicinformation', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId })
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -831,7 +886,7 @@ uploadPicture({}, formData){   // 上传图片
 // 
 //
     promotionList({dispatch}, list){   // 获取大闸蟹列表
-        axios.fetch('/shopss/api/promotion/promotionList', { current: list.current, limit: list.limit }) 
+        axios.fetch('/shops/api/promotion/promotionList', { current: list.current, limit: list.limit }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
@@ -843,12 +898,60 @@ uploadPicture({}, formData){   // 上传图片
         .catch(err => console.log(err))
     },
     crabgroupList({commit}, list){   // 获取大闸蟹列表
-        axios.fetch('/shopss/api/promotion/groupList', { promotionId: list.id, current: list.list.current, limit: list.list.limit }) 
+        axios.fetch('/shops/api/promotion/groupList', { promotionId: list.id, current: list.list.current, limit: list.list.limit }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
                 // Util.setLocal(res.data.data[0], 'promotionList')
                 commit('GETCRABGROUPLIST', res.data.data)
+            }
+        })
+        .catch(err => console.log(err))
+    },
+
+
+
+    scoreGoodsList({state}, list){   // 获取积分兑换的所有商品列表
+        return axios.fetch('/shops/api/score/scoreGoodsList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+            current: list.current, limit: list.limit }) 
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                return Promise.resolve(res)
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    scoreGoodDteail({state,commit}, id){   // 查看积分商城商品详情
+        axios.fetch('/shops/api/score/scoreGoodDteail', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+            scoreGoodId: id }) 
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                commit('scoreGoodDteail', res.data.data)
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    exchange({state,commit}, list){   // 积分兑换商品
+        axios.fetch('/shops/api/score/exchange', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+            scoreGoodId: list.scoreGoodId, totalScore: list.totalScore, goodsNum: list.goodsNum }) 
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                Toast.success('兑换成功！')
+                router.go(-1)
+            }
+        })
+        .catch(err => console.log(err))
+    },
+    myScoreGoodsList({state,commit}, id){   // 我的积分兑换列表
+        axios.fetch('/shops/api/score/myScoreGoodsList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId,
+            current: 1, limit: 100 }) 
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                commit('myScoreGoodsList', res.data.data)
             }
         })
         .catch(err => console.log(err))
