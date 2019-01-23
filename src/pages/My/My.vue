@@ -15,7 +15,8 @@
         <div class="My_list">
             <div class="My_list_" @click="$router.push('/Balance')">
                 <div><img src="../../assets/my/Integral.png" alt=""><span>账户余额（元）</span><p>{{'¥'+(isFloats || 0)}}</p></div>
-                <div>充值有礼</div>
+                <div></div>
+                <!-- <div>充值有礼</div> -->
             </div>
             <div class="My_list_" @click="$router.push('/Wallet')">
                 <div><img src="../../assets/my/well.png" alt=""><span>我的积分</span></div>
@@ -61,6 +62,9 @@ export default {
         
     },
     beforeCreate(){
+        this.$store.dispatch('user')
+    },
+    activated(){
         this.$store.dispatch('user')
     },
     computed:{
@@ -173,7 +177,8 @@ export default {
         div{ display: inline; p{ margin-left: 0.5rem; color: #EA1616; line-height: 0.45rem; .font1; } } 
         div:last-child{
             width: 1.2rem; height: 0.48rem; font-size: 0.24rem; border-radius: 0.24rem; color:rgba(43,43,43,1);
-            .font1; text-align: center; line-height: 0.48rem; border: 0.02rem solid rgba(234,22,22,1);
+            .font1; text-align: center; line-height: 0.48rem; 
+            // border: 0.02rem solid rgba(234,22,22,1);
         }
     }
     .My_list_:last-child{ border: 0; }

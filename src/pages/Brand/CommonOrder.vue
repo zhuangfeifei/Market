@@ -22,13 +22,14 @@
                     </div>
                     <div class="CommonOrder_combined">共{{goods_Allnum(item.goodsList)}}件商品，合计<span>￥{{item.ORDER_MONEY}}</span>（含运费<span class="freight">￥0.00</span>）</div>
                     <div class="CommonOrder_date">
-                        <span>{{item.ORDER_DATE}}</span>
+                        <div> <span v-if="item.ORDER_STATUS < 2">{{item.ORDER_DATE}}</span></div>
                         <div class="CommonOrder_status">
                             <div v-if="item.ORDER_STATUS == 0" class="CommonOrder_status_payment">付款</div>
                             <div v-if="item.ORDER_STATUS == 0" class="CommonOrder_status_Cancel">取消订单</div>
                             <div v-if="item.orderAfterList.length > 0 && item.orderAfterList[0].sale_type == 0 && item.ORDER_STATUS < 2" class="CommonOrder_status_remind">已提醒</div>
                             <div v-if="item.ORDER_STATUS > 0 && item.orderAfterList.length == 0 && item.ORDER_STATUS < 2" class="CommonOrder_status_delivery">提醒发货</div>
                             <div v-if="item.ORDER_STATUS == 2" class="CommonOrder_status_Confirm">确认收货</div>
+                            <div v-if="item.ORDER_STATUS >= 2" class="CommonOrder_status_Cancel">查看物流</div>
                             <div v-if="item.ORDER_STATUS > 0 && item.ORDER_STATUS < 3" class="CommonOrder_status_return">退换货</div>
                         </div>
                     </div>
@@ -184,7 +185,7 @@ nav{
                 img{ width: 1.2rem; height: 1.2rem; border-radius: 0.1rem; }
             }
             .CommonOrder_content_title{
-                display: inline-block; width: 100%; height: 0.29rem; line-height: 0.29rem; .font1; .row; color:rgba(43,43,43,1);
+                display: inline-block; width: 100%; height: 0.35rem; line-height: 0.35rem; .font1; .row; color:rgba(43,43,43,1);
             }
             .CommonOrder_content_Specifications{
                 display: inline-block; width: 100%; height: 0.6rem; line-height: 0.6rem; .font2; .row; color:rgba(128,128,128,1); font-size: 0.24rem;

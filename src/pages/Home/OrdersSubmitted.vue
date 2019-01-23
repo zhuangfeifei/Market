@@ -8,15 +8,16 @@
                 <div class="OrdersSubmitted_order_content"><p>下单时间</p><span>{{orderDetail.ORDER_DATE}}</span></div>
                 <div class="OrdersSubmitted_order_content"><p>订单金额</p><span>{{orderDetail.ORDER_MONEY}}元</span></div>
                 <div class="OrdersSubmitted_order_content">
-                    <p>账户余额（{{isFloats || 0}}元）</p>
-                    <p><img class="OrdersSubmitted_order_checked" @click="isChecked = !isChecked" :src="isFloats > orderDetail.ORDER_MONEY && isChecked ? imgs[1] : imgs[0]" alt=""><span>{{isFloats > orderDetail.ORDER_MONEY ? '可用' : '不可用'}}</span></p>
+                    <p>账户余额（{{isAmountFloats || 0}}元）</p>
+                    <p><img class="OrdersSubmitted_order_checked" @click="isChangeChecked" :src="isAmountFloats > 0 && isChecked ? imgs[1] : imgs[0]" alt=""><span>{{isAmountFloats > 0 ? '可用' : '不可用'}}</span></p>
                 </div>
-                <div class="OrdersSubmitted_order_content">
+                <div class="OrdersSubmitted_order_content" @click="showList = true">
                     <p>优惠红包</p><p><span class="redMoney">{{redMoneys.price}}元</span><img class="OrdersSubmitted_order_more" src="../../assets/img/yishoujiantou.png" alt=""></p>
-                    <van-coupon-cell class="OrdersSubmitted_red" :coupons="coupons" :chosen-coupon="chosenCoupon" @click="showList = true" />
+                    <van-coupon-cell class="OrdersSubmitted_red" :coupons="coupons" :chosen-coupon="chosenCoupon" @click="onWatchshowList = true" />
                 </div>
             </div>
-            <div class="OrdersSubmitted_order_Real"><span>实付</span><span>{{moeny}}元</span></div>
+            <div class="OrdersSubmitted_order_Real"><span>余额实付</span><span>{{wxAmount == 0 ? yueAmount > redMoneys.price ? yueAmount - redMoneys.price : 0.00 : redMoneys.price > wxAmount ? yueAmount - (redMoneys.price - wxAmount) : yueAmount}}元</span></div>
+            <div class="OrdersSubmitted_order_Real"><span>微信实付</span><span>{{wxAmount > redMoneys.price ? wxAmount - redMoneys.price : 0.00}}元</span></div>
         </div>
 
         <div class="OrdersSubmitted_footer">
@@ -47,7 +48,8 @@ export default {
     data() {  
         return {
             chosenCoupon: -1, showList: false, imgs:[require('../../assets/img/checke.png'),require('../../assets/img/checkedRed.png')],isChecked: false,
-            redMoneys: { couponId:'', price:0 }
+            redMoneys: { couponId:'', price:0 }, 
+            yueAmount: 0.00, wxAmount: 0.00
         }
     },
     components: {
@@ -60,6 +62,7 @@ export default {
     },
     computed:{
         orderDetail(){
+            this.wxAmount = this.$store.state.orderDetail.ORDER_MONEY
             return this.$store.state.orderDetail
         },
         coupons(){
@@ -68,7 +71,7 @@ export default {
         user(){
             return this.$store.state.user
         },
-        isFloats(){
+        isAmountFloats(){
             if(this.user){
                 return Number.isInteger(this.user.wtCustomer.amount) ? `${this.user.wtCustomer.amount}.00` : this.user.wtCustomer.amount
             }
@@ -78,13 +81,18 @@ export default {
         },
         isPays(){
             return this.$store.state.isPay
-        }
+        },
     },
     created(){
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
         document.title = '订单确认'
         // console.log(12)
+
+        this.$nextTick(()=>{
+            this.yueAmount = 0.00
+            this.wxAmount = this.orderDetail.ORDER_MONEY
+        })
     },
     activated(){
         // console.log('hah')
@@ -92,6 +100,18 @@ export default {
     methods:{
         address(){
             this.$router.push('/Address')
+        },
+        isChangeChecked(){
+            if(this.isAmountFloats > 0){
+                this.isChecked = !this.isChecked
+                if(this.isChecked){
+                    this.yueAmount = this.isAmountFloats > this.orderDetail.ORDER_MONEY ? this.orderDetail.ORDER_MONEY : this.isAmountFloats
+                    this.wxAmount = this.isAmountFloats > this.orderDetail.ORDER_MONEY ? 0.00 : this.orderDetail.ORDER_MONEY - this.isAmountFloats
+                }else{
+                    this.yueAmount = 0.00
+                    this.wxAmount = this.orderDetail.ORDER_MONEY
+                }
+            }
         },
         onChange(index) {
             this.showList = false;
@@ -131,6 +151,13 @@ export default {
             // console.log(this.isChecked)
             // console.log(this.user.wtCustomer.payPassword)
         },
+        // yueAmount(){
+        //     console.log(this.isChecked)
+        //     // return this.isChecked ? 0.00 : this.isAmountFloats > this.orderDetail.ORDER_MONEY ? this.orderDetail.ORDER_MONEY : this.isAmountFloats
+        // },
+        // wxAmount(){
+        //     return 12
+        // },
     },
 }
 </script>
@@ -150,7 +177,7 @@ export default {
 
 
 .OrdersSubmitted_order{
-    width: 100%; height: 6.36rem; background-color: white;
+    width: 100%; background-color: white;
     h4{ color:rgba(43,43,43,1); .font1; line-height: 1.1rem; margin-left: 0.4rem; }
     .OrdersSubmitted_order_{
         width: 100%; height: 4.36rem; padding: 0 0.4rem; border-top: 0.015rem solid rgba(206,206,206,1); border-bottom: 0.015rem solid rgba(206,206,206,1);

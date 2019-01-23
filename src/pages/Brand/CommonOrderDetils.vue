@@ -20,7 +20,7 @@
             <div class="CommonOrderDetils_goods" v-for="(item,index) in CommonOrderDetail.goodsList" :key="index">
                 <img :src="imgUrlGoods + item.THUMB_PIC" alt="">
                 <div class="CommonOrderDetils_goods_content">
-                    <h5>{{item.GOODS_NAME}}</h5>
+                    <div>{{item.GOODS_NAME}}</div>
                     <p>规格：{{item.goods_specif}}</p>
                     <p>x{{item.GOODS_NUM}}<span>{{item.NOW_PRICE}}元</span></p>
                 </div>
@@ -40,6 +40,7 @@
         <div v-if="CommonOrderDetail" class="CommonOrderDetils_footer">
             <div v-if="CommonOrderDetail.ORDER_STATUS > 0 && CommonOrderDetail.ORDER_STATUS < 3" @click.stop="$router.push({path:'/Return',query:{ id: CommonOrderDetail.ID }})" class="CommonOrder_status_return">退换货</div>
             <div v-if="CommonOrderDetail.ORDER_STATUS == 2" class="CommonOrder_status_Confirm" @click="confirmDelivery">确认收货</div>
+            <div v-if="CommonOrderDetail.ORDER_STATUS >= 2" @click.stop="$router.push({path:'/Logistics',query:{ id: CommonOrderDetail.deliverno }})" class="CommonOrder_status_Cancel">查看物流</div>
             <div v-if="CommonOrderDetail.orderAfterList.length > 0 && CommonOrderDetail.orderAfterList[0].sale_type == 0 && CommonOrderDetail.ORDER_STATUS < 2" class="CommonOrder_status_remind">已提醒</div>
             <div v-if="CommonOrderDetail.ORDER_STATUS > 0 && CommonOrderDetail.orderAfterList.length == 0 && CommonOrderDetail.ORDER_STATUS < 2" class="CommonOrder_status_delivery" @click="delivery">提醒发货</div>
             <div v-if="CommonOrderDetail.ORDER_STATUS == 0" @click="orderCancelOrder" class="CommonOrder_status_Cancel">取消订单</div>
@@ -171,7 +172,7 @@ export default {
         img{ width: 1.2rem; height: 1.2rem; }
         .CommonOrderDetils_goods_content{
             width: calc(100% - 1.7rem); height: 1.2rem; display: flex; flex-flow: column; justify-content: space-between;
-            h5{ overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; line-height: 0.3rem; font-size: 0.3rem; .font3; }
+            div{ width: 100%; height: 0.35rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; line-height: 0.35rem; font-size: 0.3rem; .font3; }
             p{ 
                 font-size: 0.24rem; color:rgba(128,128,128,1); .font2; line-height: 0.24rem;
                 span{ float: right; color:rgba(43,43,43,1); font-size: 0.3rem; .font2; } 

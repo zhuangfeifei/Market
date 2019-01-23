@@ -25,6 +25,19 @@ Vue.use(VueLazyLoad,{
     // loading:'../static/placeholder.gif'
 })
 
+let time = setInterval(()=>{
+  store.commit('market_wxh', getLocal('market_wxh'))
+  store.commit('market_openId', getLocal('market_openId'))
+  store.commit('market_unionId', getLocal('market_unionId'))
+  try{
+    if(store.state.market_wxhs != '' || store.state.market_wxhs != null || store.state.market_wxhs != undefined) {
+      clearInterval(time)
+    }
+  }catch(e){
+    
+  }
+})
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

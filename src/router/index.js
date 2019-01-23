@@ -18,6 +18,7 @@ const AddAddress = resolve => require(['@/pages/Home/address/AddAddress'], resol
 const NewYears = resolve => require(['@/pages/Home/NewYears'], resolve)
 const Vouchers = resolve => require(['@/pages/Home/Vouchers'], resolve)
 const LuckyDraw = resolve => require(['@/pages/Home/LuckyDraw'], resolve)
+const GoodStatus = resolve => require(['@/pages/Home/GoodStatus'], resolve)
 
 const ShoppingCart = resolve => require(['@/pages/ShoppingCart/ShoppingCart'], resolve)
 const CreateGoodsCart = resolve => require(['@/pages/ShoppingCart/CreateGoodsCart'], resolve)
@@ -31,6 +32,7 @@ const GroupPurchaseOrder = resolve => require(['@/pages/Brand/GroupPurchaseOrder
 const GroupPurchaseOrderDetils = resolve => require(['@/pages/Brand/GroupPurchaseOrderDetils'], resolve)
 const CommonOrder = resolve => require(['@/pages/Brand/CommonOrder'], resolve)
 const CommonOrderDetils = resolve => require(['@/pages/Brand/CommonOrderDetils'], resolve)
+const Logistics = resolve => require(['@/pages/Brand/Logistics'], resolve)
 
 const My = resolve => require(['@/pages/My/My'], resolve)
 const Card = resolve => require(['@/pages/My/Card'], resolve)
@@ -65,56 +67,15 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      component: index,
-      meta:{
-        index:0,
-        keepAlive: true
-      },
-      children:[{
-        path: '/',
-        component: Home,
-        meta:{
-          index:1,
-          keepAlive: true
-        }
-      },{
-        path: 'Classification',
-        component: Classification,
-        meta:{
-          index:2,
-          keepAlive: true
-        }
-      },
-      {
-        path: 'Brand',
-        component: Brand,
-        meta:{
-          index:2,
-          keepAlive: true
-        }
-      },{
-        path: 'Discount',
-        component: Discount,
-        meta:{
-          index:2,
-          keepAlive: true
-        }
-      },{
-        path: 'ShoppingCart',
-        component: ShoppingCart,
-        meta:{
-          index:2,
-          keepAlive: true
-        }
-      },{
-        path: 'My',
-        component: My,
-        meta:{
-          index:2,
-          keepAlive: true
-        }
-      }]
+      path: '/', component: index, meta:{ ndex:0, keepAlive: false },
+      children:[
+        { path: '/', component: Home, meta:{ ndex:1, keepAlive: true } },
+        { path: 'Classification', component: Classification, meta:{ index:2, keepAlive: true } },
+        { path: 'Brand', component: Brand, meta:{ index:2, keepAlive: true } },
+        { path: 'Discount', component: Discount, meta:{ index:2, keepAlive: false } },
+        { path: 'ShoppingCart', component: ShoppingCart, meta:{ index:2, keepAlive: false } },
+        { path: 'My', component: My, meta:{ index:2, keepAlive: true } }
+      ]
     },
     { path: '/Introduce', component: Introduce },
     { path: '/DiscountItem', component: DiscountItem },
@@ -126,7 +87,7 @@ export default new Router({
     { path: '/Wallet', component: Wallet },
     { path: '/Integralshop', component: Integralshop, },
     { path: '/ShopDetils', component: ShopDetils },
-    { path: '/ShopActivity', component: ShopActivity },
+    { path: '/ShopActivity', component: ShopActivity, meta:{ keepAlive: true } },
     { path: '/Rule', component: Rule },
     { path: '/VoucherDetails', component: VoucherDetails },
     { path: '/Balance', component: Balance },
@@ -139,12 +100,12 @@ export default new Router({
     { path: '/CommonOrder', component: CommonOrder },
     { path: '/CommonOrderDetils', component: CommonOrderDetils },
     { path: '/Recharge', component: Recharge },
-    { path: '/Crab', component: Crab },
+    { path: '/Crab', component: Crab, meta:{ keepAlive: false } },
     { path: '/GoodsDetails', component: GoodsDetails },
     { path: '/CreateGoods', component: CreateGoods },
     { path: '/OrdersSubmitted', component: OrdersSubmitted },
     { path: '/CreateGoodsCart', component: CreateGoodsCart },
-    { path: '/Goods', component: Goods },
+    { path: '/Goods', component: Goods, meta:{ keepAlive: false } },
     { path: '/Address', component: Address },
     { path: '/AddAddress', component: AddAddress },
     { path: '/Result', component: Result },
@@ -156,5 +117,7 @@ export default new Router({
     { path: '/MyIntegral', component: MyIntegral },
     { path: '/Password', component: Password },
     { path: '/NewPassword', component: NewPassword },
+    { path: '/Logistics', component: Logistics },
+    { path: '/GoodStatus', component: GoodStatus },
   ]
 })

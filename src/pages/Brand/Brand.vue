@@ -50,11 +50,11 @@ export default {
                 noMoreSize: 10,
                 page: { num: 0, size: 10 },
                 htmlNodata: '<p class="upwarp-nodata">-- 没有更多了！ --</p>',
-                toTop: {
-					//回到顶部按钮
-					src: require("../../assets/img/totop.png"), //图片路径,默认null,支持网络图
-					offset: 500 //列表滚动1000px才显示回到顶部按钮
-				},
+                // toTop: {
+				// 	//回到顶部按钮
+				// 	src: require("../../assets/img/totop.png"), //图片路径,默认null,支持网络图
+				// 	offset: 500 //列表滚动1000px才显示回到顶部按钮
+				// },
             },
             shopList:''
         }
@@ -186,7 +186,7 @@ export default {
     .font3{ font-family:PingFang-SC-Bold; font-weight: Bold; }
 
     .BrandMescroll {
-        position: fixed;
+        position: fixed; 
         top: 1.03rem;
         bottom: 0.8rem;
         height: auto;
@@ -246,7 +246,7 @@ export default {
                     font-size: 0.28rem; line-height: 0.6rem; display: flex; justify-content: space-between;
                     span:nth-child(1){ color:rgba(255,139,75,1); margin-right: 0.47rem;}
                     .Brand_name{
-                        display: inline-block; width: 2.5rem; height: 0.4rem; line-height: 0.6rem;
+                        display: inline-block; width: 2.5rem; height: 0.6rem; line-height: 0.6rem;
                         overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; 
                     }
                 }

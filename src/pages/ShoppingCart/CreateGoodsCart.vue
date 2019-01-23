@@ -4,9 +4,11 @@
         <nav @click="address">
             <img src="../../assets/img/address.png" alt="">
             <div v-if="listadress.length == 0">请填写收货信息</div>
-            <div v-if="listadress.length > 0 && index == changeIndex" class="nav_address" v-for="(item,index) in listadress" :key="index">
+            <div class="nav_address" v-for="(item,index) in listadress" :key="index">
+                <div v-if="listadress.length > 0 && index == changeIndex">
                 <p>收货人：{{item.ship_name}}</p><span>{{item.phone_num}}</span>
                 <div>收货地址：{{item.province+item.city+item.area+item.address}}</div>
+                </div>
             </div>
             <img src="../../assets/img/yishoujiantou.png" alt="">
         </nav>

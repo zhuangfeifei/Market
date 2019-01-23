@@ -14,17 +14,19 @@ import { Toast, Dialog } from 'vant'
 const state = {
     isLoading: false,
     active: 0,   // 导航
-    market_wxh: Util.getLocal('market_wxh'),
-    market_openId: Util.getLocal('market_openId'),
-    market_unionId: Util.getLocal('market_unionId'),
+    market_wxh: '',
+    market_openId: '',
+    market_unionId: '',
     imgUrl: axios.urls + '/shops/kaptcha/',
     imgUrlGoods: axios.urls + '/shops/kaptcha/file/gallery/',
+    imgUrlIcons: axios.urls + '/shops/kaptcha/file/newfunc/',
     isPage: true,
     isPay: false,
     isPassword: false,
     isSuccess: false,
     isGetAuthentication: 2,
     html: '',
+    isFocus: true,
     user: '',        // 获取用户信息
     carousel: '',    // 轮播图
     announceList: '',    // 公告
@@ -49,11 +51,13 @@ const state = {
     mainGoods:'', // 推荐商品（主推）
     crabgroupList:'', // 获取大闸蟹列表
     couponList:'', // 领取所有优惠券列表
+    promotionList:'', // 
 
     CategoryOneList:'', // 获取商品一级分类列表
     CategoryTwoOrThreeList:'', // 根据一级分类主键id/二级分类主键id获取二级/三级商品分类信息列表
     CategoryTwoOrThreeListDetail:'', // 查询商品详情
     goodsList:'', // 分页查询商品列表
+    allGoodsByCategory:'', // 分页查询商品列表
     createGoods:'', // 生成商品订单
     orderDetail:'', // 查询订单详情
     mySelfRedPacketList:'', // 获取我的优惠券列表
@@ -77,6 +81,14 @@ const state = {
 
     scoreGoodDteail:'', // 查看积分商城商品详情
     myScoreGoodsList:'', // 我的积分兑换列表
+
+
+
+
+    index_icon:'', // 我的积分兑换列表
+
+
+    getDeliverInfo:'', // 查询快递物流信息
 }
 
 export default new Vuex.Store({

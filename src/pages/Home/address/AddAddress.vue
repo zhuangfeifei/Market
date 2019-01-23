@@ -14,9 +14,6 @@
             <div class="AddAddress_">
                 <span>详细地址</span><van-field v-model="list.address" class="AddAddress_input" placeholder="请填写详细地址（街道、楼牌号等）" rows="1" autosize/>
             </div>
-            <div class="AddAddress_">
-                <span>邮政编码</span><van-field v-model="list.zipCode" class="AddAddress_input" placeholder="请填写邮政编码" />
-            </div>
         </div>
 
         <div class="AddAddress_defailt">
@@ -42,7 +39,7 @@ export default {
         return {
             areaList:a, address: '', value:'', checked: false, show: false,object:'',
             img:[require('../../../assets/img/adressDefailt.png'),require('../../../assets/img/adressDefailts.png')],
-            list:{ shipName:'', phoneNum:'', province:'', city:'', area:'', address:'', zipCode:'', isdefault: 0 }
+            list:{ shipName:'', phoneNum:'', province:'', city:'', area:'', address:'', zipCode:215000, isdefault: 0 }
         }
     },
     components: {
@@ -132,7 +129,7 @@ export default {
 
 
 .AddAddress{
-    width: 100%; height: 6.13rem; background-color: white; padding: 0 0.4rem;
+    width: 100%; background-color: white; padding: 0 0.4rem;
     .AddAddress_{
         width: 100%; height: 1.22rem; display: flex; justify-content: space-between; border-bottom: 0.01rem solid rgba(206,206,206,1); align-items: center;
         span{ font-size: 0.28rem; color:rgba(43,43,43,1); .font1; }
@@ -150,7 +147,7 @@ export default {
 }
 
 .AddAddress_fotter{
-    width: 100%; height: 1.28rem; border-top: 0.01rem solid rgba(204,204,204,1); position: fixed;bottom: 0; left: 0;
+    width: 100%; height: 1.28rem; border-top: 0.01rem solid rgba(204,204,204,1); position: fixed;bottom: 0; left: 0; background-color: white;
     display: flex; justify-content: space-around; align-items: center; text-align: center;
     div{
         width: 3.15rem; height: 0.96rem; border: 0.02rem solid rgba(255,139,75,1); border-radius: 0.1rem; line-height: 0.96rem;

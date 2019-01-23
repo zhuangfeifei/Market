@@ -50,6 +50,9 @@ export default {
     beforeCreate(){
         this.$store.dispatch('getList')
     },
+    activated(){
+        this.$store.dispatch('getList')
+    },
     computed:{
         getList(){
             return this.$store.state.getList

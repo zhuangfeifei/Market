@@ -2,11 +2,12 @@
   <div id="app">
     <!--<transition :name="transitionName">-->
       <!--<router-view/>-->
-      <!--<keep-alive>-->
-          <!-- <router-view v-if="$route.meta.keepAlive"></router-view> -->
-          <router-view/>
-          <van-loading v-if="isLoading" class="apploading" size="40px" color="#E74744"/>
-      <!--</keep-alive>-->
+        <!-- <keep-alive>
+            <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive> -->
+
+        <router-view />
+        <van-loading v-if="isLoading" class="apploading" size="40px" color="#E74744"/>
 
     <!--</transition>-->
     <!--<transition :name="transitionName">-->

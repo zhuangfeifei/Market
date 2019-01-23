@@ -120,7 +120,7 @@ import header from '../../components/header'
         width: 100%; border-top: 0.3rem solid gainsboro; .font2;
         .add_reduce{
             width: 90%; height: 1.3rem; margin: 0 auto; display: flex; justify-content: space-between; font-size: 0.28rem;
-            border-bottom: 0.01rem solid rgba(206,206,206,1); line-height: 0.4rem; padding-top: 0.48rem;
+            border-bottom: 0.01rem solid rgba(206,206,206,1); line-height: 0.4rem; align-items: center;
             .date{
                 color:rgba(128,128,128,1); font-size: 0.22rem;
             }

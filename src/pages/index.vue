@@ -1,7 +1,11 @@
 <template>
     <div id="index">
 
-        <router-view></router-view>
+        <keep-alive>
+            <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+
+        <router-view v-if="!$route.meta.keepAlive" />
 
         <bottom-item></bottom-item>
 
@@ -24,7 +28,9 @@ export default {
         this.$store.dispatch('isFineList')
     },
     computed:{
-        
+        isFocus(){
+            return this.$store.state.isFocus
+        }
     },
     mounted(){
         

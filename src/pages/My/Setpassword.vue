@@ -78,7 +78,7 @@ export default {
 
 <style lang="less" scoped>
     #Setup{
-        width: 100%; min-height: 100vh; background-color: white; font-size: 0.3rem; padding: 0 0.4rem; padding-top: 1.5rem;
+        width: 100%; min-height: 100vh; background-color: white; font-size: 0.3rem; padding: 0 0.4rem; padding-top: 0.6rem;
     }
 
     *{
@@ -93,11 +93,11 @@ export default {
         text-align: center; font-size: 0.48rem; .font1
     }
     .Setup_input{
-        margin-top: 0.64rem;
+        margin-top: 0.34rem;
     }
     .Setup_next{
         width: 4rem; height: 0.96rem; background-color: rgba(255,139,75,1); border-radius: 0.1rem;
-        color: white; font-size: 0.36rem; .font1; line-height: 0.96rem; text-align: center; margin: 0 auto; margin-top: 1.28rem; 
+        color: white; font-size: 0.36rem; .font1; line-height: 0.96rem; text-align: center; margin: 0 auto; margin-top: 0.5rem; 
     }
     
 </style>

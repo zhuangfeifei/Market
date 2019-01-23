@@ -24,6 +24,9 @@ export default {
     isSuccess(state,res){
         state.isSuccess = res
     },
+    isFocus(state,res){
+        state.isFocus = res
+    },
     [types.ACTIVE](state,res){
         state.active = res
     },
@@ -111,6 +114,9 @@ export default {
     goodsList(state,res){
         state.goodsList = res
     },
+    allGoodsByCategory(state,res){
+        state.allGoodsByCategory = res
+    },
     listadress(state,res){
         state.listadress = res
     },
@@ -137,6 +143,9 @@ export default {
     cartList(state){
         state.cartList = Util.getLocal('cartLists')
     },
+    promotionList(state,res){
+        state.promotionList = res
+    },
 
 // ------------------------- 普通订单 -------------------------
     CommonOrderDetail(state, res){
@@ -159,6 +168,32 @@ export default {
     },
     myScoreGoodsList(state, res){
         state.myScoreGoodsList = res
+    },
+
+
+
+    index_icon(state, res){
+        state.index_icon = res
+    },
+
+
+
+
+    market_wxh(state,res){
+        state.market_wxh = res
+    },
+    market_openId(state,res){
+        state.market_openId = res
+    },
+    market_unionId(state,res){
+        state.market_unionId = res
+    },
+
+
+
+    
+    getDeliverInfo(state,res){
+        state.getDeliverInfo = res
     },
 }
 

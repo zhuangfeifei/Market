@@ -1,5 +1,6 @@
 import axios from 'axios'
 import store from './store'
+import Util from './storage'
 import router from '../router'
 import { Toast, Dialog } from 'vant'
 
@@ -11,6 +12,13 @@ axios.defaults.baseURL = urls
 
 // 请求拦截
 axios.interceptors.request.use(function (config) {
+  // console.log(store.state.market_wxh)
+    if(store.state.market_wxh == '' || store.state.market_wxh == null || store.state.market_wxh == undefined){
+      store.commit('market_wxh', Util.getLocal('market_wxh'))
+      store.commit('market_openId', Util.getLocal('market_openId'))
+      store.commit('market_unionId', Util.getLocal('market_unionId'))
+      store.dispatch('carousel')
+    }
  
    if(config.url !== '/market/shops/api/order/pay' && config.url !== '/market/shops/api/address/addadress') store.commit('isLoading', true)
     return config
@@ -22,10 +30,6 @@ axios.interceptors.request.use(function (config) {
 
 // 请求
 const fetch = (url, params = '', headers = { 'Content_Type':'application/x-www-form-urlencoded' }) => {
-  if(store.state.market_unionId == null){
-    window.location.reload()
-    return
-  }
 
   axios.defaults.headers.post['Content-Type'] = headers.Content_Type
   

@@ -5,16 +5,9 @@
             <div><input id="name" type="text" v-model="goodsName" ref="input" placeholder="搜索你想要的商品"></div>
             <img @click="search" src="../../assets/img/search.png" alt="">
         </nav>
-        <!-- <div class="Goods_title"><span>默认</span><span>销量</span><span>价格</span></div> -->
         <mescroll-vue class="GoodsMescroll" :down="mescrollDown" :up="mescrollUp" @init="mescrollInit">
             <div class="goods">
-                <div class="goods_list" v-for="(item,index) in goodsList" :key="index" @click="$router.push({path:'/GoodsDetails', query:{id: item.id}})">
-                    <img v-lazy="imgUrlGoods + item.thumbnail_pic" alt="">
-                    <div>
-                        <p>{{item.goods_name}}</p>
-                    </div>
-                    <span>¥{{item.price}}</span>
-                </div>
+                <goods-item :goodsList="goodsList"></goods-item>
             </div>
             <div v-if="goodsList.length == 0" class="goods_no">暂无</div>
         </mescroll-vue>
@@ -24,6 +17,7 @@
 
 <script>
 import MescrollVue from 'mescroll.js/mescroll.vue'
+import _Goods from '../../components/_goods'
 export default {
     data() {  
         return {
@@ -40,7 +34,8 @@ export default {
         }
     },
     components: {
-        MescrollVue
+        MescrollVue,
+        "goods-item": _Goods
     },
     beforeCreate(){
         
@@ -54,10 +49,11 @@ export default {
         document.body.scrollTop = 0
         document.documentElement.scrollTop = 0
         document.title =  this.$route.query.title || '商品分类'
-        // console.log(12)
+        
+        this.goodsName = this.$route.query.goodsName
     },
     activated(){
-        // console.log('hah')
+        
     },
     methods:{
         search(){
@@ -133,18 +129,7 @@ export default {
 
 
 .goods{
-    width: 100%; height: 100%; display: flex; flex-wrap: wrap;
-    .goods_list{
-        width: 3.73rem; height: 4.55rem; margin-top: 0.02rem; background-color: white; padding: 0.4rem 0 0.1rem 0.4rem; 
-        img{ width: 3.15rem; height: 2.4rem; }
-        div{
-            width: 100%; height: 0.76rem; padding-right: 0.2rem; line-height: 0.38rem; margin-bottom: 0.2rem; margin-top: 0.05rem;
-            p{ overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; font-size: 0.28rem; }
-        }
-        span{ color: #EA1616; .font1; }
-    }
-    .goods_list:nth-child(2n -1){ margin-right: 0.02rem; }
-    .goods_list:nth-child(2n){ padding: 0.4rem 0 0.1rem 0.19rem!important; div{  padding-right: 0.4rem; } }
+    width: 100%; height: 100%;
 }
 
 .goods_no{

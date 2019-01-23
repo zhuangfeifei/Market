@@ -20,7 +20,7 @@
 
         <van-goods-action>
             <van-goods-action-mini-btn icon="phone-o" text="客服" @click="onClickKeBtn"/>
-            <van-goods-action-mini-btn icon="shopping-cart-o" text="购物车" @click="$router.push('/ShoppingCart')"/>
+            <van-goods-action-mini-btn icon="shopping-cart-o" text="购物车" @click="goodsCart"/>
             <van-goods-action-big-btn text="加入购物车" @click="onClickMiniBtn"/>
             <van-goods-action-big-btn text="立即购买" primary @click="onClickBigBtn"/>
         </van-goods-action>
@@ -62,13 +62,20 @@ export default {
     },
     methods:{
         onClickMiniBtn() {
-            this.$store.dispatch('insertGoods', this.$route.query.id)
+            this.CategoryTwoOrThreeListDetail.inventory == 0 ? this.isInventory() : this.$store.dispatch('insertGoods', this.$route.query.id)
         },
         onClickBigBtn() {
-            this.$router.push({path:'/CreateGoods',query:{id: this.CategoryTwoOrThreeListDetail.id}})
+            this.CategoryTwoOrThreeListDetail.inventory == 0 ? this.isInventory() : this.$router.push({path:'/CreateGoods',query:{id: this.CategoryTwoOrThreeListDetail.id}})
         },
         onClickKeBtn(){
             window.location.href = 'tel:0512-66831208'
+        },
+        goodsCart(){
+            this.$router.push('/ShoppingCart')
+            this.$store.commit('ACTIVE', 3)
+        },
+        isInventory(){
+            this.$toast('已售罄')
         }
     },
 }

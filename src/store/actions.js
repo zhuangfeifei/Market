@@ -93,6 +93,16 @@ uploadPicture({}, formData){   // 上传图片
     })
     .catch(err => console.log(err))
 },
+getDeliverInfo({state,commit}, deliverNos){   // 查询快递物流信息
+    return axios.fetch('/shops/api/order/getDeliverInfo', { deliverNo: deliverNos } )
+    .then(res => {
+        // console.log(res.data)
+        if(res.data.code == 200) {
+            commit('getDeliverInfo', res.data.data)
+        }
+    })
+    .catch(err => console.log(err))
+},
 //
 //
 // ------------------------- 购物车 -------------------------
@@ -191,6 +201,16 @@ uploadPicture({}, formData){   // 上传图片
             // console.log(res.data)
             if(res.data.code == 200) commit('goodsList', res.data.data)
             return Promise.resolve(res)
+        })
+        .catch(err => console.log(err))
+    },
+    allGoodsByCategory({commit}, list){   // 分页查询商品列表
+        return axios.fetch('/shops/api/goods/allGoodsByCategory', { limit: list.limit, current: list.current, categoryId: list.categoryId, goodsName: list.goodsName })
+        .then(res => {
+            // console.log(res.data)
+            if(res.data.code == 200) {
+                return Promise.resolve(res)
+            }
         })
         .catch(err => console.log(err))
     },
@@ -368,7 +388,7 @@ uploadPicture({}, formData){   // 上传图片
         axios.fetch('/shops/api/newfunc/index_icon') 
         .then(res => {
             // console.log(res.data)
-            // if(res.data.code == 200) commit('index_goods', res.data.data)
+            if(res.data.code == 200) commit('index_icon', res.data.data)
         })
         .catch(err => console.log(err))
     },
@@ -885,14 +905,13 @@ uploadPicture({}, formData){   // 上传图片
 // ------------------------- 大闸蟹 -------------------------
 // 
 //
-    promotionList({dispatch}, list){   // 获取大闸蟹列表
+    promotionList({dispatch,commit}, list){   // 获取大闸蟹列表
         axios.fetch('/shops/api/promotion/promotionList', { current: list.current, limit: list.limit }) 
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
-                // Util.setLocal(res.data.data[0], 'promotionList')
-                // commit('SHOP_DETAIL')
-                dispatch('crabgroupList', { id: res.data.data[0].id, list})
+                commit('promotionList', res.data.data)
+                if(res.data.data.length > 0) dispatch('crabgroupList', { id: res.data.data[0].id, list})
             }
         })
         .catch(err => console.log(err))
@@ -902,7 +921,10 @@ uploadPicture({}, formData){   // 上传图片
         .then(res => {
             // console.log(res.data)
             if(res.data.code == 200) {
-                // Util.setLocal(res.data.data[0], 'promotionList')
+                function sortId(a,b){  
+                    return a.order_num - b.order_num  
+                 }
+                res.data.data.sort(sortId);
                 commit('GETCRABGROUPLIST', res.data.data)
             }
         })

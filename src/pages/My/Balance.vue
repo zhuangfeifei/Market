@@ -5,7 +5,7 @@
         <div class="Balance">
             <div class="Balance_">
                 <p>当前余额</p><h4><span>¥ </span>{{user.wtCustomer.amount || 0}}</h4>
-                <router-link to=""><div class="Balance_Recharge">充值</div></router-link>
+                <!-- <router-link to=""><div class="Balance_Recharge">充值</div></router-link> -->
             </div>
             <nav>
                 <div @click="tab(index)" v-for="(item,index) in title" :key="index" :class="{active: tabIndex == index}"><span>{{item}}</span><section v-show="tabIndex == index"></section></div>
@@ -79,7 +79,6 @@ export default {
             let list = { queryType: this.tabIndex, limit: page.size, current: page.num }
             this.$store.dispatch('balance', list)
             .then(res => {
-                // console.log(res.data)
                 if(res.data.code == 200) {
                     let arr = res.data.data.yueList
                     if (page.num === 1) this.balance = []
