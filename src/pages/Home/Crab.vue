@@ -2,7 +2,7 @@
     <div id="Crab">
 
          <!-- :style="{background:'url('+imgUrl + promotionList[0].backchartpic+')', 'background-size': 'cover', 'background-repeat': 'no-repeat', 'background-position':'center'}" -->
-        <div v-if="crabgroupList != ''" class="Crab">
+        <div v-if="promotionList != ''" class="Crab">
             <nav>
                 <img class="Crab_list_logos" :src="imgUrl + promotionList[itemIndex].toppic" alt="">
                 <!-- <img class="Crab_list_logos" src="../../assets/home/necessities.png" alt=""> -->
@@ -25,23 +25,6 @@
                         <span v-else class="Crab_immediately Crab_immediatelyEnd">已售罄</span>
                     </div>
                 </div>
-                <!-- <div class="Crab_list_">
-                    <div class="Crab_Recommend"><img :src="img[1]" alt=""></div>
-                    <div class="Crab_list" v-for="(item,indexs) in crabgroupList" :key="item.id">
-                        <img class="Crab_list_content" @click="detailss(indexs)" :src="imgUrl + item.thumbnail_pic" alt="">
-                        <div class="Crab_list_ammont">
-                            <span>{{item.group_name}}</span>
-                            <div class="Crab_">
-                                <p>已售{{item.soldRate}}%</p>
-                                <div class="Crab_Progressbar"><div class="Crab_Progressbar_" :style="{width: item.soldRate+'%'}"><div></div></div></div>
-                            </div>
-                            <div class="Crab_pay">
-                                <p>¥<span>{{item.price}}</span> <del>原价：{{item.discount}}</del></p>
-                                <div :class="{CrabNo:item.inventory == 0}">{{item.inventory == 0 ? '已售罄' : '立即抢购'}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="Crab_footer"><img :src="imgUrl + promotionList[itemIndex].footpic" alt=""></div>
             </div>
         </div>
@@ -65,12 +48,12 @@ export default {
     },
     beforeCreate(){
         this.$store.dispatch('user')
-        let list = { current: 1, limit: 1000, isPage: false, itemIndex: this.$route.query.itemIndex || 0 }
+        let list = { current: 1, limit: 1000, isPage: false, activity_id: this.$route.query.activity_id }
         this.$store.dispatch('promotionList', list)
     },
     activated(){
         this.$store.dispatch('user')
-        let list = { current: 1, limit: 1000, isPage: false, itemIndex: this.$route.query.itemIndex || 0 }
+        let list = { current: 1, limit: 1000, isPage: false, activity_id: this.$route.query.activity_id }
         this.$store.dispatch('promotionList', list)
     },
     computed:{
@@ -103,11 +86,11 @@ export default {
         //     this.$router.push({path:"/VoucherDetails"})
         // }
 
-        this.itemIndex = this.$route.query.itemIndex
+        this.itemIndex = this.$route.query.itemIndex || 0
 
-        this.$nextTick(()=>{
-            setTimeout( ()=> {this.videoMethod()}, 500);
-        })
+        // this.$nextTick(()=>{
+        //     setTimeout( ()=> {this.videoMethod()}, 500);
+        // })
     },
     methods:{
         detailss(indexs){

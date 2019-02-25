@@ -100,7 +100,7 @@ export default {
             }
             this.$store.dispatch('goodsList', list)
             .then(res => {
-                console.log(res.data)
+                // console.log(res.data)
                 if(res.data.code == 200) {
                     let arr = res.data.data
                     if (page.num === 1) this.goodsList = []

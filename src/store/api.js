@@ -5,7 +5,7 @@ import router from '../router'
 import { Toast, Dialog } from 'vant'
 
 
-let localhostDev = true  
+let localhostDev = false  
 let urls = localhostDev ? '/market' : 'http://www.homeamc.cn'
 
 axios.defaults.baseURL = urls

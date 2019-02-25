@@ -8,7 +8,7 @@
 
         <van-swipe class="swipe" :autoplay="3000">
             <van-swipe-item v-for="(item, index) in carousel" :key="index">
-                <router-link v-if="item.titlename === '太湖专题'" to="/Crab"><img :src="imgUrl + item.picture" /></router-link>
+                <img v-if="item.url == ''" @click="routers(index)" :src="imgUrl + item.picture" />
                 <a v-else :href="item.url"><img v-lazy="imgUrl + item.picture" /></a>
             </van-swipe-item>
         </van-swipe>
@@ -32,7 +32,7 @@
         <div class="Home_activity">
             <section><img src="../../assets/home/Home_activity.png" alt=""><p>活动专区</p></section>
             <div>
-                <img @click="$router.push({path:''})" src="../../assets/home/Home_activity_kill.png" alt="">
+                <img @click="Home_activity_kill" src="../../assets/home/Home_activity_kill.png" alt="">
                 <img @click="$router.push({path:'/Promotion'})" src="../../assets/home/Home_activity_promotion.png" alt="">
             </div>
         </div>
@@ -134,6 +134,12 @@ export default {
     //     this.scrollWatch = false;
     // },
     methods:{
+        Home_activity_kill(){
+            this.$toast('正在开发中')
+        },
+        routers(index){
+            this.$router.push({path:'/Crab', query:{ activity_id: this.carousel[index].activity_id, itemIndex: index }})
+        },
         details(id){
             this.$router.push({path:'/GoodsDetails',query:{id: id}})
             // this.$router.push({path:'/DiscountItem',query:{indexs: index}})

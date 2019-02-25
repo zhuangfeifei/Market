@@ -96,7 +96,7 @@ uploadPicture({}, formData){   // 上传图片
 getDeliverInfo({state,commit}, deliverNos){   // 查询快递物流信息
     return axios.fetch('/shops/api/order/getDeliverInfo', { deliverNo: deliverNos } )
     .then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         if(res.data.code == 200) {
             commit('getDeliverInfo', res.data.data)
         }
@@ -197,7 +197,7 @@ getDeliverInfo({state,commit}, deliverNos){   // 查询快递物流信息
     brands({commit}, id){   // 查询品牌列表
         axios.fetch('/shops/api/goods/brands')
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data.code == 200) {
                 let a = {brand_name:'所有', id: ''}
                 res.data.data.unshift(a)
@@ -366,7 +366,7 @@ getDeliverInfo({state,commit}, deliverNos){   // 查询快递物流信息
     carousel({commit}){   // 轮播图
         axios.fetch('/shops/api/basic/carousel')
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data.code == 200) commit('CAROUSEL', res.data.data)
         })
         .catch(err => console.log(err))
@@ -505,7 +505,7 @@ getDeliverInfo({state,commit}, deliverNos){   // 查询快递物流信息
         axios.fetch('/shops/api/groupOrder/groupList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             shopId: shopIds, groupType: '' }) 
         .then(res => {
-            // console.log(res.data)   
+            console.log(res.data)   
             if(res.data.code == 200) {
                 Util.setLocal(res.data.data, 'groupList')
                 commit('GROUP_LIST')
@@ -930,10 +930,10 @@ getDeliverInfo({state,commit}, deliverNos){   // 查询快递物流信息
     promotionList({dispatch,commit}, list){   // 获取大闸蟹列表   活动促销秒杀
         axios.fetch('/shops/api/promotion/promotionList', { current: list.current, limit: list.limit }) 
         .then(res => {
-            console.log(res.data)
+            // console.log(res.data)
             if(res.data.code == 200) {
                 commit('promotionList', res.data.data)
-                if(res.data.data.length > 0) dispatch('crabgroupList', { id: res.data.data[list.itemIndex].id, list})
+                if(res.data.data.length > 0) dispatch('crabgroupList', { id: list.activity_id || res.data.data[0].id, list})
             }
         })
         .catch(err => console.log(err))
@@ -1009,7 +1009,7 @@ getDeliverInfo({state,commit}, deliverNos){   // 查询快递物流信息
         axios.fetch('/shops/api/gruopKill/killList', { access_type:'WXH5', wxh: state.market_wxh, openId: state.market_openId, unionId: state.market_unionId, 
             shopId: shopIds, groupType: '', limit: 50, current: 1 } )
         .then(res => {
-            console.log(res.data)   
+            // console.log(res.data)   
             if(res.data.code == 200) {
                 let killTimeLists = {}, dest = []
                 for(let val of res.data.data){
@@ -1025,7 +1025,7 @@ getDeliverInfo({state,commit}, deliverNos){   // 查询快递物流信息
                         }
                     }
                 }
-                console.log(dest)
+                // console.log(dest)
                 Util.setLocal(dest.reverse(), 'groupKillList')
                 commit('GROUPKILL_LIST')
             }

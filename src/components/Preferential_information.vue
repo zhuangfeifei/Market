@@ -11,9 +11,9 @@
                     <div class="CashCoupon_list_num">
                         <div class="CashCoupon_list_num_">
                             <p>售价：<span>¥{{item.price}}</span></p>
-                            <div class="Crab_Progressbar"><div class="Crab_Progressbar_" :style="{width: 50+'%'}"><div></div></div></div>
+                            <div class="Crab_Progressbar"><div class="Crab_Progressbar_" :style="{width: parseInt(item.soldNum) / item.inventory+'%'}"><div></div></div></div>
                         </div>
-                        <div class="CashCoupon_list_btn">立即购买</div>
+                        <div class="CashCoupon_list_btn" :class="{CashCoupon_list_btn_: item.inventory == 0}">{{item.inventory == 0 ? '已售完' : '立即购买'}}</div>
                     </div>
                 </div>
             </div>
@@ -115,6 +115,7 @@ export default {
                     width: 1.4rem; height: 0.48rem; background:rgba(255,139,75,1); border-radius: 0.1rem; margin-top: 0.2rem;
                     color: white; font-size: 0.28rem; .font1; text-align: center; line-height: 0.48rem;
                 } 
+                .CashCoupon_list_btn_{ background:rgba(206,206,206,1)!important; }
             }
         }
     }
