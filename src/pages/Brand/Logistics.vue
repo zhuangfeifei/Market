@@ -36,7 +36,7 @@ export default {
         
     },
     beforeCreate(){
-        this.$store.dispatch('getDeliverInfo', this.$route.query.ORDER_NO)
+        this.$store.dispatch('getDeliverInfo', this.$route.query.deliverno)
     },
     computed:{
         ...mapState({

@@ -2,7 +2,7 @@
     <div id="My" v-if="user">
 
         <nav class="My_nav" @click="$router.push('/Membership')">
-            <section><img :src="user.wtCustomer.avatar" alt=""><img v-if="user.wtCustomer.phonenumber != ''" src="../../assets/my/king.png" alt=""></section>
+            <section><img :src="user.wtCustomer.avatar || avatar" alt=""><img v-if="user.wtCustomer.phonenumber != ''" src="../../assets/my/king.png" alt=""></section>
             <div><p>{{user.wtCustomer.nickname}}<span v-if="user.wtCustomer.phonenumber != ''" class="My_vip">会员</span></p><span>{{user.wtCustomer.phonenumber}}</span></div>
         </nav>
 
@@ -55,7 +55,8 @@
 export default {
     data() {
         return {
-            show:false,isCode:true,registered:false
+            show:false,isCode:true,registered:false,
+            avatar: require('../../assets/my/avatar.png')
         }
     },
     components: {

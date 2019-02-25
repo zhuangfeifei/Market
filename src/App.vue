@@ -2,11 +2,12 @@
   <div id="app">
     <!--<transition :name="transitionName">-->
       <!--<router-view/>-->
-        <!-- <keep-alive>
-            <router-view v-if="$route.meta.keepAlive"></router-view>
-        </keep-alive> -->
+        <keep-alive :include='includedComponents' :excluded='excludedComponents'>
+            <router-view></router-view>
+        </keep-alive>
+        
 
-        <router-view />
+        <!-- <router-view v-if="!$route.meta.keepAlive"/> -->
         <van-loading v-if="isLoading" class="apploading" size="40px" color="#E74744"/>
 
     <!--</transition>-->
@@ -27,7 +28,13 @@ export default {
   computed:{
     isLoading(){
       return this.$store.state.market_unionId == null ? true : false || this.$store.state.isLoading
-    }
+    },
+    includedComponents(){
+      return this.$store.state.includedComponents.toString()
+    },
+    excludedComponents(){
+      return this.$store.state.excludedComponents
+    },
   },
   created(){
       

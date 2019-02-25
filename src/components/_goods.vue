@@ -9,7 +9,7 @@
             <div>
                 <p>{{item.goods_name}}</p>
             </div>
-            <span>¥{{item.price}}</span>
+            <span>¥{{item.price}}</span><del>¥{{item.market_price}}</del>
         </div>
 
     </div>
@@ -70,6 +70,7 @@ export default {
         p{ font-size: 0.28rem; }
     }
     span{ color: #EA1616; .font1; }
+    del{ font-size: 0.24rem; color: grey; margin-left: 0.2rem; }
 }
 .goods_list:nth-child(2n -1){ margin-right: 0.02rem; }
 .goods_list:nth-child(2n){ padding: 0.4rem 0 0.1rem 0.19rem!important; div{  padding-right: 0.4rem; } }

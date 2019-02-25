@@ -1,18 +1,18 @@
 <template>
     <div id="Crab">
 
-         <!-- :style="{background:'url('+imgUrl + promotionList[0].topchartpic+')', 'background-size': 'cover', 'background-repeat': 'no-repeat', 'background-position':'center'}" -->
+         <!-- :style="{background:'url('+imgUrl + promotionList[0].backchartpic+')', 'background-size': 'cover', 'background-repeat': 'no-repeat', 'background-position':'center'}" -->
         <div v-if="crabgroupList != ''" class="Crab">
             <nav>
-                <img class="Crab_list_logos" src="../../assets/home/necessities.png" alt="">
-                <!-- <img class="Crab_list_logos" src="../../assets/img/CrabBacks.png" alt=""> -->
+                <img class="Crab_list_logos" :src="imgUrl + promotionList[itemIndex].toppic" alt="">
+                <!-- <img class="Crab_list_logos" src="../../assets/home/necessities.png" alt=""> -->
                 <!-- <div>
                     <video muted id="videos" width="100%" height="100%" src="../../assets/img/1.mp4" controls autoplay="autoplay" playsinline="true" loop type="video/mp4">
                         您的浏览器不支持 video 标签。 
                     </video>
                 </div> -->
             </nav>
-            <div class="Crab_main">
+            <div class="Crab_main" :style="{background:'url('+imgUrl + promotionList[itemIndex].backchartpic+')', 'background-size': '100% 16.64rem'}">
                 <div class="Crab_Recommend"><img :src="img[1]" alt=""><p>(火爆进行中)</p></div>
                 <div class="Crab_list_">
                     <div class="Crab_list_content" @click="$router.push({path:'/GoodsDetails', query:{id: item.goods_id}})" v-for="(item,index) in crabgroupList" :key="index">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </div> -->
-                <div class="Crab_footer"><img src="../../assets/home/necessitiesBottom.png" alt=""></div>
+                <div class="Crab_footer"><img :src="imgUrl + promotionList[itemIndex].footpic" alt=""></div>
             </div>
         </div>
 
@@ -56,7 +56,7 @@ export default {
     data() {
         return {
             activeNames: ['0'],img:[require('../../assets/img/Recommend.png'),require('../../assets/img/NoRecommend.png')],
-            show:true,
+            show:true, itemIndex: 0,
             list: { current: 1, limit: 50, isPage: false }
         }
     },
@@ -65,12 +65,12 @@ export default {
     },
     beforeCreate(){
         this.$store.dispatch('user')
-        let list = { current: 1, limit: 1000, isPage: false }
+        let list = { current: 1, limit: 1000, isPage: false, itemIndex: this.$route.query.itemIndex || 0 }
         this.$store.dispatch('promotionList', list)
     },
     activated(){
         this.$store.dispatch('user')
-        let list = { current: 1, limit: 1000, isPage: false }
+        let list = { current: 1, limit: 1000, isPage: false, itemIndex: this.$route.query.itemIndex || 0 }
         this.$store.dispatch('promotionList', list)
     },
     computed:{
@@ -102,6 +102,8 @@ export default {
         //     this.$store.dispatch('groupListDetail', this.$route.query.statusId)
         //     this.$router.push({path:"/VoucherDetails"})
         // }
+
+        this.itemIndex = this.$route.query.itemIndex
 
         this.$nextTick(()=>{
             setTimeout( ()=> {this.videoMethod()}, 500);
@@ -146,7 +148,8 @@ export default {
 
 <style lang="less" scoped>
 #Crab{
-    width: 100%; height: 100%; font-size: 0.3rem; background-color: #c00716; padding-bottom: 0.1rem;
+    width: 100%; height: 100%; font-size: 0.3rem; 
+    // border: 0.01rem solid black;
 }
 
 *{
@@ -159,6 +162,7 @@ export default {
 
 .Crab{
     width: 100%; height: 100%; 
+    // border: 0.01rem solid red;
     & nav{ 
         width: 100%; height: 9.44rem;
         .Crab_list_logos{ width: 100%; height: 100%; } 
@@ -168,7 +172,9 @@ export default {
         // }
     }
     .Crab_main{
-        width: 100%; height: 100%; background: url('../../assets/home/necessitiesBack.png'); background-size: 100% 16.64rem;
+        width: 100%; height: 100%; 
+        // background: url('../../assets/home/necessitiesBack.png'); 
+        background-size: 100% 16.64rem;
         // padding: 0.8rem 0 0 0; 
         .Crab_Recommend{ 
             width: 95%; height: 2rem; margin-bottom: 0.6rem; text-align: center; background-color: white; margin: 0 auto; padding-top: 0.8rem;
@@ -180,7 +186,7 @@ export default {
             .Crab_list_content{
                 width: calc((100% - 1.2rem) / 3); height: 4.06rem; margin-left: 0.3rem; margin-bottom: 0.64rem;
                 section{ 
-                    width: 100%; height: calc((95vw - 1.2rem) / 3); 
+                    width: 100%; height: calc((95vw - 1.2rem) / 3); background-size: cover!important; background-repeat: no-repeat!important; background-position:center!important;
                     .SoldOut{
                         width: 100%; height: 100%; text-align: center; padding-top: calc(50% - 0.64rem); background: rgba(0,0,0,0.4);
                         img{ width: 1.28rem; height: 1.28rem; }
@@ -231,7 +237,7 @@ export default {
     //         }
     //     }
         .Crab_footer{ 
-            width: 100%; height: 3.79rem; 
+            width: 100%; height: 3.79rem; overflow: hidden;
             img{ width: 100%; height: 100%; }
         }
     }

@@ -30,6 +30,7 @@ const state = {
     user: '',        // 获取用户信息
     carousel: '',    // 轮播图
     announceList: '',    // 公告
+    announceDetail: '',    // 公告
     isFineList: '',    // 精选
     getContactList: '',    // 馆位
     shopDetail: '',    // 查询商户详情
@@ -57,6 +58,7 @@ const state = {
     CategoryTwoOrThreeList:'', // 根据一级分类主键id/二级分类主键id获取二级/三级商品分类信息列表
     CategoryTwoOrThreeListDetail:'', // 查询商品详情
     goodsList:'', // 分页查询商品列表
+    brands:'', // 品牌列表
     allGoodsByCategory:'', // 分页查询商品列表
     createGoods:'', // 生成商品订单
     orderDetail:'', // 查询订单详情
@@ -89,6 +91,18 @@ const state = {
 
 
     getDeliverInfo:'', // 查询快递物流信息
+
+    isKeepAlive:false, // 缓存
+    includedComponent:'ShopActivity,CommonOrder', // 缓存
+    includedComponents:'ShopActivity,Goods,CommonOrder,GoodStatus', // 缓存
+    excludedComponents:'', // 缓存
+    included:'Home,Classification,Brand,My', // 缓存
+    excluded:'', // 缓存
+
+
+    groupKillList:'', // 秒杀
+    promotionList:'', // 秒杀
+    times:'',
 }
 
 export default new Vuex.Store({

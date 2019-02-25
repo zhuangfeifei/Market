@@ -30,6 +30,7 @@
 
 <script>
 export default {
+    name:'GoodDetails',
     data() {  
         return {
             
@@ -78,6 +79,14 @@ export default {
             this.$toast('已售罄')
         }
     },
+    deactivated(){
+        // this.$destroy();//销毁B的实例
+    }
+    // beforeRouteLeave(to, from, next) {   
+    // // 设置下一个路由的 meta
+    //     to.path === '/GoodStatus' ? to.meta.keepAlive = true : null // B 跳转到 A 时，让 A 缓存，即不刷新（代码写在B页面）
+    //     next();
+    // }
 }
 </script>
 

@@ -36,6 +36,9 @@ export default {
     [types.ANNOUNCELIST](state,res){
         state.announceList = res
     },
+    announceDetail(state,res){
+        state.announceDetail = res
+    },
     [types.ISFINELIST](state,res){
         state.isFineList = res
     },
@@ -113,6 +116,9 @@ export default {
     },
     goodsList(state,res){
         state.goodsList = res
+    },
+    brands(state,res){
+        state.brands = res
     },
     allGoodsByCategory(state,res){
         state.allGoodsByCategory = res
@@ -195,5 +201,43 @@ export default {
     getDeliverInfo(state,res){
         state.getDeliverInfo = res
     },
+
+
+    isKeepAlive(state,res){
+        state.isKeepAlive = res
+    },
+    includedComponents(state,res){
+        state.includedComponents = res
+    },
+    excludedComponents(state, res){
+        state.excludedComponents = res
+    },
+
+
+
+    GROUPKILL_LIST(state){
+        state.groupKillList = Util.getLocal('groupKillList')
+    },
+    PROMORION_LIST(state, res){
+        state.promotionList = res
+    },
+    TIMES(state){
+        var date = new Date();
+        var year = date.getFullYear(),
+            month = date.getMonth() + 1,
+            day = date.getDate(),
+            hours = date.getHours(),
+            minutes = date.getMinutes(),
+            seconds = date.getSeconds(),
+            vWeek_s = date.getDay()
+        var times = year + "-" + toDub(month) + "-" + toDub(day) + " " + toDub(hours) + ":" + toDub(minutes) + ":" + toDub(seconds)
+        var times1 = year + "." + toDub(month) + "." + toDub(day)
+        function toDub(n) {
+            return n < 10 ? "0" + n : "" + n
+        }
+        var current = Date.parse(new Date(times.replace(/-/g, "/")))
+        var list = { times, times1, current }
+        state.times = list
+    }
 }
 

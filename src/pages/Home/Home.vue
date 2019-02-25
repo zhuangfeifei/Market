@@ -24,7 +24,7 @@
             <router-link to="/CouponAll"><div><img :src="imgUrlIcons + index_icon.middleMenus[7].iconImage" alt=""></div></router-link>
         </div>
 
-        <div class="Headline" @click="$router.push('')">
+        <div class="Headline" @click="announce">
             <img src="../../assets/img/Headline.png" alt="">
             <span v-if="announceList != ''">{{announceList[0].title}}</span>
         </div>
@@ -32,13 +32,13 @@
         <div class="Home_activity">
             <section><img src="../../assets/home/Home_activity.png" alt=""><p>活动专区</p></section>
             <div>
-                <img src="../../assets/home/Home_activity_kill.png" alt="">
-                <img src="../../assets/home/Home_activity_promotion.png" alt="">
+                <img @click="$router.push({path:''})" src="../../assets/home/Home_activity_kill.png" alt="">
+                <img @click="$router.push({path:'/Promotion'})" src="../../assets/home/Home_activity_promotion.png" alt="">
             </div>
         </div>
         
         <div class="home_list" v-for="(item,index) in index_goods" :key="index">
-            <div class="home_list_title" @click="$router.push({path:'/GoodStatus',query:{categoryId: item.categoryId, title: item.categoryName}})">
+            <div class="home_list_title" @click="goodStatus(item)">
                 <img class="home_list_title_img" v-lazy="imgUrl + '/file/newfunc/' + item.icon" alt="">
                 <span :class="{home_list_title1: item.categoryName === '中外名酒', home_list_title2: item.categoryName === '生鲜水果', home_list_title3: item.categoryName === '食品饮料',
                     home_list_title4: item.categoryName === '个人护理' || item.categoryName === '年货市集', home_list_title5: item.categoryName === '家居清洁', home_list_title6: item.categoryName === '粮油副食'}">
@@ -55,7 +55,7 @@
                         <div @click="details(val.id)" class="grid-center"><img v-lazy="imgUrlGoods + val.thumbnailPic" alt=""></div>
                         <div @click="details(val.id)" class="grid-centers">
                             <div>{{val.goodsName}}</div>
-                            <p class="grid-center-money">¥{{val.price}}</p>
+                            <p class="grid-center-money">¥{{val.price}}<del>¥{{val.marketPrice}}</del></p>
                         </div>
                     </grid-item>
                 </grid>
@@ -77,8 +77,8 @@ export default {
     },
     components: {
         Grid,
-    GridItem,
-    GroupTitle,
+        GridItem,
+        GroupTitle,
     },
     beforeCreate(){
         let list = { current: 1, limit: 5, isPage: false }
@@ -98,6 +98,7 @@ export default {
             isFineList: state => state.isFineList,
             preferentialList: state => state.preferentialList,
             announceList: state => state.announceList,
+            announceDetail: state => state.announceDetail,
             market_unionId: state => state.market_unionId,
             goodsList: state => state.goodsList,
             index_icon: state => state.index_icon,
@@ -162,11 +163,26 @@ export default {
             $(document).ready(()=>{
                 $(window).height() < win_h ? this.$store.commit('isFocus', false) : this.$store.commit('isFocus', true)
             })
-        }
+        },
+        announce(){
+            this.$dialog.alert({
+                title: this.announceList[0].title,
+                message: this.announceDetail[0].offer_deatils,
+                // confirmButtonText: '确定'
+            }).then(() => {
+                // router.push({path:'/'})
+            })
+        },
+        goodStatus(item){
+            // console.log(true)
+            // this.$store.commit("includedComponents", this.$store.state.includedComponent+",GoodStatus")
+            // this.$store.commit("excludedComponents","");
+            this.$router.push({path:'/GoodStatus',query:{categoryId: item.categoryId, title: item.categoryName}})
+        },
     },
     watch:{
         scrollTop(val,old){
-            val > old ? this.fixed = false : this.fixed = true
+            val > old && val != 0  ? this.fixed = false : this.fixed = true
         },
         SearchgoodsName(val,old){
             var oForm =  document.getElementsByTagName("form")[0];
@@ -176,6 +192,13 @@ export default {
             }
         },
     },
+    // beforeRouteLeave(to, from, next) {   
+    //     // 设置下一个路由的 meta
+    //     console.log('home')
+    //     console.log(to)
+    //     to.path === '/GoodStatus' ? to.meta.keepAlive = false : null
+    //     next();
+    // },
     destroyed(){
         window.removeEventListener('scroll', this.scrollFixed)
         window.removeEventListener('resize', this.focusChang)
@@ -185,7 +208,7 @@ export default {
 
 <style lang="less" scoped>
 #home{
-    width: 100%; height: 100%; padding-bottom: 0.2rem; background: url(../../assets/home/homeback.png); background-size: 100% 8.6rem; font-size: 0.3rem; padding-top: 0.2rem;
+    width: 100%; height: 100%; padding-bottom: 0.2rem; background-color: rgba(246,246,246,1); font-size: 0.3rem;
 }
 
 *{
@@ -213,14 +236,14 @@ export default {
 }
 
 .swipe{
-    width: 95%; height: 4.26rem; margin: 0 auto;
+    width: 95%; height: 2.84rem; margin: 0 auto;
     & img{
         width: 100%; height: 100%;
     }
 }
 
 .classification{
-    width: 95%; height: 3.6rem; font-size: 0.25rem; text-align: center; background-color: white; margin: 0 auto; margin-top: 0.74rem; border-radius: 0.1rem;
+    width: 95%; height: 3.6rem; font-size: 0.25rem; text-align: center; background-color: white; margin: 0 auto; margin-top: 0.2rem; border-radius: 0.1rem;
     a{color:rgba(43,43,43,1);font-family:YouYuan;}
     & div{
         width: 25%; height: 1.4rem; float: left; margin-top: 0.2rem;
@@ -282,7 +305,7 @@ export default {
     width: 100%; color: #4B4B4B; padding: calc((100% - 2.1rem) / 2); border-top: 0.008rem solid rgba(255,139,75,0.3);
     div{ width: 100%; height: 0.3rem; font-size: 0.24rem; line-height: 0.3rem; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; }
     span{ background-color: #F15C4E; border-radius: 0.03rem; color: white; padding: 0.02rem 0.06rem; font-size: 0.14rem!important; }
-    .grid-center-money{ font-size: 0.24rem; color: #EA1616; .font1; margin-top: 0.08rem; letter-spacing: 0.02rem; }
+    .grid-center-money{ font-size: 0.24rem; color: #EA1616; .font1; margin-top: 0.08rem; letter-spacing: 0.02rem; del{ font-size: 0.2rem!important; color: #808080; margin-left: 0.1rem; } }
 }
 .weui-grid {
     margin: 0; padding: 0!important;

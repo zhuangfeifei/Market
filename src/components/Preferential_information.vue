@@ -4,8 +4,18 @@
         <div class="ShopDetils_CashCoupon">
             <h4>代金券</h4>
             <div class="ShopDetils_CashCoupon_list" @click="details(index)" v-for="(item,index) in groupList" :key="index">
-                <div><h4>{{item.group_name}}</h4><del>原价：{{item.discount}}</del></div>
-                <div>¥{{item.present_price}}抢购</div>
+                <div><img :src="imgUrlGoods+item.thumbnail_pic" alt=""></div>
+                <div>
+                    <h4>{{item.group_name}}</h4>
+                    <!-- <del>原价：{{item.discount}}</del> -->
+                    <div class="CashCoupon_list_num">
+                        <div class="CashCoupon_list_num_">
+                            <p>售价：<span>¥{{item.price}}</span></p>
+                            <div class="Crab_Progressbar"><div class="Crab_Progressbar_" :style="{width: 50+'%'}"><div></div></div></div>
+                        </div>
+                        <div class="CashCoupon_list_btn">立即购买</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -37,6 +47,11 @@ export default {
         
     },
     props:['groupList'],
+    computed:{
+        imgUrlGoods(){
+            return this.$store.state.imgUrlGoods
+        },
+    },
     created(){
         // document.body.scrollTop = 0
         // document.documentElement.scrollTop = 0
@@ -70,17 +85,38 @@ export default {
     width: 100%;
     h4{ color:rgba(43,43,43,1); .font3; }
     & .ShopDetils_CashCoupon_list{
-        width: 100%; height: 1.87rem; margin-top: 0.2rem; padding: 0.23rem 0.3rem;
-        background: url("../assets/img/CashCoupon.png") no-repeat; background-size: 100% 100%;
-        div:nth-child(1){ 
-            width: calc(100% - 2.6rem); height: 100%; float: left; position: relative;
-            p:nth-child(2){ font-size: 0.28rem; .font2; color:rgba(75,75,75,1); line-height: 0.6rem; }
-            del{ font-size: 0.24rem; .font2; color:rgba(75,75,75,1); margin-top: 0.1rem; position: absolute; bottom: 0; left: 0; }
+        width: 100%; height: 1.87rem; margin-top: 0.2rem; padding: 0.23rem 0.3rem; display: flex; justify-content: space-between; align-items: center;
+        background:rgba(246,246,246,1);
+        div:nth-child(1){
+            width: 1.6rem; height: 1.6rem;
+            img{ width: 100%; height: 100%; }
         }
-        div:nth-child(2){
-            width: 2rem; height: 0.81rem; background:rgba(255,139,75,1); border-radius: 0.1rem; margin-top: 0.27rem;
-            color: white; font-size: 0.36rem; .font1; float: right; text-align: center; line-height: 0.81rem;
-        } 
+        div:nth-child(2){ 
+            width: calc(100% - 1.8rem); height: 100%; text-align: left;
+            // del{ font-size: 0.24rem; .font2; color:rgba(75,75,75,1); margin-top: 0.1rem; position: absolute; bottom: 0; left: 0; }
+            .CashCoupon_list_num{
+                width: 100%; height: 1rem; display: flex; justify-content: space-between; margin-top: 0.4rem;
+                .CashCoupon_list_num_{
+                    width: calc(100% - 1.4rem); height: 100%;
+                    p{ font-size: 0.28rem; .font2; color:rgba(75,75,75,1); line-height: 0.4rem; span{ font-size: 0.36rem; color: #FF8B4B; .font3; } }
+                    .Crab_Progressbar{
+                        width: 2.06rem; height: 0.14rem; border-radius: 0.07rem; border:1px solid #FF8B4B; margin-top: 0.05rem;
+                        .Crab_Progressbar_{ 
+                            height: 100%;
+                            div{
+                                width: 100%; height: 100%; border-top-left-radius: 0.02rem; border-bottom-left-radius: 0.02rem; background:#FF8B4B; 
+                                -webkit-animation:dong 0.5s linear 0s 1 alternate;
+                                animation: dong 0.5s linear 0s 1 alternate;
+                            }
+                        }
+                    }
+                }
+                .CashCoupon_list_btn{
+                    width: 1.4rem; height: 0.48rem; background:rgba(255,139,75,1); border-radius: 0.1rem; margin-top: 0.2rem;
+                    color: white; font-size: 0.28rem; .font1; text-align: center; line-height: 0.48rem;
+                } 
+            }
+        }
     }
 }
 

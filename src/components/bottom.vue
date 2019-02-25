@@ -54,7 +54,7 @@ export default {
 
 <style lang="less" scoped>
     #bottom{
-        width: 100%; height: 1.1rem; position: fixed; bottom: 0; left: 0; box-shadow:1px 0px 0px rgba(0,0,0,0.3); z-index: 10000;
+        width: 100%; height: 1.1rem; position: fixed; bottom: 0; left: 0; box-shadow:1px 0px 0px rgba(0,0,0,0.3); z-index: 1000;
     }
 
     .footer{

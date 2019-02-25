@@ -40,7 +40,7 @@
         <div v-if="CommonOrderDetail" class="CommonOrderDetils_footer">
             <div v-if="CommonOrderDetail.ORDER_STATUS > 0 && CommonOrderDetail.ORDER_STATUS < 3" @click.stop="$router.push({path:'/Return',query:{ id: CommonOrderDetail.ID }})" class="CommonOrder_status_return">退换货</div>
             <div v-if="CommonOrderDetail.ORDER_STATUS == 2" class="CommonOrder_status_Confirm" @click="confirmDelivery">确认收货</div>
-            <div v-if="CommonOrderDetail.ORDER_STATUS >= 2" @click.stop="$router.push({path:'/Logistics',query:{ id: CommonOrderDetail.deliverno }})" class="CommonOrder_status_Cancel">查看物流</div>
+            <div v-if="CommonOrderDetail.ORDER_STATUS >= 2" @click.stop="$router.push({path:'/Logistics',query:{ deliverno: CommonOrderDetail.deliverno }})" class="CommonOrder_status_Cancel">查看物流</div>
             <div v-if="CommonOrderDetail.orderAfterList.length > 0 && CommonOrderDetail.orderAfterList[0].sale_type == 0 && CommonOrderDetail.ORDER_STATUS < 2" class="CommonOrder_status_remind">已提醒</div>
             <div v-if="CommonOrderDetail.ORDER_STATUS > 0 && CommonOrderDetail.orderAfterList.length == 0 && CommonOrderDetail.ORDER_STATUS < 2" class="CommonOrder_status_delivery" @click="delivery">提醒发货</div>
             <div v-if="CommonOrderDetail.ORDER_STATUS == 0" @click="orderCancelOrder" class="CommonOrder_status_Cancel">取消订单</div>

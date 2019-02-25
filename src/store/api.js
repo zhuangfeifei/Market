@@ -59,8 +59,16 @@ axios.interceptors.response.use(function (response) {
     }).catch(()=>{
        Toast.clear()
     });
-  }else if(response.data.code != 200) Toast.fail(response.data.message)
-
+  }else if(response.data.code != 200) {
+    Dialog.alert({
+        title: '温馨提示',
+        message: response.data.message,
+        // confirmButtonText: '确定'
+    }).then(() => {
+        // router.push({path:'/'})
+    })
+  }
+  
     return response;
 
   }, function (error) {

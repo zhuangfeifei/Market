@@ -73,10 +73,8 @@ export default {
         },
     },
     created(){
-        this.top()
+        // this.top()
         document.title = '普通订单'
-
-        
     },
     activated(){
         // console.log('hah')
@@ -101,7 +99,7 @@ export default {
             let list = { limit: page.size, current: page.num, tabIndex: this.tabIndex == 0 ? '' : this.tabIndex - 1  }
             this.$store.dispatch('CommonOrder', list)
             .then(res => {
-                // console.log(res.data)
+                console.log(res.data)
                 if(res.data.code == 200) {
                     let arr = res.data.data
                     if (page.num === 1) this.CommonOrder = []

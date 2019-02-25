@@ -39,9 +39,9 @@
             </div>
         </div>
 
-        <Preferential-information v-if="tabIndex == 0" :groupList="groupList"></Preferential-information>
-        <Hot-comments v-if="tabIndex == 1"></Hot-comments>
-        <v-html v-if="tabIndex == 2"></v-html>
+        <v-html v-show="tabIndex == 0"></v-html>
+        <Hot-comments v-show="tabIndex == 1"></Hot-comments>
+        <Preferential-information v-show="tabIndex == 2" :groupList="groupList"></Preferential-information>
 
         <van-popup class="ImagePreviews" v-model="show"><img class="ImagePreview" @click="isShow" :src="imgs" alt=""></van-popup>
 
@@ -59,7 +59,7 @@ import { setTimeout } from 'timers';
 		name: "loginpassword-item",
         data(){
             return{
-                active: 0, title:['优惠信息','热门评论','品牌故事'], tabIndex: 0, tableFixed: false, show:false, imgs:''
+                active: 0, title:['商家简介','热门评论','优惠信息'], tabIndex: 0, tableFixed: false, show:false, imgs:''
             }
         },
         components: {
@@ -100,7 +100,7 @@ import { setTimeout } from 'timers';
             },
             tab(index){
                 this.tabIndex = index
-                index == 2 ? this.$store.commit('HTML', this.shopDetail.content) : ''
+                index == 0 ? this.$store.commit('HTML', this.shopDetail.content) : ''
                 let Top = $(".ShopDetils_table").offset().top
                 $(window).scrollTop(Top)
             },

@@ -8,8 +8,11 @@
             </van-row>
             <div v-if="isYu" class="Pay_change">
                 <p>订单编号：{{orderDetail.ORDER_NO}}</p>
-                <h4>¥{{isWx ? moeny : user.wtCustomer.amount > moeny ? moeny : (moeny - user.wtCustomer.amount).toFixed(2)}}</h4>
-                <div @click="pay" class="Pay_start">立即付款</div>
+                <!-- <h4>¥{{isWx ? moeny : user.wtCustomer.amount > moeny ? moeny : (moeny - user.wtCustomer.amount).toFixed(2)}}</h4> -->
+                <h4 v-if="yueAmount > 0"><span>余额实付：</span><span>¥{{yueAmount}}</span></h4>
+                <h4 v-if="wxAmount > 0"><span>微信实付：</span><span>¥{{wxAmount}}</span></h4>
+                <p v-if="wxAmount > 0 && yueAmount > 0" class="PayCommon_tip">余额与微信混合支付，先余额支付再微信支付</p>
+                <div @click="pay" class="Pay_start" :class="{is_Pay_start: wxAmount > 0 && yueAmount > 0}">立即付款</div>
             </div>
             <div v-else class="Pay_passwod">
                 <p>请输入余额支付密码</p>
@@ -31,7 +34,7 @@ export default {
     components: {
         
     },
-    props:['isWx','moeny','redMoneys'],
+    props:['isWx','moeny','redMoneys','yueAmount','wxAmount'],
     beforeCreate(){
         // this.$store.dispatch('user')
     },
@@ -104,7 +107,7 @@ export default {
             }
             let lists = {  // 余额+微信
                 access_type:'WXH5', wxh: this.$store.state.market_wxh, openId: this.$store.state.market_openId, unionId: this.$store.state.market_unionId,
-                orderId: this.orderDetail.ID, payType: 4, payPwd: this.value, totalMoney: this.moeny, couponMoney: this.redMoneys.price, couponId: this.redMoneys.couponId,
+                orderIds: this.orderDetail.ID, payType: 4, payPwd: this.value, totalMoney: this.moeny, couponMoney: this.redMoneys.price, couponId: this.redMoneys.couponId,
                 yueAmount: this.user.wtCustomer.amount, 
                 wxAmount: parseFloat((this.moeny - this.user.wtCustomer.amount).toFixed(2)) 
             }
@@ -137,10 +140,18 @@ export default {
 .Pay_change{
     width: 100vw; height: calc(8rem - 1.3rem); padding: 0 0.4rem;
     p{ margin-top: 0.63rem; font-size: 0.28rem; color:rgba(75,75,75,1); .font1; }
-    h4{ font-size: 0.6rem; .font3; margin-top: 0.48rem; letter-spacing: 0.06rem; }
+    h4{ 
+        display: flex; justify-content: center; align-items: center;
+        font-size: 0.3rem; .font3; margin-top: 0.48rem; letter-spacing: 0.06rem; 
+        span:last-child{ font-size: 0.6rem; line-height: 0.4rem;  } 
+    }
+    .PayCommon_tip{ color: tomato; font-size: 0.24rem; }
     .Pay_start{
         width: 100%; height: 0.96rem; font-size: 0.34rem; .font3; color:rgba(255,255,255,1); 
         background:rgba(255,139,75,1); border-radius: 0.1rem; line-height: 0.96rem; margin-top: 3.5rem;
+    }
+    .is_Pay_start{
+        margin-top: 1.6rem!important;
     }
 }
 .Pay_passwod{

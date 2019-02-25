@@ -19,6 +19,7 @@ const NewYears = resolve => require(['@/pages/Home/NewYears'], resolve)
 const Vouchers = resolve => require(['@/pages/Home/Vouchers'], resolve)
 const LuckyDraw = resolve => require(['@/pages/Home/LuckyDraw'], resolve)
 const GoodStatus = resolve => require(['@/pages/Home/GoodStatus'], resolve)
+const SecondsKill = resolve => require(['@/pages/Home/SecondsKill'], resolve)
 
 const ShoppingCart = resolve => require(['@/pages/ShoppingCart/ShoppingCart'], resolve)
 const CreateGoodsCart = resolve => require(['@/pages/ShoppingCart/CreateGoodsCart'], resolve)
@@ -55,6 +56,7 @@ const NewPassword = resolve => require(['@/pages/My/NewPassword'], resolve)
 
 const Discount = resolve => require(['@/pages/Activity/Discount'], resolve)
 const DiscountItem = resolve => require(['@/pages/Activity/DiscountItem'], resolve)
+const Promotion = resolve => require(['@/pages/Activity/Promotion'], resolve)
 
 Vue.use(Router)
 
@@ -67,14 +69,14 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/', component: index, meta:{ ndex:0, keepAlive: false },
+      path: '/', component: index, meta:{ index:0, keepAlive: false },
       children:[
-        { path: '/', component: Home, meta:{ ndex:1, keepAlive: true } },
-        { path: 'Classification', component: Classification, meta:{ index:2, keepAlive: true } },
-        { path: 'Brand', component: Brand, meta:{ index:2, keepAlive: true } },
+        { path: '/',name:'Home', component: Home, meta:{ index:1, keepAlive: true } },
+        { path: 'Classification',name:'Classification', component: Classification, meta:{ index:2, keepAlive: true } },
+        { path: 'Brand',name:'Brand', component: Brand, meta:{ index:2, keepAlive: true } },
         { path: 'Discount', component: Discount, meta:{ index:2, keepAlive: false } },
         { path: 'ShoppingCart', component: ShoppingCart, meta:{ index:2, keepAlive: false } },
-        { path: 'My', component: My, meta:{ index:2, keepAlive: true } }
+        { path: 'My',name:'My', component: My, meta:{ index:2, keepAlive: true } }
       ]
     },
     { path: '/Introduce', component: Introduce },
@@ -87,7 +89,7 @@ export default new Router({
     { path: '/Wallet', component: Wallet },
     { path: '/Integralshop', component: Integralshop, },
     { path: '/ShopDetils', component: ShopDetils },
-    { path: '/ShopActivity', component: ShopActivity, meta:{ keepAlive: true } },
+    { path: '/ShopActivity',name:'ShopActivity', component: ShopActivity, meta:{ keepAlive: true } },
     { path: '/Rule', component: Rule },
     { path: '/VoucherDetails', component: VoucherDetails },
     { path: '/Balance', component: Balance },
@@ -97,15 +99,15 @@ export default new Router({
     { path: '/Authentication', component: Authentication },
     { path: '/Owner', component: Owner },
     { path: '/CouponAll', component: CouponAll },
-    { path: '/CommonOrder', component: CommonOrder },
+    { path: '/CommonOrder',name:'CommonOrder', component: CommonOrder, meta:{ keepAlive: true } },
     { path: '/CommonOrderDetils', component: CommonOrderDetils },
     { path: '/Recharge', component: Recharge },
     { path: '/Crab', component: Crab, meta:{ keepAlive: false } },
-    { path: '/GoodsDetails', component: GoodsDetails },
+    { path: '/GoodsDetails',name:'GoodsDetails', component: GoodsDetails },
     { path: '/CreateGoods', component: CreateGoods },
     { path: '/OrdersSubmitted', component: OrdersSubmitted },
     { path: '/CreateGoodsCart', component: CreateGoodsCart },
-    { path: '/Goods', component: Goods, meta:{ keepAlive: false } },
+    { path: '/Goods',name:'Goods', component: Goods, meta:{ keepAlive: true } },
     { path: '/Address', component: Address },
     { path: '/AddAddress', component: AddAddress },
     { path: '/Result', component: Result },
@@ -118,6 +120,8 @@ export default new Router({
     { path: '/Password', component: Password },
     { path: '/NewPassword', component: NewPassword },
     { path: '/Logistics', component: Logistics },
-    { path: '/GoodStatus', component: GoodStatus },
+    { path: '/GoodStatus', name:'GoodStatus', component: GoodStatus, meta:{ keepAlive: false } },
+    { path: '/Promotion', component: Promotion },
+    { path: '/SecondsKill', component: SecondsKill },
   ]
 })

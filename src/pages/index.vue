@@ -1,11 +1,11 @@
 <template>
     <div id="index">
 
-        <keep-alive>
-            <router-view v-if="$route.meta.keepAlive"></router-view>
+        <keep-alive :include='included' :excluded='excluded'>
+            <router-view></router-view>
         </keep-alive>
 
-        <router-view v-if="!$route.meta.keepAlive" />
+        <!-- <router-view v-if="!$route.meta.keepAlive" /> -->
 
         <bottom-item></bottom-item>
 
@@ -30,7 +30,13 @@ export default {
     computed:{
         isFocus(){
             return this.$store.state.isFocus
-        }
+        },
+        included(){
+            return this.$store.state.included.toString()
+        },
+        excluded(){
+            return this.$store.state.excluded
+        },
     },
     mounted(){
         

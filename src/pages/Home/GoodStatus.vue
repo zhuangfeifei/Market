@@ -25,6 +25,7 @@
 // import MescrollVue from 'mescroll.js/mescroll.vue'
 import _Goods from '../../components/_goods'
 export default {
+    name:'GoodStatus',
     data() {  
         return {
             goodsName: '', categoryId: '',
@@ -52,17 +53,15 @@ export default {
         imgUrlGoods(){
             return this.$store.state.imgUrlGoods
         },
+        isKeepAlive(){
+            return this.$store.state.isKeepAlive
+        },
     },
     created(){
-        document.body.scrollTop = 0
-        document.documentElement.scrollTop = 0
         document.title =  this.$route.query.title || '商品分类'
         
         this.goodsName = this.$route.query.goodsName
         this.categoryId = this.$route.query.categoryId
-    },
-    activated(){
-        
     },
     methods:{
         search(){
@@ -110,6 +109,24 @@ export default {
                 this.loading = false
             })
         }
+    },
+    beforeRouteLeave(to, from, next) {   
+        if(to.name==='GoodsDetails'){
+            next()
+        }else{
+            this.$store.commit("includedComponents", '');
+            this.$store.commit("excludedComponents","GoodStatus");
+            next()
+        }
+    },
+    activated(){
+        if(this.$store.state.includedComponents.indexOf('GoodStatus') == -1){
+            this.$store.commit("includedComponents", this.$store.state.includedComponent+",GoodStatus")
+            this.$store.commit("excludedComponents","");
+        }
+    },
+    deactivated(){
+        
     },
 }
 </script>

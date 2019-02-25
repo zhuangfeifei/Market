@@ -16,8 +16,8 @@
                     <van-coupon-cell class="OrdersSubmitted_red" :coupons="coupons" :chosen-coupon="chosenCoupon" @click="onWatchshowList = true" />
                 </div>
             </div>
-            <div class="OrdersSubmitted_order_Real"><span>余额实付</span><span>{{wxAmount == 0 ? yueAmount > redMoneys.price ? yueAmount - redMoneys.price : 0.00 : redMoneys.price > wxAmount ? yueAmount - (redMoneys.price - wxAmount) : yueAmount}}元</span></div>
-            <div class="OrdersSubmitted_order_Real"><span>微信实付</span><span>{{wxAmount > redMoneys.price ? wxAmount - redMoneys.price : 0.00}}元</span></div>
+            <div class="OrdersSubmitted_order_Real"><span>余额实付</span><span>{{wxAmount == 0 ? yueAmount > redMoneys.price ? (yueAmount - redMoneys.price).toFixed(2) : 0.00 : redMoneys.price > wxAmount ? yueAmount - (redMoneys.price - wxAmount).toFixed(2) : yueAmount}}元</span></div>
+            <div class="OrdersSubmitted_order_Real"><span>微信实付</span><span>{{wxAmount > redMoneys.price ? (wxAmount - redMoneys.price).toFixed(2) : 0.00}}元</span></div>
         </div>
 
         <div class="OrdersSubmitted_footer">
@@ -26,7 +26,11 @@
         </div>
 
 
-        <PayCommon-item v-if="isPays" :isWx="!isChecked" :moeny="moeny" :redMoneys="redMoneys"></PayCommon-item>
+        <PayCommon-item v-if="isPays" :isWx="!isChecked" :moeny="moeny" :redMoneys="redMoneys" 
+            :yueAmount="wxAmount == 0 ? yueAmount > redMoneys.price ? (yueAmount - redMoneys.price).toFixed(2) : 0.00 : redMoneys.price > wxAmount ? yueAmount - (redMoneys.price - wxAmount).toFixed(2) : yueAmount"
+            :wxAmount="wxAmount > redMoneys.price ? (wxAmount - redMoneys.price).toFixed(2) : 0.00"
+            >
+        </PayCommon-item>
 
         <!-- 优惠券列表 -->
         <van-popup v-model="showList" position="bottom">
